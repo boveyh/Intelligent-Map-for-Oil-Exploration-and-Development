@@ -23,6 +23,13 @@ if (mode === 'all' || mode === 'wf') {
     '<h3>' + wf.metrics.title + '</h3>' + wf.metrics.html + K.fails(wf.fails));
 }
 if (mode === 'm') blocks.push('<h3>' + wf.metrics.title + '</h3>' + wf.metrics.html);
+/* bg1 / bg2 / bg3 …：只渲染背景里的第 n 节，便于逐张图截图核对 */
+if (/^bg\d+$/.test(mode)) {
+  const k = Number(mode.slice(2)) - 1;
+  const sec = def.tabs.background.sections[k];
+  blocks.push(K.sec4(sec.no, sec.en, sec.title, sec.html));
+}
+if (/^wfstep$/.test(mode)) blocks.push(K.pipeline(wf.steps));
 
 const html = '<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8">' +
   '<link rel="stylesheet" href="../assets/core/tokens.css">' +

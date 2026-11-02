@@ -195,8 +195,9 @@
       test = pool.slice(cut);
     }
 
-    /* 井 1 全井段预测，用于画剖面 */
-    var profile = knnPredict(train, wells[0].pts);
+    /* 剖面与按井评分使用同一留出井；随机划分模式另作混合样点对照。 */
+    var profileWell = TESTW[0];
+    var profile = knnPredict(train, wells[profileWell].pts);
 
     var res = knnPredict(train, test);
     var yt = [], yp = [], yf = [], vsh = [];
@@ -238,7 +239,7 @@
       r2: r2(yt, yp), rmse: rmse(yt, yp),
       r2f: r2(yt, yf), rmseF: rmse(yt, yf),
       sameWell: res.sameWell, bins: bins, scat: scat,
-      profile: profile.pred, profileTruth: wells[0].pts
+      profile: profile.pred, profileTruth: wells[profileWell].pts, profileWell: profileWell, split: split
     };
   }
 
@@ -279,7 +280,7 @@
     /* 真实值 */
     var pts = ev.profileTruth, i, pth = [], pfm = [], pml = [];
     for (i = 0; i < pts.length; i++) {
-      if (pts[i].well !== 0) continue;
+      if (pts[i].well !== ev.profileWell) continue;
       pth.push(tx(pts[i].phi) + ',' + ty(i));
       pfm.push(tx(pts[i].formula) + ',' + ty(i));
       pml.push(tx(ev.profile[i]) + ',' + ty(i));
@@ -297,7 +298,7 @@
     s += '<line x1="268" y1="14" x2="292" y2="14" stroke="' + C.jade + '" stroke-width="2"/>';
     s += '<text x="297" y="17.5" font-size="9.5" fill="' + C.text + '">学习法</text>';
 
-    s += '<text x="96" y="' + (H - 10) + '" font-size="9.5" font-family="monospace" fill="' + C.dim + '">WELL-01 · ' + (DEPTH0) + '—' + (DEPTH0 + depthSpan) + ' m · 220 个采样点</text>';
+    s += '<text x="96" y="' + (H - 10) + '" font-size="9.5" font-family="monospace" fill="' + C.dim + '">WELL-02 · ' + (ev.split === 'well' ? '整井留出' : '随机划分') + ' · ' + (DEPTH0) + '—' + (DEPTH0 + depthSpan) + ' m · 220 个采样点</text>';
     s += '</svg>';
     return s;
   }

@@ -23,6 +23,8 @@ const ROOT = path.resolve(__dirname, '..');
 const CASES = path.join(ROOT, 'cases');
 const SITE = ROOT;   /* 站点就在仓库根目录，GitHub Pages 从 /(root) 部署 */
 const PKG = path.join(ROOT, 'packages');
+const { enrich, stories, plate, processHTML } = require('../cases/shared/visual-story.js');
+const { wrapSource } = require('../cases/shared/demo-method.js');
 
 /* K 工具箱是纯字符串函数，给个 window 壳就能在 Node 里跑 */
 if (typeof global.window === 'undefined') global.window = {};
@@ -46,7 +48,7 @@ function loadContent(id) {
   const def = typeof mod === 'function' ? mod(K) : mod;
   if (!def || !def.id) throw new Error(id + ': content.js 没有返回含 id 的对象');
   if (!def.tabs || !def.tabs.background) throw new Error(id + ': 缺少 tabs.background');
-  return def;
+  return enrich(def);
 }
 
 /* ---------- 插件源码 ---------- */
@@ -56,6 +58,9 @@ function pluginSource(def) {
     id: def.id,
     sceneId: def.sceneId,
     title: def.title,
+    summary: def.summary || '',
+    previewImage: def.previewImage || '',
+    algorithmType: def.algorithmType || '',
     status: def.status || 'ready',
     version: def.version || '1.0.0',
     updated: def.updated || '',
@@ -73,13 +78,15 @@ function pluginSource(def) {
   return '/* 自动生成，请勿手改 —— 源文件 cases/' + def.id + '/content.js */\n' +
     '(function () {\n' +
     '  var D = ' + JSON.stringify(base, null, 2) + ';\n' +
-    '  D.tabs.demo = {\n' +
+    '  var live;\n  D.tabs.demo = {\n' +
     '    label: ' + JSON.stringify(demo.label || '可运行示范') + ',\n' +
     '    intro: ' + JSON.stringify(demo.intro || '') + ',\n' +
     '    mount: function (root, ctx) {\n' +
     '      if (typeof window.' + g + ' !== \'function\') { root.innerHTML = ' + fallback + '; return; }\n' +
-    '      window.' + g + '(root, ctx);\n' +
-    '    }\n' +
+    '      live = window.' + g + '(root, ctx);\n' +
+    '      return live;\n' +
+    '    },\n' +
+    '    unmount: function () { if (live && live.unmount) live.unmount(); live = null; }\n' +
     '  };\n' +
     '  Cases.register(D);\n' +
     '})();\n';
@@ -92,6 +99,7 @@ function packageJSON(def) {
     id: def.id,
     sceneId: def.sceneId,
     title: def.title,
+    summary: def.summary || '',
     status: def.status || 'ready',
     version: def.version || '1.0.0',
     updated: def.updated || '',
@@ -135,8 +143,27 @@ function readme(def) {
     '说明',
     '----',
     '纯前端、无外部依赖、无网络请求；所有数据在浏览器里按固定随机种子合成，',
-    '指标由页面实时计算，不含预置结果。'
+    '交互指标由页面实时计算；背景和流程中的静态对照数值由 tools/test-*.js 复算。',
+    '场景图为 AI 生成的静态概念模型，用于解释空间关系，不参与算法计算。'
   ].join('\n');
+}
+
+/* Add presentation to the original sample without changing its case or algorithm source. */
+function builtinVisualSource() {
+  const s = stories['welllog-layer'];
+  const extra = {
+    previewImage: 'assets/models/' + s.image + '.webp',
+    algorithmType: s.type,
+    background: plate(s),
+    workflow: processHTML(s)
+  };
+  return '/* Generated presentation only; original sample algorithm remains unchanged. */\n' +
+    '(function () {\n  var c = Cases.get("welllog-layer");\n  if (!c) return;\n' +
+    '  var v = ' + JSON.stringify(extra) + ';\n' +
+    '  c.previewImage = v.previewImage; c.algorithmType = v.algorithmType;\n' +
+    '  c.tabs.background.sections[0].html = v.background + c.tabs.background.sections[0].html;\n' +
+    '  c.tabs.workflow.metrics.html = v.workflow + c.tabs.workflow.metrics.html;\n' +
+    '})();\n';
 }
 
 /* ---------- index.html 自动挂载 ---------- */
@@ -149,8 +176,8 @@ function patchIndex(ids) {
   html = html.replace(new RegExp('[ \\t]*' + B + '[\\s\\S]*?' + E + '\\n?', 'g'), '');
 
   const block = ids.length
-    ? [B].concat(ids.map((id) => '<script src="assets/cases/' + id + '.case.js?v=20261023"></script>\n' +
-      '<script src="assets/cases/' + id + '.demo.js?v=20261023"></script>'))
+    ? [B, '<script src="assets/cases/welllog-layer.visual.js?v=20261102-release"></script>'].concat(ids.map((id) => '<script src="assets/cases/' + id + '.case.js?v=20261102-release"></script>\n' +
+      '<script src="assets/cases/' + id + '.demo.js?v=20261102-release"></script>'))
       .concat([E, '']).join('\n')
     : '';
 
@@ -171,6 +198,7 @@ function main() {
 
   ensure(PKG);
   ensure(path.join(SITE, 'assets/cases'));
+  fs.writeFileSync(path.join(SITE, 'assets/cases/welllog-layer.visual.js'), builtinVisualSource(), 'utf8');
 
   const built = [];
   ids.forEach((id) => {
@@ -180,11 +208,12 @@ function main() {
     ensure(path.join(pkgDir, 'demo'));
 
     fs.writeFileSync(path.join(pkgDir, 'case.json'), JSON.stringify(packageJSON(def), null, 2), 'utf8');
-    fs.copyFileSync(path.join(CASES, id, 'demo/demo.js'), path.join(pkgDir, 'demo/demo.js'));
+    const demoSource = wrapSource(fs.readFileSync(path.join(CASES, id, 'demo/demo.js'), 'utf8'), id, def.demoGlobal || 'CASE_DEMO');
+    fs.writeFileSync(path.join(pkgDir, 'demo/demo.js'), demoSource, 'utf8');
     fs.writeFileSync(path.join(pkgDir, 'README.txt'), readme(def), 'utf8');
 
     fs.writeFileSync(path.join(SITE, 'assets/cases', id + '.case.js'), pluginSource(def), 'utf8');
-    fs.copyFileSync(path.join(CASES, id, 'demo/demo.js'), path.join(SITE, 'assets/cases', id + '.demo.js'));
+    fs.writeFileSync(path.join(SITE, 'assets/cases', id + '.demo.js'), demoSource, 'utf8');
 
     const kb = (fs.statSync(path.join(pkgDir, 'case.json')).size +
       fs.statSync(path.join(pkgDir, 'demo/demo.js')).size) / 1024;

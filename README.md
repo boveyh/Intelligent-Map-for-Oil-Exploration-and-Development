@@ -1,73 +1,61 @@
-# 石油勘探开发的智能化可能性地图 · 案例工程
+# 石油作业智能化案例站点
 
-课程作业：在给定的门户框架上，为「测井」类别补齐全部子场景的可运行案例，并向邻接环节外延。
+展示具体作业任务里的数据、算法介入、传统对照、判断变化和人工复核。
+入口是根目录 index.html，纯前端，无算法后端。可用静态服务器或 GitHub Pages 预览。
 
-**站点就在仓库根目录，GitHub Pages 选 `main` / `/(root)` 即可直接跑，无需任何构建。**
+当前：9 个自制案例 + 1 个框架样例；测井有 5 个主要学习案例、1 个标准化配套案例与原框架样例。13 个环节、61 个原场景，w6/w7 已淘汰。首页按测井任务组织，其他案例和外部导入继续自动显示。
+在线入口：[GitHub Pages](https://boveyh.github.io/Intelligent-Map-for-Oil-Exploration-and-Development/)。项目说明、作业要求对照、改进路线与 AI 评分指令见 [Proposal](docs/PROPOSAL.md)。
+核查、案例评价、局限和后续优先级见 [PLAN.md](PLAN.md)。
+已核查的优秀项目及具体借鉴方式见 [智能化案例参考与改进](docs/2026-10-31-智能化案例参考与改进.md)。
 
-## 目录
+## 本地预览
 
-```
-index.html                唯一入口，脚本加载顺序在此（GitHub Pages 根就是它）
-assets/data.js            13 环节 / 63 场景元数据（已新增测井 w6 / w7）
-assets/core/              外壳：路由、导航、组件、上传与示范宿主
-assets/cases/             自动生成的案例插件（勿手改）
-docs/                     框架自带文档：如何添加新案例
-firstbreak-pick-case/     框架自带样例（考核用，勿改）
-
-cases/<案例 id>/          案例源文件（唯一要手写的地方）
-  content.js              正文：专业背景 + 案例流程（用 K 工具箱写版式）
-  demo/demo.js            可运行示范：自包含，无外部依赖
-
-packages/<案例 id>/       构建产物：可拖进「添加案例」的案例包
-  case.json               清单（HTML 已展开为最终字符串）
-  demo/demo.js            示范（模块模式，挂进 Shadow DOM）
-  README.txt              给使用者的说明
-
-tools/                    构建与自检
-shots/                    开发期截图（不提交，git 已忽略）
+```sh
+python -m http.server 8014 --bind 127.0.0.1
 ```
 
-## 三条命令
+浏览器打开 http://127.0.0.1:8014/ 。原框架支持双击 index.html；本轮内置浏览器限制 file 协议，尚未做该路径的浏览器验收。
 
-```bash
-node tools/build-case.js          # 单一源 → 插件 + 上传包 + 自动挂 index.html
-node tools/validate.js            # 按「添加案例」的口径逐项自检，有错退出码 1
-node tools/test-w2.js             # 复算示范里的指标（防止文案和代码不一致）
+## 文件
+
+- cases/<id>/content.js：背景、流程、说明的源文件。
+- cases/<id>/demo/demo.js：独立算法演示，自带样式。
+- cases/shared/visual-story.js：模型图和“输入—介入—输出—影响”说明的构建源。
+- cases/shared/demo-method.js：九个自制演示的实际方法、作用机制、验证操作与运行证据；构建时写入独立包。
+- assets/models/：十张独立场景模型图、提示词与用途说明。
+- assets/cases/：生成的插件，勿手改。
+- packages/<id>/：生成的可导入包。背景模型图已内嵌，不需接收方改主站。
+- assets/core/：原站点外壳、注册、导入与演示宿主。
+- firstbreak-pick-case/：保留原始样例。
+
+## 构建与核查
+
+```sh
+node tools/build-case.js
+node tools/validate.js
+node tools/check-visual-story.js
+node tools/check-decision-evidence.js
+node tools/check-learning-cases.js
+node tools/check-original-interface.js
+node tools/check-home-animation.js
+node tools/check-demo-method.js
+node tools/check-case-zip.js
 ```
 
-## 部署到 GitHub Pages
+tools/test-w2.js、test-w3.js、test-w4.js、test-w5.js、test-w5n.js、test-m1.js、test-c1.js、test-pr1.js 可复算合成实验指标。
+原有复算脚本部分仍使用本机绝对路径，跨电脑运行前需改为相对路径；这不影响网站或包本身运行。
 
-1. 把仓库推到 GitHub（`main` 分支）；
-2. 仓库 Settings → Pages → Source 选 **Deploy from a branch**，分支 `main`，目录 **`/(root)`**，保存；
-3. 约 1 分钟后访问 `https://<用户名>.github.io/<仓库名>/`。
+## 添加案例
 
-仓库里有 `.nojekyll`，作用是让 Pages 原样发布文件、不跑 Jekyll ——
-否则 `assets/cases/_template.case.js` 这类以下划线开头的文件会被当成 Jekyll 内部文件吃掉。
+右上角“添加案例”，可选择包内文件、整个文件夹，或“选择 ZIP 压缩包”。ZIP 可带顶层目录，也可直接拖入虚线框；每包一个 case.json，解包后继续用原校验器。支持普通 ZIP 的 Store/Deflate，不支持 RAR、7z、加密/分卷/ZIP64；展开文件总量仍不超过 6 MB。解压在浏览器本地完成。
+不同 id 可挂同一个 sceneId，页顶切换；原上传器会拦截已被占用的 id，需使用新 id 或先移除旧的本地上传记录。
+导入记录保存在当前浏览器当前站点的本地存储，换电脑或换站点需重新导入。
+首次接入场景的操作细节见 docs/如何添加新案例.md。
 
-本地无需服务器：直接双击 `index.html` 就能用（全部相对路径 + hash 路由）。
-用 VS Code 的 Live Server 打开也可以，两者行为一致。
+## 证据范围
 
-## 增加一个案例
+自制案例用固定随机种子的合成数据演示算法；数字不是现场效果。
+AI 模型图只解释空间关系，不是工程仿真计算或测量结果。案例主图为静态图，各自独立、风格统一；首页案例窗用实际 KNN 数据自动播放“曲线—近邻投票—岩性判断”，可以暂停，离开首页时清理定时器。
+w3 保留 Hough 几何基线，并增加由标注合成图像训练的候选分类器；独立留出中误报减少、漏检增加，整体 F1 略低于基线。多井标准化是数据质量配套，不统称深度学习。
 
-1. 复制 `cases/w2-reservoir-param/` 成 `cases/<新 id>/`；
-2. 改 `content.js` 里的 `id / sceneId / title / 三块内容`（`sceneId` 必须存在于 `data.js`）；
-3. 改 `demo/demo.js` 的挂载函数名，并把 `window.W2DEMO` 换成新的全局名、同步 `content.js` 末尾的 `demoGlobal`；
-4. `node tools/build-case.js && node tools/validate.js`；
-5. 若该场景首次接入，去 `assets/data.js` 给它加 `demo: true`（否则案例库会提示"场景未标记 demo:true"）。
-
-## 为什么是「单一源 + 两份产物」
-
-`case.json` 里的 html 是纯字符串，不能用 `K.*`；插件里又最好用 `K.*` 保持版式一致。
-所以正文只写一份（`content.js`，用 K），构建时序列化成两份：插件内联同样的字符串，上传包则是展开后的最终 HTML —— 两边渲染结果一致，改一次两边都变。
-
-示范脚本必须**自包含**（自己注入 `<style>`、不依赖站点 CSS、不碰 `document`），
-这样同一份文件既能被插件直接 mount 到页面里，也能被上传宿主挂进 Shadow DOM。
-
-## 已接入
-
-| 场景 | 案例 | 状态 |
-|---|---|---|
-| w1 测井曲线智能分层 | `welllog-layer`（框架自带） | 保留原样，不计入本次工作量 |
-| w2 储层参数智能解释 | `w2-reservoir-param` | 已完成，插件 + 上传包双产物 |
-| w6 测井解释报告智能成文 | — | 已新增场景，待接入 |
-| w7 测井相智能识别 | — | 已新增场景，待接入 |
+2026-11-01 已用下载的原站实际导入并运行九个自制包，并将原 firstbreak 包导入改版站核对交互和刷新恢复。原上传器、注册表、演示宿主及样例文件与下载原版的哈希一致。页面与互导记录见 [本轮验收](shots/review-2026-11-01-redesign/README.md)。

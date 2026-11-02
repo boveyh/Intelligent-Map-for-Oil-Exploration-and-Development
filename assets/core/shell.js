@@ -116,180 +116,139 @@
   }
 
   /* =========================================================
-     三、首页
+     三、首页 · 案例墙
+     ---------------------------------------------------------
+     首页第一屏之后就是"我们做了什么"。卡片全部从 Cases.list()
+     读出来，新加一个案例插件就会自动出现在墙上，不需要改这里。
      ========================================================= */
-  function homeHTML() {
-    var s = A.stats();
-    var cs = Cases.stats();
-    var total = A.allScenes.length;
-    var keys = Object.keys(M);
+  function judgeObj(c, label) {
+    var j = (c.tabs && c.tabs.background && c.tabs.background.judge) || [];
+    for (var i = 0; i < j.length; i++) {
+      if (j[i].label === label) return j[i];
+    }
+    return null;
+  }
+  function judgeOf(c, label) {
+    var j = judgeObj(c, label);
+    return j ? String(j.value || '') : '';
+  }
+  function headOf(s) { return String(s || '').split(' · ')[0].trim(); }
 
-    /* 方法构成条：一根堆叠条 + 图例，替代原先与下方方法面板重复的 5 张色块 */
-    var compBar = keys.map(function (k) {
-      var n = (A.index.byMethod[k] || []).length;
-      return '<i style="width:' + (n / total * 100).toFixed(2) + '%;background:var(--c-' + (M[k].colorKey || k) + ')"></i>';
-    }).join('');
-    var compLegend = keys.map(function (k) {
-      var n = (A.index.byMethod[k] || []).length;
-      return '<a href="#/method/' + k + '"><i style="background:var(--c-' + (M[k].colorKey || k) + ')"></i>' + M[k].abbr +
-        '<b>' + n + '</b></a>';
-    }).join('');
-
-    var coverPct = total ? Math.round(cs.coveredScenes / total * 100) : 0;
-    var coverBar =
-      '<i style="width:' + coverPct + '%;background:var(--jade)"></i>' +
-      '<i style="width:' + (100 - coverPct) + '%;background:var(--line)"></i>';
-
-    var diffBar =
-      '<i style="width:' + (s.diff.低 / total * 100).toFixed(2) + '%;background:var(--ok)"></i>' +
-      '<i style="width:' + (s.diff.中 / total * 100).toFixed(2) + '%;background:var(--warn)"></i>' +
-      '<i style="width:' + (s.diff.高 / total * 100).toFixed(2) + '%;background:var(--bad)"></i>';
-
-    var chain = A.stages.map(function (st) {
-      return '<a class="step" href="#/stage/' + st.id + '">' +
-        '<div class="step-idx">' + pad(st.idx) + '</div>' +
-        '<div class="step-name">' + esc(st.name) + '</div>' +
-        '<div class="step-n">' + st.scenes.length + '<span>场景</span></div>' +
-        stageBar(st.id) + '</a>';
-    }).join('');
-
-    var mcards = Object.keys(M).map(function (k) {
-      return '<a class="mcard" data-m="' + (M[k].colorKey || k) + '" href="#/method/' + k + '">' +
-        '<div class="abbr"><b>' + M[k].abbr + '</b><span>' + esc(M[k].signal) + '</span></div>' +
-        '<div class="nm">' + esc(M[k].name) + '</div>' +
-        '<div class="ds">' + esc(M[k].desc) + '</div>' +
-        '<div class="cnt"><b>' + (A.index.byMethod[k] || []).length + '</b>个场景</div></a>';
-    }).join('');
-
-    return '<main>' +
-      '<section class="hero"><div class="wrap"><div class="hero-grid">' +
-
-      '<div class="hero-main">' +
-      '<div class="hero-top">' +
-      '<span class="hero-badge">' + esc(A.meta.version) + ' · ' + total + ' 个候选场景</span>' +
-      '<span class="hero-badge alt">案例系统 · ' + cs.registered + ' 个已接入</span>' +
-      '</div>' +
-      '<h1>石油勘探开发的<em>智能化</em><br>可能性地图</h1>' +
-      '<p class="hero-lead">把整条作业链拆成 ' + total + ' 个候选场景，逐个说明：哪一步能被算法替掉、需要准备什么数据、难在哪里。带「可运行」标记的场景，可以直接在浏览器里跑一遍，看算法在什么条件下失效。</p>' +
-      '<div class="hero-note"><div>' +
-      '<p><b>这不是一个展示页，而是一个可扩展的系统。</b>场景元数据、案例内容、可运行示范三者分离；新增案例只需写一个插件文件并注册，外壳、导航、检索路径都会自动接上。</p>' +
-      '</div></div>' +
-      '<div class="hero-acts">' +
-      '<a class="btn primary" href="#/chain">浏览完整作业链 <span class="ar">→</span></a>' +
-      '<a class="btn" href="#/scene/w1?tab=demo">看一个可运行示范</a>' +
-      '</div>' +
-      '</div>' +
-
-      '<aside class="spec">' +
-      '<div class="spec-h"><span class="mono">AT A GLANCE · 速览</span><span class="mono">' + esc(A.meta.version) + '</span></div>' +
-      '<div class="spec-body">' +
-      '<div class="spec-row"><span class="k">作业环节</span><span class="v">' + A.stages.length + '<small>个</small></span></div>' +
-      '<div class="spec-row"><span class="k">候选场景</span><span class="v">' + total + '<small>个</small></span></div>' +
-      '<div class="spec-row"><span class="k">难度分布（低 / 中 / 高）</span><span class="v">' + s.diff.低 + '<small>/</small>' + s.diff.中 + '<small>/</small>' + s.diff.高 + '</span></div>' +
-      '</div>' +
-      '<div class="spec-bar">' + diffBar + '</div>' +
-      '<div class="spec-body">' +
-      '<div class="spec-row"><span class="k">已接入案例</span><span class="v">' + cs.registered + '<small>个</small></span></div>' +
-      '<div class="spec-row"><span class="k">其中可运行示范</span><span class="v">' + cs.withDemo + '<small>个</small></span></div>' +
-      '<div class="spec-row"><span class="k">案例覆盖场景</span><span class="v">' + cs.coveredScenes + '<small>/ ' + total + ' · ' + coverPct + '%</small></span></div>' +
-      '</div>' +
-      '<div class="spec-bar">' + coverBar + '</div>' +
-      '<div class="spec-sub"><span class="mono">方法构成 · BY METHOD</span></div>' +
-      '<div class="comp">' +
-      '<div class="comp-bar">' + compBar + '</div>' +
-      '<div class="comp-legend">' + compLegend + '</div>' +
-      '</div>' +
-      '<div class="spec-f"><span>数据截至 2026-10</span><span>教学用途</span></div>' +
-      '</aside>' +
-
-      '</div></div></section>' +
-
-      /* 按环节找 */
-      '<section class="section"><div class="wrap">' +
-      '<div class="sec-head">' +
-      '<div class="sec-rail"><span class="sec-num">01</span><span class="kicker">BY STAGE</span>' +
-      '<span class="r"><a class="btn sm ghost" href="#/chain">完整链条 →</a></span></div>' +
-      '<h2>按环节找：我现在站在哪一步</h2>' +
-      '<p>沿着作业链从左到右，每个节点下方的色条表示该环节可用的方法构成。点进去是该环节的场景清单。</p>' +
-      '</div>' +
-      '<div class="chain-wrap"><div class="chain-scroll"><div class="chain">' + chain + '</div></div>' +
-      '<div class="chain-hint">← 横向滚动查看全部 ' + A.stages.length + ' 个环节</div></div>' +
-      '</div></section>' +
-
-      /* 按方法找 */
-      '<section class="section"><div class="wrap">' +
-      '<div class="sec-head">' +
-      '<div class="sec-rail"><span class="sec-num">02</span><span class="kicker">BY METHOD</span></div>' +
-      '<h2>按方法找：我手上有一套什么技术</h2>' +
-      '<p>如果你已经有一支做 CV 或时序的团队，更自然的问法是「这套技术在这行能干什么」。点进去是跨环节的场景清单。</p>' +
-      '</div>' +
-      '<div class="methods">' + mcards + '</div>' +
-      '</div></section>' +
-
-      /* 矩阵 */
-      '<section class="section"><div class="wrap">' +
-      '<div class="sec-head">' +
-      '<div class="sec-rail"><span class="sec-num">03</span><span class="kicker">MATRIX</span></div>' +
-      '<h2>方法 × 环节：哪里已经被占满，哪里还是空白</h2>' +
-      '<p>行列交点上的数字是该环节里用到该方法的地点数量。点格子直接带筛选条件跳到环节页。</p>' +
-      '</div>' +
-      matrixHTML() +
-      '</div></section>' +
-
-      /* 系统构成 */
-      '<section class="section"><div class="wrap">' +
-      '<div class="sec-head">' +
-      '<div class="sec-rail"><span class="sec-num">04</span><span class="kicker clay">SYSTEM</span>' +
-      '<span class="r"><a class="btn primary sm" href="#/guide">接入指南 →</a></span></div>' +
-      '<h2>这个系统由三层组成</h2>' +
-      '<p>新增一个案例，只动第二层的一个文件，外加 index.html 里一行 script 标签。</p>' +
-      '</div>' +
-      '<div class="fields">' +
-      '<div class="field"><div class="fx">01 · DATA LAYER · assets/data.js</div>' +
-      '<h4>场景元数据</h4>' +
-      '<p>13 个环节、' + total + ' 个场景的名称、方法标签、难度、数据条件。这一层<b>不含任何案例实现</b>，只是一张可检索的表。</p></div>' +
-      '<div class="field"><div class="fx">02 · CASE LAYER · assets/cases/*.js</div>' +
-      '<h4>案例插件</h4>' +
-      '<p>每个案例一个文件，调用 <b>Cases.register()</b> 声明自己绑定的场景、三块内容与可选的 demo 挂载函数。互不引用、可单独删除。</p></div>' +
-      '<div class="field"><div class="fx">03 · SHELL · assets/core/*</div>' +
-      '<h4>外壳与组件</h4>' +
-      '<p>路由、导航、检索路径、标签/表格/四段式等组件，以及设计令牌。所有案例共用同一套版式，改一次全站生效。</p></div>' +
-      '</div>' +
-      '<div style="margin-top:16px;display:flex;gap:8px;flex-wrap:wrap">' +
-      '<a class="btn" href="#/cases">查看案例库与校验结果 →</a>' +
-      '<a class="btn ghost" href="#/guide">看怎么添加下一个案例</a></div>' +
-      '</div></section>' +
-      '</main>';
+  /* 从 judge 的「收益」里挑一条最能说明问题的指标。
+     value 形如「标签 旧值 → 新值」，也可能以数字开头（缺主语），
+     这时借 desc 的第一小句当标签。 */
+  function pickKpi(c) {
+    var j = judgeObj(c, '合成验证') || judgeObj(c, '收益');
+    if (!j) return null;
+    var val = String(j.value || '').trim();
+    if (!val) return null;
+    if (/^[\d≥≤]/.test(val)) return { k: String(j.desc || j.label).split(/[，,（(·]/)[0].trim(), v: val };
+    var m = /^(.*?)\s+((?:\d|[≥≤])[\s\S]*)$/.exec(val) || /^([^\d]*)([\s\S]*)$/.exec(val);
+    var label = (m[1] || '').trim();
+    var num = (m[2] || '').trim() || val;
+    if (!label) label = String(j.desc || '').split(/[，,（(·]/)[0].trim();
+    return { k: label, v: num };
   }
 
-  function matrixHTML() {
-    var counts = A.countByStageMethod();
-    var keys = Object.keys(M);
-    var head = '<tr><th>环节</th>' + keys.map(function (k) {
-      return '<th>' + M[k].abbr + '</th>';
-    }).join('') + '<th>合计</th></tr>';
+  function cardMethods(c) {
+    var m = (c.methods && c.methods.length) ? c.methods : ((A.index.byId[c.sceneId] || {}).methods || []);
+    return m.slice(0, 2);
+  }
 
-    var body = A.stages.map(function (st) {
-      var c = counts[st.id];
-      var rowTotal = st.scenes.length;
-      return '<tr><th><i>' + pad(st.idx) + '</i>' + esc(st.name) + '</th>' +
-        keys.map(function (k) {
-          var n = c[k] || 0;
-          return '<td class="' + (n ? '' : 'zero') + '"><a href="#/stage/' + st.id + '?m=' + k + '">' + (n || '·') + '</a></td>';
-        }).join('') +
-        '<td><a href="#/stage/' + st.id + '" style="color:var(--ink-3)">' + rowTotal + '</a></td></tr>';
+  function liveCases() {
+    return Cases.list().filter(function (c) {
+      return c.id !== 'your-case-id' && c.sceneId && A.index.byId[c.sceneId];
+    }).sort(function (a, b) {
+      var sa = A.index.byId[a.sceneId], sb = A.index.byId[b.sceneId];
+      if (sa.stageIdx !== sb.stageIdx) return sa.stageIdx - sb.stageIdx;
+      if (a.sceneId !== b.sceneId) return a.sceneId < b.sceneId ? -1 : 1;
+      return 0;
+    });
+  }
+
+  function caseCards(list) {
+    return list.map(function (c, i) {
+      var sc = A.index.byId[c.sceneId];
+      var mts = cardMethods(c);
+      var mt = mts[0] || 'cv';
+      var df = headOf(judgeOf(c, '难度'));
+      var task = headOf(judgeOf(c, '任务类型')).split(/[\/／+]/)[0].trim();
+      var kp = pickKpi(c);
+
+      return '<a class="hw-card" style="--hc:var(--c-' + mt + ')" href="#/scene/' + c.sceneId +
+        '?case=' + encodeURIComponent(c.id) + '&tab=bg">' +
+        (c.previewImage ? '<div class="hw-model"><img loading="lazy" src="' + esc(c.previewImage) + '" alt="' + esc(c.title) + '概念模型"><span>' + esc(c.algorithmType || '交互案例') + '</span></div>' : '') +
+        '<div class="hw-top">' +
+        '<div class="hw-st"><b>' + pad(sc.stageIdx) + ' ' + esc(sc.stageName) + '</b>' +
+        (task ? '<span class="t">' + esc(task) + '</span>' : '') + '</div>' +
+        (df ? '<span class="hw-df" data-d="' + esc(df) + '">难度 ' + esc(df) + '</span>' : '') +
+        '</div>' +
+        '<div class="hw-ti">' + esc(c.title) + '</div>' +
+        (c.algorithmType ? '<div class="hw-algorithm">' + esc(c.algorithmType) + '</div>' : '') +
+        '<div class="hw-sum">' + esc(c.summary || sc.point || sc.problem || '') + '</div>' +
+        '<div class="hw-kpi' + (kp ? '' : ' empty') + '">' +
+        (kp && kp.k ? '<span class="k">' + esc(kp.k) + '</span>' : '') +
+        '<span class="v">' + esc(c.id === 'welllog-layer' ? '框架样例 · 原始口径' : (kp ? kp.v : (c.algorithmType || '查看方法与输出'))) + '</span></div>' +
+        '<div class="hw-evidence">' + (c.id === 'welllog-layer' ? '框架自带样例，不计新增案例' : (c.imported ? '外部导入案例 · 证据见正文' : '合成数据实验 · 指标条件见正文')) + '</div>' +
+        '<div class="hw-foot">' + mts.map(caseChip).join('') +
+        '<span class="hw-go">案例</span></div>' +
+        '</a>';
     }).join('');
-
-    var foot = '<tr><th>合计</th>' + keys.map(function (k) {
-      return '<td>' + (A.index.byMethod[k] || []).length + '</td>';
-    }).join('') + '<td>' + A.allScenes.length + '</td></tr>';
-
-    return '<div class="matrix-wrap"><table class="matrix"><thead>' + head + '</thead><tbody>' + body +
-      '</tbody><tfoot>' + foot + '</tfoot></table></div>';
   }
 
   /* =========================================================
-     四、链条总览页
+     四、首页
+     ========================================================= */
+  function homeHTML() {
+    var list=liveCases(), used={};
+    var groups=[
+      {no:'01',title:'先让曲线可用',desc:'缺测怎样补，井间刻度怎样对齐',ids:['w5-completion','w5-normalization']},
+      {no:'02',title:'识别地层与岩性',desc:'从已知标签学习，在新井上形成判断',ids:['w1-boundary-learning','w4-lithology']},
+      {no:'03',title:'解释物性与裂缝',desc:'预测连续参数，筛选井壁结构候选',ids:['w2-reservoir-param','w3-imaging-fracture']}
+    ];
+    var sections=groups.map(function(g){
+      var selected=g.ids.map(function(id){return list.filter(function(c){return c.id===id;})[0];}).filter(Boolean);
+      selected.forEach(function(c){used[c.id]=true;});
+      return '<section class="home-task"><div class="home-task-head"><span>'+g.no+'</span><h3>'+g.title+'</h3><p>'+g.desc+'</p></div><div class="hw">'+caseCards(selected)+'</div></section>';
+    }).join('');
+    var additional=list.filter(function(c){return !used[c.id] && c.id!=='welllog-layer';});
+    var sample=list.filter(function(c){return c.id==='welllog-layer';});
+    var stages=A.stages.map(function(st){return '<a href="#/stage/'+st.id+'"><small>'+pad(st.idx)+'</small>'+esc(st.name)+'</a>';}).join('');
+    var methods=Object.keys(M).map(function(k){return '<a href="#/method/'+k+'"><b>'+esc(M[k].abbr)+'</b>'+esc(M[k].name)+'</a>';}).join('');
+    return '<main class="home-page"><section class="hero"><div class="wrap"><div class="hero-grid">'+
+      '<div class="hero-main"><span class="home-eyebrow">测井专题 / WELL LOGGING</span><h1>从测井曲线<br>到<span>有依据的判断</span></h1>'+
+      '<p class="hero-lead">分层、岩性、物性、裂缝与曲线修复。看智能方法读取什么信息，怎样形成结果，以及哪些井段仍需要人工复核。</p>'+
+      '<div class="hero-acts"><a class="btn primary" href="#/scene/w4?case=w4-lithology&amp;tab=demo">先看岩性识别 →</a><a class="btn" href="#logging-cases" data-home-jump>浏览测井案例</a></div>'+
+      '<p class="home-intro-note">可交互的合成数据实验 · 传统方法与学习方法同场对照</p></div>'+
+      (global.HomeLithology?global.HomeLithology.html():'')+'</div></div></section>'+
+      '<section class="section home-main" id="logging-cases"><div class="wrap"><div class="home-section-head"><div><span class="home-eyebrow">按当前问题进入</span><h2>六个案例，三类测井任务</h2></div><a href="#/stage/welllog">测井全部场景 ↗</a></div>'+sections+
+      '<p class="home-count">全站已接入 '+list.length+' 个案例。测井五个原场景均有案例；标准化作为数据质量配套。原框架示范单独保留。</p>'+
+      (sample.length?'<details class="home-sample"><summary>查看原框架分层样例</summary><div class="hw">'+caseCards(sample)+'</div></details>':'')+'</div></section>'+
+      (additional.length?'<section class="section home-extensions"><div class="wrap"><div class="home-section-head"><div><span class="home-eyebrow">更多作业任务</span><h2>其他已接入案例</h2></div><a href="#/cases">完整案例库 ↗</a></div><p class="home-section-copy">录井、固井、采油及外部导入案例也可从这里进入。</p><div class="hw home-extra-grid">'+caseCards(additional)+'</div></div></section>':'')+
+      '<section class="section home-directory"><div class="wrap"><div class="home-section-head"><div><span class="home-eyebrow">全站导航</span><h2>按作业环节或方法继续查找</h2></div></div><div class="home-directory-row"><h3>13 个作业环节</h3><nav aria-label="全部作业环节">'+stages+'</nav></div><div class="home-directory-row"><h3>按方法找</h3><nav aria-label="全部智能方法">'+methods+'</nav></div><div class="home-upload-note"><p>已有案例包？右上角“添加案例”继续使用原框架统一接口。</p><a href="#/guide">查看接入说明 →</a></div></div></section></main>';
+  }
+  /* 首页主线叙事的一小段：某一环节 + 它下面的案例/子场景 */
+  function storySeg(list, stageId, items, say) {
+    var st = null;
+    A.stages.forEach(function (x) { if (x.id === stageId) st = x; });
+    if (!st) return '';
+    var n = 0;
+    list.forEach(function (c) { if (A.index.byId[c.sceneId].stageId === stageId) n++; });
+    return '<a class="st-seg' + (n > 2 ? ' hot' : '') + '" href="#/stage/' + stageId + '">' +
+      '<div class="st-top"><span class="no">' + pad(st.idx) + '</span><b>' + esc(st.name) + '</b>' +
+      '<span class="n">' + (n ? n + ' 例' : '待做') + '</span></div>' +
+      '<div class="st-flow">' + items.map(function (t) { return '<i>' + esc(t) + '</i>'; }).join('') + '</div>' +
+      '<div class="st-say">' + esc(say) + '</div>' +
+      '<span class="st-go">进入</span></a>';
+  }
+
+  function stSceneHas(list, sceneId) {
+    for (var i = 0; i < list.length; i++) if (list[i].sceneId === sceneId) return true;
+    return false;
+  }
+
+  /* =========================================================
+     五、链条总览页
      ========================================================= */
   function chainHTML() {
     var rows = A.stages.map(function (st) {
@@ -519,9 +478,10 @@
         return '<span class="mtag" data-m="' + ck + '"><b>' + M[k].abbr + '</b>' + esc(M[k].name) + '</span>';
       }).join('') +
       cBadge +
+      (c && c.algorithmType ? '<span class="tag">' + esc(c.algorithmType) + '</span>' : '') +
       '</div>' +
-      '<h1 class="dh-title">' + esc(sc.name) + '</h1>' +
-      '<p class="dh-sub">' + esc(sc.intro) + '</p>' +
+      '<h1 class="dh-title">' + esc(c && c.title || sc.name) + '</h1>' +
+      '<p class="dh-sub">' + esc(c && c.summary || sc.intro) + '</p>' +
       '<div class="dh-tags">' + K.dtag(sc.diff) +
       (sc.status === 'ext' ? '<span class="badge-wip">待扩展</span>' : '') +
       '<span class="tag"><span class="dot" style="color:var(--ink-4)"></span>' + esc(sc.id.toUpperCase()) + '</span>' +
@@ -541,7 +501,7 @@
     var b = c.tabs.background;
     var out = '';
     if (b.judge) out += K.judge(b.judge);
-    if (b.lede) out += '<div class="lede-block"><span class="kicker plain">专业场景介绍</span><p>' + rich(b.lede) + '</p></div>';
+    if (b.lede) out += '<div class="lede-block"><span class="kicker plain">本案例需要解决的判断</span><p>' + rich(b.lede) + '</p></div>';
     (b.sections || []).forEach(function (s, i) {
       out += K.sec4(i + 1, s.en || '', s.title, s.html || s.body || '');
     });
@@ -571,7 +531,7 @@
   }
 
   function renderDemoShell(sc, c) {
-    return '<div id="case-demo-root"></div>';
+    return (c.tabs.demo.intro ? '<div class="demo-context" style="margin:16px 0;padding:13px 16px;background:var(--paper-2);border-left:3px solid var(--jade);font-size:12px;line-height:1.9">' + rich(c.tabs.demo.intro) + '</div>' : '') + '<div id="case-demo-root"></div>';
   }
 
   /* ---- 无案例：展示速览 + 接入引导 ---- */
@@ -645,7 +605,7 @@
       var b = e.target.closest('.tab');
       if (!b) return;
       activate(b.dataset.tab, true);
-      setHashQuiet('#/scene/' + sc.id + '?tab=' + b.dataset.tab);
+      setHashQuiet('#/scene/' + sc.id + '?case=' + encodeURIComponent(c.id) + '&tab=' + b.dataset.tab);
     });
 
     var want = { 1: 'bg', 2: 'flow', 3: 'demo' }[parseHash().q.tab] || parseHash().q.tab;
@@ -971,7 +931,7 @@
       '<div class="gstep"><div class="gn">1</div><div>' +
       '<h3>复制模板，改三处</h3>' +
       '<p>把 <b>assets/cases/_template.case.js</b> 复制成 <b>你的案例.case.js</b>，然后只改三处：<b>id</b>、<b>sceneId</b>、以及三个 tab 里的内容。</p>' +
-      '<p>id 用 kebab-case，保证唯一；sceneId 必须是 <b>assets/data.js</b> 里已经存在的场景 id（比如 <b>w1</b> 是测井分层）。如果这个场景还不存在，先在 data.js 的对应环节 scenes 数组里加一条元数据。</p>' +
+      '<p>id 用 kebab-case，保证唯一；sceneId 必须是 <b>assets/data.js</b> 里已经存在的场景 id（比如 <b>w1</b> 是测井分层）。为保证案例包可在原框架导入，请绑定接收方已有的场景；同场景可用不同案例 id 扩展，不新造场景 id。</p>' +
       '</div></div>' +
 
       '<div class="gstep"><div class="gn">2</div><div>' +
@@ -1080,6 +1040,10 @@
     } else html = notFound('页面不存在');
 
     view.innerHTML = header() + html + footer();
+
+    if (!p.length && global.HomeLithology) mounted=global.HomeLithology.mount(view.querySelector('.home-case'));
+    var homeJump=view.querySelector('[data-home-jump]');
+    if(homeJump) homeJump.addEventListener('click',function(e){e.preventDefault();view.querySelector('#logging-cases').scrollIntoView({behavior:window.matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'});});
 
     // 页面级交互
     if (p[0] === 'stage') bindFilters(view);

@@ -245,7 +245,7 @@ table.matrix tfoot th{text-align:left;padding-left:16px;font-size:9.5px;letter-s
 .dh-tags{display:flex;align-items:center;gap:7px;margin-top:11px;flex-wrap:wrap}
 
 .tabs{
-  display:flex;gap:0;margin-top:16px;border-bottom:1px solid var(--line-2);
+  display:flex;gap:0;margin-top:16px;border-bottom:1px solid var(--line-2);max-width:100%;min-width:0;
   position:sticky;top:var(--nav-h);z-index:30;
   background:rgba(251,250,246,.94);backdrop-filter:blur(12px);
   overflow-x:auto;

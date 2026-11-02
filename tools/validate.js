@@ -95,7 +95,7 @@ dirs.forEach((id) => {
 /* 场景绑定冲突 */
 Object.keys(bound).forEach((k) => {
   if (bound[k].length > 1) {
-    console.log('△ 场景 ' + k + ' 被多个案例绑定：' + bound[k].join(', ') + '（上传后会互相覆盖）');
+    console.log('△ 场景 ' + k + ' 绑定多个案例：' + bound[k].join(', ') + '（按不同 id 并存，由页顶切换器选择）');
     warn++;
   }
 });
