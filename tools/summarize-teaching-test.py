@@ -20,7 +20,7 @@ for row in rows:
         assert row[f"q{question}_score"] in ("0", "1"), "Observer must assign 0/1 based on the rubric"
     for field in ("home_seconds", "w4_seconds", "guide_seconds"):
         assert float(row[field]) > 0, "Use actual measured time"
-summary = {"source": str(source), "participants": len(rows), "status": "待采集" if not rows else "不足五人" if len(rows) < 5 else "已采集；还需审阅原话、计分与真实迭代"}
+summary = {"source": str(source), "participants": len(rows), "status": "未开展（0 条真实记录）" if not rows else "不足五人" if len(rows) < 5 else "已采集；还需审阅原话、计分与真实迭代"}
 if rows:
     summary.update({
         "per_question_pass_rate": {f"q{q}": sum(int(r[f"q{q}_score"]) for r in rows)/len(rows) for q in (1, 2, 3)},

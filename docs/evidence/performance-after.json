@@ -1,0 +1,478 @@
+{
+  "url": "https://boveyh.github.io/Intelligent-Map-for-Oil-Exploration-and-Development/",
+  "route": "direct HTTPS; browser --no-proxy-server",
+  "viewport": "1280x900",
+  "cache": "new context per run; CDN cache uncontrolled",
+  "throttle": "none",
+  "rows": [
+    {
+      "readyMs": 6381.100000008941,
+      "fcpMs": 3644,
+      "requests": 30,
+      "decodedBytes": 2949178,
+      "encodedBytes": 2551167,
+      "resources": [
+        {
+          "url": "https://boveyh.github.io/Intelligent-Map-for-Oil-Exploration-and-Development/assets/core/tokens.css",
+          "decodedBytes": 6193,
+          "encodedBytes": 2649
+        },
+        {
+          "url": "https://boveyh.github.io/Intelligent-Map-for-Oil-Exploration-and-Development/assets/core/layout.css",
+          "decodedBytes": 11279,
+          "encodedBytes": 3128
+        },
+        {
+          "url": "https://boveyh.github.io/Intelligent-Map-for-Oil-Exploration-and-Development/assets/core/ui.css",
+          "decodedBytes": 48164,
+          "encodedBytes": 10312
+        },
+        {
+          "url": "https://boveyh.github.io/Intelligent-Map-for-Oil-Exploration-and-Development/assets/core/home.css",
+          "decodedBytes": 9667,
+          "encodedBytes": 2673
+        },
+        {
+          "url": "https://boveyh.github.io/Intelligent-Map-for-Oil-Exploration-and-Development/assets/data.js",
+          "decodedBytes": 79687,
+          "encodedBytes": 26302
+        },
+        {
+          "url": "https://boveyh.github.io/Intelligent-Map-for-Oil-Exploration-and-Development/assets/core/registry.js",
+          "decodedBytes": 6485,
+          "encodedBytes": 2766
+        },
+        {
+          "url": "https://boveyh.github.io/Intelligent-Map-for-Oil-Exploration-and-Development/assets/core/kit.js",
+          "decodedBytes": 8151,
+          "encodedBytes": 2918
+        },
+        {
+          "url": "https://boveyh.github.io/Intelligent-Map-for-Oil-Exploration-and-Development/assets/cases/welllog-layer.case.js",
+          "decodedBytes": 20872,
+          "encodedBytes": 8006
+        },
+        {
+          "url": "https://boveyh.github.io/Intelligent-Map-for-Oil-Exploration-and-Development/assets/cases/welllog-layer.demo.js",
+          "decodedBytes": 22766,
+          "encodedBytes": 7639
+        },
+        {
+          "url": "https://boveyh.github.io/Intelligent-Map-for-Oil-Exploration-and-Development/assets/cases/welllog-layer.visual.js",
+          "decodedBytes": 325052,
+          "encodedBytes": 244244
+        },
+        {
+          "url": "https://boveyh.github.io/Intelligent-Map-for-Oil-Exploration-and-Development/assets/cases/catalog.js",
+          "decodedBytes": 8935,
+          "encodedBytes": 2904
+        },
+        {
+          "url": "https://boveyh.github.io/Intelligent-Map-for-Oil-Exploration-and-Development/assets/cases/w4-lithology.demo.js",
+          "decodedBytes": 50373,
+          "encodedBytes": 17682
+        },
+        {
+          "url": "https://boveyh.github.io/Intelligent-Map-for-Oil-Exploration-and-Development/assets/core/builtin-loader.js",
+          "decodedBytes": 1108,
+          "encodedBytes": 591
+        },
+        {
+          "url": "https://boveyh.github.io/Intelligent-Map-for-Oil-Exploration-and-Development/assets/core/case-demo-host.js",
+          "decodedBytes": 14476,
+          "encodedBytes": 5284
+        },
+        {
+          "url": "https://boveyh.github.io/Intelligent-Map-for-Oil-Exploration-and-Development/assets/core/case-upload.js",
+          "decodedBytes": 66694,
+          "encodedBytes": 22059
+        },
+        {
+          "url": "https://boveyh.github.io/Intelligent-Map-for-Oil-Exploration-and-Development/assets/core/case-zip.js",
+          "decodedBytes": 10088,
+          "encodedBytes": 3924
+        },
+        {
+          "url": "https://boveyh.github.io/Intelligent-Map-for-Oil-Exploration-and-Development/assets/core/admin.js",
+          "decodedBytes": 24682,
+          "encodedBytes": 6661
+        },
+        {
+          "url": "https://boveyh.github.io/Intelligent-Map-for-Oil-Exploration-and-Development/assets/core/home-demo.js",
+          "decodedBytes": 8406,
+          "encodedBytes": 3346
+        },
+        {
+          "url": "https://boveyh.github.io/Intelligent-Map-for-Oil-Exploration-and-Development/assets/core/shell.js",
+          "decodedBytes": 64521,
+          "encodedBytes": 20473
+        },
+        {
+          "url": "https://boveyh.github.io/Intelligent-Map-for-Oil-Exploration-and-Development/assets/models/home-strata-background.webp",
+          "decodedBytes": 192992,
+          "encodedBytes": 192992
+        },
+        {
+          "url": "https://boveyh.github.io/Intelligent-Map-for-Oil-Exploration-and-Development/assets/models/reconstruction.webp",
+          "decodedBytes": 210140,
+          "encodedBytes": 210140
+        },
+        {
+          "url": "https://boveyh.github.io/Intelligent-Map-for-Oil-Exploration-and-Development/assets/models/multiwell.webp",
+          "decodedBytes": 219084,
+          "encodedBytes": 219084
+        },
+        {
+          "url": "https://boveyh.github.io/Intelligent-Map-for-Oil-Exploration-and-Development/assets/models/boundary-learning.webp",
+          "decodedBytes": 207370,
+          "encodedBytes": 207370
+        },
+        {
+          "url": "https://boveyh.github.io/Intelligent-Map-for-Oil-Exploration-and-Development/assets/models/lithology.webp",
+          "decodedBytes": 229526,
+          "encodedBytes": 229526
+        },
+        {
+          "url": "https://boveyh.github.io/Intelligent-Map-for-Oil-Exploration-and-Development/assets/models/reservoir.webp",
+          "decodedBytes": 261884,
+          "encodedBytes": 261884
+        },
+        {
+          "url": "https://boveyh.github.io/Intelligent-Map-for-Oil-Exploration-and-Development/assets/models/fracture.webp",
+          "decodedBytes": 274382,
+          "encodedBytes": 274382
+        },
+        {
+          "url": "https://boveyh.github.io/Intelligent-Map-for-Oil-Exploration-and-Development/assets/models/cement.webp",
+          "decodedBytes": 165798,
+          "encodedBytes": 165798
+        },
+        {
+          "url": "https://boveyh.github.io/Intelligent-Map-for-Oil-Exploration-and-Development/assets/models/cuttings.webp",
+          "decodedBytes": 196308,
+          "encodedBytes": 196308
+        },
+        {
+          "url": "https://boveyh.github.io/Intelligent-Map-for-Oil-Exploration-and-Development/assets/models/pump.webp",
+          "decodedBytes": 194980,
+          "encodedBytes": 194980
+        },
+        {
+          "url": "https://boveyh.github.io/favicon.ico",
+          "decodedBytes": 9115,
+          "encodedBytes": 5142
+        }
+      ]
+    },
+    {
+      "readyMs": 5940.600000008941,
+      "fcpMs": 3352,
+      "requests": 29,
+      "decodedBytes": 2940063,
+      "encodedBytes": 2546025,
+      "resources": [
+        {
+          "url": "https://boveyh.github.io/Intelligent-Map-for-Oil-Exploration-and-Development/assets/core/tokens.css",
+          "decodedBytes": 6193,
+          "encodedBytes": 2649
+        },
+        {
+          "url": "https://boveyh.github.io/Intelligent-Map-for-Oil-Exploration-and-Development/assets/core/home.css",
+          "decodedBytes": 9667,
+          "encodedBytes": 2673
+        },
+        {
+          "url": "https://boveyh.github.io/Intelligent-Map-for-Oil-Exploration-and-Development/assets/core/ui.css",
+          "decodedBytes": 48164,
+          "encodedBytes": 10312
+        },
+        {
+          "url": "https://boveyh.github.io/Intelligent-Map-for-Oil-Exploration-and-Development/assets/core/layout.css",
+          "decodedBytes": 11279,
+          "encodedBytes": 3128
+        },
+        {
+          "url": "https://boveyh.github.io/Intelligent-Map-for-Oil-Exploration-and-Development/assets/data.js",
+          "decodedBytes": 79687,
+          "encodedBytes": 26302
+        },
+        {
+          "url": "https://boveyh.github.io/Intelligent-Map-for-Oil-Exploration-and-Development/assets/cases/welllog-layer.demo.js",
+          "decodedBytes": 22766,
+          "encodedBytes": 7639
+        },
+        {
+          "url": "https://boveyh.github.io/Intelligent-Map-for-Oil-Exploration-and-Development/assets/core/kit.js",
+          "decodedBytes": 8151,
+          "encodedBytes": 2918
+        },
+        {
+          "url": "https://boveyh.github.io/Intelligent-Map-for-Oil-Exploration-and-Development/assets/core/registry.js",
+          "decodedBytes": 6485,
+          "encodedBytes": 2766
+        },
+        {
+          "url": "https://boveyh.github.io/Intelligent-Map-for-Oil-Exploration-and-Development/assets/cases/welllog-layer.case.js",
+          "decodedBytes": 20872,
+          "encodedBytes": 8006
+        },
+        {
+          "url": "https://boveyh.github.io/Intelligent-Map-for-Oil-Exploration-and-Development/assets/cases/welllog-layer.visual.js",
+          "decodedBytes": 325052,
+          "encodedBytes": 244244
+        },
+        {
+          "url": "https://boveyh.github.io/Intelligent-Map-for-Oil-Exploration-and-Development/assets/cases/catalog.js",
+          "decodedBytes": 8935,
+          "encodedBytes": 2904
+        },
+        {
+          "url": "https://boveyh.github.io/Intelligent-Map-for-Oil-Exploration-and-Development/assets/core/builtin-loader.js",
+          "decodedBytes": 1108,
+          "encodedBytes": 591
+        },
+        {
+          "url": "https://boveyh.github.io/Intelligent-Map-for-Oil-Exploration-and-Development/assets/cases/w4-lithology.demo.js",
+          "decodedBytes": 50373,
+          "encodedBytes": 17682
+        },
+        {
+          "url": "https://boveyh.github.io/Intelligent-Map-for-Oil-Exploration-and-Development/assets/core/case-demo-host.js",
+          "decodedBytes": 14476,
+          "encodedBytes": 5284
+        },
+        {
+          "url": "https://boveyh.github.io/Intelligent-Map-for-Oil-Exploration-and-Development/assets/core/case-upload.js",
+          "decodedBytes": 66694,
+          "encodedBytes": 22059
+        },
+        {
+          "url": "https://boveyh.github.io/Intelligent-Map-for-Oil-Exploration-and-Development/assets/core/shell.js",
+          "decodedBytes": 64521,
+          "encodedBytes": 20473
+        },
+        {
+          "url": "https://boveyh.github.io/Intelligent-Map-for-Oil-Exploration-and-Development/assets/core/case-zip.js",
+          "decodedBytes": 10088,
+          "encodedBytes": 3924
+        },
+        {
+          "url": "https://boveyh.github.io/Intelligent-Map-for-Oil-Exploration-and-Development/assets/core/admin.js",
+          "decodedBytes": 24682,
+          "encodedBytes": 6661
+        },
+        {
+          "url": "https://boveyh.github.io/Intelligent-Map-for-Oil-Exploration-and-Development/assets/core/home-demo.js",
+          "decodedBytes": 8406,
+          "encodedBytes": 3346
+        },
+        {
+          "url": "https://boveyh.github.io/Intelligent-Map-for-Oil-Exploration-and-Development/assets/models/home-strata-background.webp",
+          "decodedBytes": 192992,
+          "encodedBytes": 192992
+        },
+        {
+          "url": "https://boveyh.github.io/Intelligent-Map-for-Oil-Exploration-and-Development/assets/models/reconstruction.webp",
+          "decodedBytes": 210140,
+          "encodedBytes": 210140
+        },
+        {
+          "url": "https://boveyh.github.io/Intelligent-Map-for-Oil-Exploration-and-Development/assets/models/multiwell.webp",
+          "decodedBytes": 219084,
+          "encodedBytes": 219084
+        },
+        {
+          "url": "https://boveyh.github.io/Intelligent-Map-for-Oil-Exploration-and-Development/assets/models/boundary-learning.webp",
+          "decodedBytes": 207370,
+          "encodedBytes": 207370
+        },
+        {
+          "url": "https://boveyh.github.io/Intelligent-Map-for-Oil-Exploration-and-Development/assets/models/reservoir.webp",
+          "decodedBytes": 261884,
+          "encodedBytes": 261884
+        },
+        {
+          "url": "https://boveyh.github.io/Intelligent-Map-for-Oil-Exploration-and-Development/assets/models/lithology.webp",
+          "decodedBytes": 229526,
+          "encodedBytes": 229526
+        },
+        {
+          "url": "https://boveyh.github.io/Intelligent-Map-for-Oil-Exploration-and-Development/assets/models/cuttings.webp",
+          "decodedBytes": 196308,
+          "encodedBytes": 196308
+        },
+        {
+          "url": "https://boveyh.github.io/Intelligent-Map-for-Oil-Exploration-and-Development/assets/models/fracture.webp",
+          "decodedBytes": 274382,
+          "encodedBytes": 274382
+        },
+        {
+          "url": "https://boveyh.github.io/Intelligent-Map-for-Oil-Exploration-and-Development/assets/models/cement.webp",
+          "decodedBytes": 165798,
+          "encodedBytes": 165798
+        },
+        {
+          "url": "https://boveyh.github.io/Intelligent-Map-for-Oil-Exploration-and-Development/assets/models/pump.webp",
+          "decodedBytes": 194980,
+          "encodedBytes": 194980
+        }
+      ]
+    },
+    {
+      "readyMs": 5987.5,
+      "fcpMs": 3236,
+      "requests": 29,
+      "decodedBytes": 2940063,
+      "encodedBytes": 2546025,
+      "resources": [
+        {
+          "url": "https://boveyh.github.io/Intelligent-Map-for-Oil-Exploration-and-Development/assets/core/tokens.css",
+          "decodedBytes": 6193,
+          "encodedBytes": 2649
+        },
+        {
+          "url": "https://boveyh.github.io/Intelligent-Map-for-Oil-Exploration-and-Development/assets/core/ui.css",
+          "decodedBytes": 48164,
+          "encodedBytes": 10312
+        },
+        {
+          "url": "https://boveyh.github.io/Intelligent-Map-for-Oil-Exploration-and-Development/assets/core/layout.css",
+          "decodedBytes": 11279,
+          "encodedBytes": 3128
+        },
+        {
+          "url": "https://boveyh.github.io/Intelligent-Map-for-Oil-Exploration-and-Development/assets/core/home.css",
+          "decodedBytes": 9667,
+          "encodedBytes": 2673
+        },
+        {
+          "url": "https://boveyh.github.io/Intelligent-Map-for-Oil-Exploration-and-Development/assets/data.js",
+          "decodedBytes": 79687,
+          "encodedBytes": 26302
+        },
+        {
+          "url": "https://boveyh.github.io/Intelligent-Map-for-Oil-Exploration-and-Development/assets/core/registry.js",
+          "decodedBytes": 6485,
+          "encodedBytes": 2766
+        },
+        {
+          "url": "https://boveyh.github.io/Intelligent-Map-for-Oil-Exploration-and-Development/assets/cases/welllog-layer.case.js",
+          "decodedBytes": 20872,
+          "encodedBytes": 8006
+        },
+        {
+          "url": "https://boveyh.github.io/Intelligent-Map-for-Oil-Exploration-and-Development/assets/core/kit.js",
+          "decodedBytes": 8151,
+          "encodedBytes": 2918
+        },
+        {
+          "url": "https://boveyh.github.io/Intelligent-Map-for-Oil-Exploration-and-Development/assets/cases/welllog-layer.demo.js",
+          "decodedBytes": 22766,
+          "encodedBytes": 7639
+        },
+        {
+          "url": "https://boveyh.github.io/Intelligent-Map-for-Oil-Exploration-and-Development/assets/cases/catalog.js",
+          "decodedBytes": 8935,
+          "encodedBytes": 2904
+        },
+        {
+          "url": "https://boveyh.github.io/Intelligent-Map-for-Oil-Exploration-and-Development/assets/cases/w4-lithology.demo.js",
+          "decodedBytes": 50373,
+          "encodedBytes": 17682
+        },
+        {
+          "url": "https://boveyh.github.io/Intelligent-Map-for-Oil-Exploration-and-Development/assets/cases/welllog-layer.visual.js",
+          "decodedBytes": 325052,
+          "encodedBytes": 244244
+        },
+        {
+          "url": "https://boveyh.github.io/Intelligent-Map-for-Oil-Exploration-and-Development/assets/core/case-demo-host.js",
+          "decodedBytes": 14476,
+          "encodedBytes": 5284
+        },
+        {
+          "url": "https://boveyh.github.io/Intelligent-Map-for-Oil-Exploration-and-Development/assets/core/builtin-loader.js",
+          "decodedBytes": 1108,
+          "encodedBytes": 591
+        },
+        {
+          "url": "https://boveyh.github.io/Intelligent-Map-for-Oil-Exploration-and-Development/assets/core/case-upload.js",
+          "decodedBytes": 66694,
+          "encodedBytes": 22059
+        },
+        {
+          "url": "https://boveyh.github.io/Intelligent-Map-for-Oil-Exploration-and-Development/assets/core/case-zip.js",
+          "decodedBytes": 10088,
+          "encodedBytes": 3924
+        },
+        {
+          "url": "https://boveyh.github.io/Intelligent-Map-for-Oil-Exploration-and-Development/assets/core/home-demo.js",
+          "decodedBytes": 8406,
+          "encodedBytes": 3346
+        },
+        {
+          "url": "https://boveyh.github.io/Intelligent-Map-for-Oil-Exploration-and-Development/assets/core/admin.js",
+          "decodedBytes": 24682,
+          "encodedBytes": 6661
+        },
+        {
+          "url": "https://boveyh.github.io/Intelligent-Map-for-Oil-Exploration-and-Development/assets/core/shell.js",
+          "decodedBytes": 64521,
+          "encodedBytes": 20473
+        },
+        {
+          "url": "https://boveyh.github.io/Intelligent-Map-for-Oil-Exploration-and-Development/assets/models/home-strata-background.webp",
+          "decodedBytes": 192992,
+          "encodedBytes": 192992
+        },
+        {
+          "url": "https://boveyh.github.io/Intelligent-Map-for-Oil-Exploration-and-Development/assets/models/reconstruction.webp",
+          "decodedBytes": 210140,
+          "encodedBytes": 210140
+        },
+        {
+          "url": "https://boveyh.github.io/Intelligent-Map-for-Oil-Exploration-and-Development/assets/models/multiwell.webp",
+          "decodedBytes": 219084,
+          "encodedBytes": 219084
+        },
+        {
+          "url": "https://boveyh.github.io/Intelligent-Map-for-Oil-Exploration-and-Development/assets/models/boundary-learning.webp",
+          "decodedBytes": 207370,
+          "encodedBytes": 207370
+        },
+        {
+          "url": "https://boveyh.github.io/Intelligent-Map-for-Oil-Exploration-and-Development/assets/models/lithology.webp",
+          "decodedBytes": 229526,
+          "encodedBytes": 229526
+        },
+        {
+          "url": "https://boveyh.github.io/Intelligent-Map-for-Oil-Exploration-and-Development/assets/models/reservoir.webp",
+          "decodedBytes": 261884,
+          "encodedBytes": 261884
+        },
+        {
+          "url": "https://boveyh.github.io/Intelligent-Map-for-Oil-Exploration-and-Development/assets/models/cuttings.webp",
+          "decodedBytes": 196308,
+          "encodedBytes": 196308
+        },
+        {
+          "url": "https://boveyh.github.io/Intelligent-Map-for-Oil-Exploration-and-Development/assets/models/fracture.webp",
+          "decodedBytes": 274382,
+          "encodedBytes": 274382
+        },
+        {
+          "url": "https://boveyh.github.io/Intelligent-Map-for-Oil-Exploration-and-Development/assets/models/cement.webp",
+          "decodedBytes": 165798,
+          "encodedBytes": 165798
+        },
+        {
+          "url": "https://boveyh.github.io/Intelligent-Map-for-Oil-Exploration-and-Development/assets/models/pump.webp",
+          "decodedBytes": 194980,
+          "encodedBytes": 194980
+        }
+      ]
+    }
+  ],
+  "commit": "137063bd327a3a042e3d54a1be73ac873d787d6d",
+  "measurement_note": "Three sequential cold contexts, no simultaneous public regression; initial concurrent measurement retained locally and excluded."
+}

@@ -1,0 +1,39 @@
+{
+  "url": "https://boveyh.github.io/Intelligent-Map-for-Oil-Exploration-and-Development/",
+  "commit": "137063b",
+  "viewport": "375x900",
+  "cases": [
+    {
+      "id": "w1-boundary-learning",
+      "mounted": true,
+      "actualInputChange": true,
+      "noPageOverflow": true
+    },
+    {
+      "id": "w2-reservoir-param",
+      "mounted": true,
+      "actualInputChange": true,
+      "noPageOverflow": true
+    },
+    {
+      "id": "w3-imaging-fracture",
+      "mounted": true,
+      "actualInputChange": true,
+      "noPageOverflow": true
+    },
+    {
+      "id": "w4-lithology",
+      "mounted": true,
+      "actualInputChange": true,
+      "noPageOverflow": true
+    },
+    {
+      "id": "w5-completion",
+      "mounted": true,
+      "actualInputChange": true,
+      "noPageOverflow": true
+    }
+  ],
+  "auditLoaded": true,
+  "errors": []
+}
