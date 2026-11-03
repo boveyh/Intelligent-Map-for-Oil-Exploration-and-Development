@@ -110,6 +110,7 @@
     /* 逐像素抖动 */
     for (i = 0; i < R * C; i++) img[i] = clamp(img[i] + gauss(rnd) * p.noise * 0.0012, 0, 1);
 
+    if(p.dropout) for(var rr=0;rr<R;rr++)for(var cc=0;cc<C;cc++)if(cc/C<p.dropout)img[rr*C+cc]=bg;
     return { img: img, truth: truth };
   }
 
@@ -329,9 +330,18 @@
   function learningFilter(sal,cutoff){
     var model=trainClassifier(),candidates=hough(sal,{proposals:true});
     candidates.forEach(function(d){d.proof=explainCandidate(sal,d,model);d.mlScore=d.proof.score;});
-    candidates.sort(function(a,b){return b.mlScore-a.mlScore;});var dets=[];
-    candidates.forEach(function(d){if(d.mlScore>=(cutoff==null?.5:cutoff) && dets.every(function(q){return Math.abs(d.y0-q.y0)>=22;}))dets.push(d);});
+    candidates.sort(function(a,b){return b.mlScore-a.mlScore;});var dets=selectLearning(candidates,cutoff);
     return {model:model,candidates:candidates,dets:dets};
+  }
+  function selectLearning(candidates,cutoff){var dets=[];candidates.slice().sort(function(a,b){return b.mlScore-a.mlScore;}).forEach(function(d){if(d.mlScore>=(cutoff==null?.5:cutoff)&&dets.every(function(q){return Math.abs(d.y0-q.y0)>=22;}))dets.push(d);});return dets;}
+
+  function trace(res,i,delta){
+    var d=res.learning.candidates[i];if(!d)return null;
+    var sal=res.sal;
+    if(delta){sal=new Float32Array(sal);for(var c=0;c<C;c++){var y=Math.round(d.y0+d.A*Math.cos(2*Math.PI*c/C-d.az*Math.PI/180));for(var o=-1;o<=1;o++)if(y+o>=0&&y+o<R)sal[(y+o)*C+c]=clamp(sal[(y+o)*C+c]+delta,0,1);}}
+    var model=res.learning.model,e=explainCandidate(sal,d,model),base=delta?hough(sal):res.dets;
+    var retained=base.some(function(b){return Math.abs(b.y0-d.y0)<7&&Math.abs(b.A-d.A)<10;});
+    return {version:'trace-v1',caseId:'w3-imaging-fracture',index:i,label:(DEPTH0+d.y0*ROWM).toFixed(3)+' m · 路径 '+(i+1),role:'冻结 8 图训练模型；当前图不参与训练',inputs:LEARN_FEATURES.map(function(n,j){return [n,e.x[j],''];}),steps:LEARN_FEATURES.map(function(n,j){return [n+'：z × w',e.z[j]+' × '+model.weights[j+1]+' = '+e.terms[j]];}).concat([['偏置',model.weights[0]],['logit',e.logit],['当前探索阈值',res.p.cutoff==null?.5:res.p.cutoff]]),prediction:{name:'学习筛选分数',value:e.score,unit:'（间隔抑制前，未校准）'},baseline:{name:'同显著度图 Hough 是否提出邻近路径',value:retained?1:0,unit:'（1 是）'},control:{name:'沿此路径显著度偏移',unit:'',min:-.12,max:.12,step:.01},note:'试算在预处理后的显著度图上改动该路径，再调用原分类器与 Hough；不是修改真实井壁图像。留出汇总中学习分支 F1 未胜出，不能补回未提出候选。'};
   }
 
   /* 导出纯函数，供 tools/test-w3.js 在 Node 里复算 */
@@ -339,7 +349,7 @@
     R: R, C: C, SPAN: SPAN, BORE: BORE, ROWM: ROWM,
     dipToA: dipToA, aToDip: aToDip,
     synth: synth, saliency: saliency, hough: hough, naive: naive,
-    evaluate: evaluate, run: run, pathFeatures:pathFeatures, trainClassifier:trainClassifier, explainCandidate:explainCandidate, learningFilter:learningFilter, LEARN_FEATURES:LEARN_FEATURES
+    evaluate: evaluate, run: run, pathFeatures:pathFeatures, trainClassifier:trainClassifier, explainCandidate:explainCandidate, learningFilter:learningFilter, selectLearning:selectLearning, LEARN_FEATURES:LEARN_FEATURES, trace:trace
   };
   if (typeof window !== 'undefined') { window.W3CORE = API; }
 
@@ -510,7 +520,7 @@
     root.appendChild(wrap);
     var learningBox=el('section','w3-learning');
     learningBox.style.cssText='margin:18px 0;padding:15px;border:1px solid #dcded2;border-radius:10px;background:#fcfbf7;font:12px/1.8 system-ui,sans-serif';
-    learningBox.innerHTML='<h3 style="font-size:15px;margin:0 0 8px">标注样本怎样筛选裂缝候选？</h3><div id="w3comparison"></div><p>学习分支先放宽 Hough 搜索，再用其他合成图像的标注候选训练逻辑回归；几何基线保留原搜索规则。下表解释实际候选。</p><label for="w3cutoff">筛选分数阈值（探索） <b id="w3cutofflabel">0.50</b></label><input id="w3cutoff" type="range" min="20" max="80" step="5" value="50" style="width:100%;accent-color:#2f7d6b"><label for="w3candidate">选择候选路径</label><select id="w3candidate" style="display:block;width:100%;margin:8px 0;padding:7px"></select><div id="w3proof"></div><p id="w3training"></p>';
+    learningBox.innerHTML='<p style="padding:10px;background:#fbf3ed;color:#765841"><b>学习分支未胜出的案例。</b>冻结默认方法后，20 张独立合成图：Hough F1 0.852，学习筛选 0.839；误报 10→5，漏检 8→13。本例分析筛选的代价，不宣称胜出。</p><h3 style="font-size:15px;margin:0 0 8px">标注样本怎样筛选裂缝候选？</h3><div id="w3comparison"></div><p>学习分支先放宽 Hough 搜索，再用其他合成图像的标注候选训练逻辑回归；几何基线保留原搜索规则。下表解释实际候选。</p><label for="w3cutoff">筛选分数阈值（探索） <b id="w3cutofflabel">0.50</b></label><input id="w3cutoff" type="range" min="20" max="80" step="5" value="50" style="width:100%;accent-color:#2f7d6b"><label for="w3candidate">选择候选路径</label><select id="w3candidate" style="display:block;width:100%;margin:8px 0;padding:7px"></select><div id="w3proof"></div><p id="w3training"></p>';
     wrap.insertBefore(learningBox,wrap.querySelector('#w3note'));
     var currentResult,candidateIndex=0;
     function evidence(res){
@@ -603,6 +613,7 @@
     root.querySelector('#w3candidate').addEventListener('change',function(e){candidateIndex=+e.target.value;evidence(currentResult);});
 
     render();
+    return {trace:{read:function(d){return trace(currentResult,candidateIndex,d);},range:function(){return {min:0,max:Math.max(0,currentResult.learning.candidates.length-1),value:candidateIndex};},select:function(i){candidateIndex=i;evidence(currentResult);}}};
   }
 
   if (typeof window !== 'undefined') {

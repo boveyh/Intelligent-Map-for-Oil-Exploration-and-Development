@@ -1,6 +1,6 @@
 /* 扫描：统计段长度 → 三种标准化方法的成败（看样本量怎么决定一切） */
 global.window = {};
-require('D:/Intelligent-Map-for-Oil-Exploration-and-Development/cases/w5-normalization/demo/demo.js');
+require('../cases/w5-normalization/demo/demo.js');
 const W = global.window.W5NCORE;
 const f = (v) => v.toFixed(3);
 

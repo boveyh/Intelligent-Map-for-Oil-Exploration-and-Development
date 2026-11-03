@@ -1,0 +1,435 @@
+{
+  "base": "http://127.0.0.1:8014/",
+  "browser": "Chrome headless",
+  "date": "2026-11-03",
+  "checks": [
+    {
+      "width": 1280,
+      "page": "home",
+      "defaultPaused": true,
+      "w2Lazy": true
+    },
+    {
+      "width": 1280,
+      "case": "w1-boundary-learning",
+      "tab": "bg",
+      "panel": "bg",
+      "overflow": false,
+      "badImages": [],
+      "mountFailed": false,
+      "screenshot": "w1-boundary-learning-bg-1280.png"
+    },
+    {
+      "width": 1280,
+      "case": "w1-boundary-learning",
+      "tab": "flow",
+      "panel": "flow",
+      "overflow": false,
+      "badImages": [],
+      "mountFailed": false,
+      "screenshot": "w1-boundary-learning-flow-1280.png"
+    },
+    {
+      "width": 1280,
+      "case": "w1-boundary-learning",
+      "tab": "demo",
+      "panel": "demo",
+      "overflow": false,
+      "badImages": [],
+      "mountFailed": false,
+      "screenshot": "w1-boundary-learning-demo-1280.png"
+    },
+    {
+      "width": 1280,
+      "case": "w1-boundary-learning",
+      "interaction": "trace + guide",
+      "keyboardChangedPoint": true,
+      "keyboardChangedEvidence": true,
+      "guideTargets": 3,
+      "axSliders": 5,
+      "unnamedSliders": 0
+    },
+    {
+      "width": 1280,
+      "case": "w2-reservoir-param",
+      "tab": "bg",
+      "panel": "bg",
+      "overflow": false,
+      "badImages": [],
+      "mountFailed": false,
+      "screenshot": "w2-reservoir-param-bg-1280.png"
+    },
+    {
+      "width": 1280,
+      "case": "w2-reservoir-param",
+      "tab": "flow",
+      "panel": "flow",
+      "overflow": false,
+      "badImages": [],
+      "mountFailed": false,
+      "screenshot": "w2-reservoir-param-flow-1280.png"
+    },
+    {
+      "width": 1280,
+      "case": "w2-reservoir-param",
+      "tab": "demo",
+      "panel": "demo",
+      "overflow": false,
+      "badImages": [],
+      "mountFailed": false,
+      "screenshot": "w2-reservoir-param-demo-1280.png"
+    },
+    {
+      "width": 1280,
+      "case": "w2-reservoir-param",
+      "interaction": "trace + guide",
+      "keyboardChangedPoint": true,
+      "keyboardChangedEvidence": true,
+      "guideTargets": 3,
+      "axSliders": 3,
+      "unnamedSliders": 0
+    },
+    {
+      "width": 1280,
+      "case": "w3-imaging-fracture",
+      "tab": "bg",
+      "panel": "bg",
+      "overflow": false,
+      "badImages": [],
+      "mountFailed": false,
+      "screenshot": "w3-imaging-fracture-bg-1280.png"
+    },
+    {
+      "width": 1280,
+      "case": "w3-imaging-fracture",
+      "tab": "flow",
+      "panel": "flow",
+      "overflow": false,
+      "badImages": [],
+      "mountFailed": false,
+      "screenshot": "w3-imaging-fracture-flow-1280.png"
+    },
+    {
+      "width": 1280,
+      "case": "w3-imaging-fracture",
+      "tab": "demo",
+      "panel": "demo",
+      "overflow": false,
+      "badImages": [],
+      "mountFailed": false,
+      "screenshot": "w3-imaging-fracture-demo-1280.png"
+    },
+    {
+      "width": 1280,
+      "case": "w3-imaging-fracture",
+      "interaction": "trace + guide",
+      "keyboardChangedPoint": true,
+      "keyboardChangedEvidence": true,
+      "guideTargets": 3,
+      "axSliders": 8,
+      "unnamedSliders": 0
+    },
+    {
+      "width": 1280,
+      "case": "w4-lithology",
+      "tab": "bg",
+      "panel": "bg",
+      "overflow": false,
+      "badImages": [],
+      "mountFailed": false,
+      "screenshot": "w4-lithology-bg-1280.png"
+    },
+    {
+      "width": 1280,
+      "case": "w4-lithology",
+      "tab": "flow",
+      "panel": "flow",
+      "overflow": false,
+      "badImages": [],
+      "mountFailed": false,
+      "screenshot": "w4-lithology-flow-1280.png"
+    },
+    {
+      "width": 1280,
+      "case": "w4-lithology",
+      "tab": "demo",
+      "panel": "demo",
+      "overflow": false,
+      "badImages": [],
+      "mountFailed": false,
+      "screenshot": "w4-lithology-demo-1280.png"
+    },
+    {
+      "width": 1280,
+      "case": "w4-lithology",
+      "interaction": "trace + guide",
+      "keyboardChangedPoint": true,
+      "keyboardChangedEvidence": true,
+      "guideTargets": 3,
+      "axSliders": 6,
+      "unnamedSliders": 0
+    },
+    {
+      "width": 1280,
+      "case": "w5-completion",
+      "tab": "bg",
+      "panel": "bg",
+      "overflow": false,
+      "badImages": [],
+      "mountFailed": false,
+      "screenshot": "w5-completion-bg-1280.png"
+    },
+    {
+      "width": 1280,
+      "case": "w5-completion",
+      "tab": "flow",
+      "panel": "flow",
+      "overflow": false,
+      "badImages": [],
+      "mountFailed": false,
+      "screenshot": "w5-completion-flow-1280.png"
+    },
+    {
+      "width": 1280,
+      "case": "w5-completion",
+      "tab": "demo",
+      "panel": "demo",
+      "overflow": false,
+      "badImages": [],
+      "mountFailed": false,
+      "screenshot": "w5-completion-demo-1280.png"
+    },
+    {
+      "width": 1280,
+      "case": "w5-completion",
+      "interaction": "trace + guide",
+      "keyboardChangedPoint": true,
+      "keyboardChangedEvidence": true,
+      "guideTargets": 3,
+      "axSliders": 3,
+      "unnamedSliders": 0
+    },
+    {
+      "width": 1280,
+      "interaction": "home link Enter → w4 → depth ArrowRight → readable neighbors",
+      "passed": true
+    },
+    {
+      "width": 375,
+      "page": "home",
+      "defaultPaused": true,
+      "w2Lazy": true
+    },
+    {
+      "width": 375,
+      "case": "w1-boundary-learning",
+      "tab": "bg",
+      "panel": "bg",
+      "overflow": false,
+      "badImages": [],
+      "mountFailed": false,
+      "screenshot": "w1-boundary-learning-bg-375.png"
+    },
+    {
+      "width": 375,
+      "case": "w1-boundary-learning",
+      "tab": "flow",
+      "panel": "flow",
+      "overflow": false,
+      "badImages": [],
+      "mountFailed": false,
+      "screenshot": "w1-boundary-learning-flow-375.png"
+    },
+    {
+      "width": 375,
+      "case": "w1-boundary-learning",
+      "tab": "demo",
+      "panel": "demo",
+      "overflow": false,
+      "badImages": [],
+      "mountFailed": false,
+      "screenshot": "w1-boundary-learning-demo-375.png"
+    },
+    {
+      "width": 375,
+      "case": "w1-boundary-learning",
+      "interaction": "trace + guide",
+      "keyboardChangedPoint": true,
+      "keyboardChangedEvidence": true,
+      "guideTargets": 3,
+      "axSliders": 5,
+      "unnamedSliders": 0
+    },
+    {
+      "width": 375,
+      "case": "w2-reservoir-param",
+      "tab": "bg",
+      "panel": "bg",
+      "overflow": false,
+      "badImages": [],
+      "mountFailed": false,
+      "screenshot": "w2-reservoir-param-bg-375.png"
+    },
+    {
+      "width": 375,
+      "case": "w2-reservoir-param",
+      "tab": "flow",
+      "panel": "flow",
+      "overflow": false,
+      "badImages": [],
+      "mountFailed": false,
+      "screenshot": "w2-reservoir-param-flow-375.png"
+    },
+    {
+      "width": 375,
+      "case": "w2-reservoir-param",
+      "tab": "demo",
+      "panel": "demo",
+      "overflow": false,
+      "badImages": [],
+      "mountFailed": false,
+      "screenshot": "w2-reservoir-param-demo-375.png"
+    },
+    {
+      "width": 375,
+      "case": "w2-reservoir-param",
+      "interaction": "trace + guide",
+      "keyboardChangedPoint": true,
+      "keyboardChangedEvidence": true,
+      "guideTargets": 3,
+      "axSliders": 3,
+      "unnamedSliders": 0
+    },
+    {
+      "width": 375,
+      "case": "w3-imaging-fracture",
+      "tab": "bg",
+      "panel": "bg",
+      "overflow": false,
+      "badImages": [],
+      "mountFailed": false,
+      "screenshot": "w3-imaging-fracture-bg-375.png"
+    },
+    {
+      "width": 375,
+      "case": "w3-imaging-fracture",
+      "tab": "flow",
+      "panel": "flow",
+      "overflow": false,
+      "badImages": [],
+      "mountFailed": false,
+      "screenshot": "w3-imaging-fracture-flow-375.png"
+    },
+    {
+      "width": 375,
+      "case": "w3-imaging-fracture",
+      "tab": "demo",
+      "panel": "demo",
+      "overflow": false,
+      "badImages": [],
+      "mountFailed": false,
+      "screenshot": "w3-imaging-fracture-demo-375.png"
+    },
+    {
+      "width": 375,
+      "case": "w3-imaging-fracture",
+      "interaction": "trace + guide",
+      "keyboardChangedPoint": true,
+      "keyboardChangedEvidence": true,
+      "guideTargets": 3,
+      "axSliders": 8,
+      "unnamedSliders": 0
+    },
+    {
+      "width": 375,
+      "case": "w4-lithology",
+      "tab": "bg",
+      "panel": "bg",
+      "overflow": false,
+      "badImages": [],
+      "mountFailed": false,
+      "screenshot": "w4-lithology-bg-375.png"
+    },
+    {
+      "width": 375,
+      "case": "w4-lithology",
+      "tab": "flow",
+      "panel": "flow",
+      "overflow": false,
+      "badImages": [],
+      "mountFailed": false,
+      "screenshot": "w4-lithology-flow-375.png"
+    },
+    {
+      "width": 375,
+      "case": "w4-lithology",
+      "tab": "demo",
+      "panel": "demo",
+      "overflow": false,
+      "badImages": [],
+      "mountFailed": false,
+      "screenshot": "w4-lithology-demo-375.png"
+    },
+    {
+      "width": 375,
+      "case": "w4-lithology",
+      "interaction": "trace + guide",
+      "keyboardChangedPoint": true,
+      "keyboardChangedEvidence": true,
+      "guideTargets": 3,
+      "axSliders": 6,
+      "unnamedSliders": 0
+    },
+    {
+      "width": 375,
+      "case": "w5-completion",
+      "tab": "bg",
+      "panel": "bg",
+      "overflow": false,
+      "badImages": [],
+      "mountFailed": false,
+      "screenshot": "w5-completion-bg-375.png"
+    },
+    {
+      "width": 375,
+      "case": "w5-completion",
+      "tab": "flow",
+      "panel": "flow",
+      "overflow": false,
+      "badImages": [],
+      "mountFailed": false,
+      "screenshot": "w5-completion-flow-375.png"
+    },
+    {
+      "width": 375,
+      "case": "w5-completion",
+      "tab": "demo",
+      "panel": "demo",
+      "overflow": false,
+      "badImages": [],
+      "mountFailed": false,
+      "screenshot": "w5-completion-demo-375.png"
+    },
+    {
+      "width": 375,
+      "case": "w5-completion",
+      "interaction": "trace + guide",
+      "keyboardChangedPoint": true,
+      "keyboardChangedEvidence": true,
+      "guideTargets": 3,
+      "axSliders": 3,
+      "unnamedSliders": 0
+    },
+    {
+      "width": 375,
+      "interaction": "home link Enter → w4 → depth ArrowRight → readable neighbors",
+      "passed": true
+    },
+    {
+      "interaction": "rapid lazy route navigation",
+      "passed": true
+    }
+  ],
+  "errors": [],
+  "limits": "Automated keyboard and AX tree checks; no human screen-reader test or teaching participants."
+}

@@ -1,7 +1,7 @@
 /* w4 岩性识别：产出正文引用的全部指标，可复算
    用法：node tools/test-w4.js */
 global.window = {};
-require('D:/Intelligent-Map-for-Oil-Exploration-and-Development/cases/w4-lithology/demo/demo.js');
+require('../cases/w4-lithology/demo/demo.js');
 const W = global.window.W4CORE;
 
 function line(tag, p) {

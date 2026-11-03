@@ -113,7 +113,7 @@
       lent.push(b.lent);
 
       var pv = p + b.vug;                       /* 密度读到的孔隙度 */
-      den.push((pv) * 1.0 + (1 - pv) * L.rma + gauss(rnd) * 0.014);
+      den.push((pv) * 1.0 + (1 - pv) * L.rma + gauss(rnd) * 0.014 * (o.noiseScale || 1) + (d >= (o.shiftStart == null ? 26 : o.shiftStart) && d < (o.shiftEnd == null ? 34 : o.shiftEnd) ? (o.denShift || 0) : 0));
       ac.push((p * 620 + (1 - p) * L.acma) * L.loose + gauss(rnd) * 5.5);
       gr.push(L.gr + gauss(rnd) * L.grs);
       cnl.push(L.cnl * 0.6 + p * 1.6 + gauss(rnd) * 0.012);
@@ -420,12 +420,19 @@
     };
   }
 
+  function trace(ref,gaps,nb,i,delta){
+    var mask=maskOf(gaps);if(!mask[i])return null;
+    var q=Object.assign({},ref,{gr:ref.gr.slice()});q.gr[i]+=delta||0;
+    var model=fillReg(ref,gaps).model,x=[1,(q.gr[i]-70)/30,(q.ac[i]-260)/60,(q.cnl[i]-.2)/.1],terms=x.map(function(v,j){return v*model.coef[j];}),prediction=predReg(model,q,i),linear=fillLinear(q,gaps),neighbor=fillNeighbor(q,gaps,nb);
+    return {version:'trace-v1',caseId:'w5-completion',index:i,label:(2400+ref.z[i]).toFixed(3)+' m',role:'本井可见段拟合；选中点 DEN 遮蔽检验（非跨井测试）',inputs:[['GR',q.gr[i],'API'],['AC',q.ac[i],'μs/m'],['CNL',q.cnl[i],'v/v']],steps:['截距','GR','AC','CNL'].map(function(n,j){return [n+'：x × β',x[j]+' × '+model.coef[j]+' = '+terms[j]];}).concat([['可见段残差标准差',model.sd],['邻井借值',neighbor.den[i]],['拟合段 n',mask.filter(function(v){return !v;}).length],['90% 残差区间半宽（未校准）',1.645*model.sd]]),prediction:{name:'多曲线回归 DEN',value:prediction,unit:'g/cm³'},baseline:{name:'同点两端线性插值',value:linear.den[i],unit:'g/cm³'},control:{name:'本点 GR 偏移',unit:'API',min:-60,max:60,step:3},note:'真值 DEN 不进入遮蔽点推理；模型只用可见段。区间为残差启发式，覆盖不保证 90%。此处解释固定 26 m 主剖面的回归分支；上方 RMSE 是多位置缺口扫描，样本集合不同。其他曲线方法可在上方切换。'};
+  }
+
   var API = {
     LITH: LITH, NL: NL, BEDS: BEDS, DZ: DZ, BOT: BOT, NS: NS, GAP0: GAP0, GRCUT: GRCUT,
     buildWell: buildWell, gapsFor: gapsFor, sandFrac: sandFrac, maskOf: maskOf,
     fillLinear: fillLinear, fillNeighbor: fillNeighbor, fillReg: fillReg, fillAuto: fillAuto,
     predReg: predReg, evalGaps: evalGaps, scan: scan, mnar: mnar, ng: ng, PU: PU,
-    AUTO_TH: AUTO_TH, fitReg: fitReg, fill: fill, diag: diag
+    AUTO_TH: AUTO_TH, fitReg: fitReg, fill: fill, diag: diag,trace:trace
   };
   if (typeof window !== 'undefined') { window.W5CORE = API; }
 
@@ -485,7 +492,7 @@
       root.appendChild(st);
     }
 
-    var state = { L: 2, mech: 'washout', mi: 'reg' };
+    var state = { L: 2, mech: 'washout', mi: 'reg' }, currentProfile,tracePoint=Math.round(GAP0/DZ);
     var cache = {};
     function getScan(mech) {
       if (!cache[mech]) cache[mech] = scan(mech);
@@ -504,7 +511,7 @@
 
     var ctl = el('div', 'w5-ctl');
     ctl.innerHTML =
-      '<div class="w5-c"><label>缺失长度 <b id="w5lL">2.0 m</b></label><input id="w5sL" type="range" min="5" max="80" step="5" value="20"></div>' +
+      '<div class="w5-c"><label for="w5sL">缺失长度 <b id="w5lL">2.0 m</b></label><input id="w5sL" type="range" min="5" max="80" step="5" value="20"></div>' +
       '<div class="w5-c"><label>缺失机制</label><div class="w5-btns">' +
       '<button class="w5-b on" data-m="random">随机</button><button class="w5-b" data-m="washout">扩径</button><button class="w5-b" data-m="casing">套管</button></div></div>' +
       '<div class="w5-c"><label>补全方法</label><div class="w5-btns">' +
@@ -530,7 +537,7 @@
       var n = Math.max(1, Math.round(L / DZ));
       var i0 = Math.round(GAP0 / DZ), i1 = i0 + n - 1;
       var gaps = [[i0, i1]];
-      var res = mi === 'reg' ? fillReg(ref, gaps) : mi === 'nb' ? fillNeighbor(ref, gaps, nb) : fillLinear(ref, gaps);
+      var res = fill(ref,gaps,nb,mi);currentProfile={ref:ref,nb:nb,gaps:gaps,res:res,L:L};tracePoint=clamp(tracePoint,i0,i1);
 
       var x0 = 62, x1 = W - 20, y0 = 22, y1 = H - 58;
       var DMIN = 2.20, DMAX = 2.76;
@@ -616,6 +623,7 @@
       g.fillText('岩性', 23, 12);
 
       /* 图例 */
+      g.strokeStyle='#315c48';g.lineWidth=1;g.setLineDash([3,3]);g.beginPath();g.moveTo(x0,Y(ref.z[tracePoint]));g.lineTo(x1,Y(ref.z[tracePoint]));g.stroke();g.setLineDash([]);g.fillStyle='#315c48';g.textAlign='left';g.fillText('单点 '+(2400+ref.z[tracePoint]).toFixed(3)+' m',x0+4,Y(ref.z[tracePoint])-5);
       g.font = '9.5px system-ui,sans-serif';
       g.textAlign = 'left';
       var lg = [['#5d666d', '实测'], [MW[mi], '补全'], ['#c9c2b0', '真实值']];
@@ -712,7 +720,7 @@
       var covNow = mi === 'reg' ? sc.cr[idx] : mi === 'nb' ? sc.cn[idx] : mi === 'auto' ? sc.ca[idx] : sc.cl[idx];
       var k = [
         [MN[mi] + ' RMSE', fmt(rmseNow) + '<small>p.u.</small>'],
-        ['区间覆盖率', Math.round(covNow * 100) + '<small>%（名义 90）</small>'],
+        ['区间覆盖率', Math.round(covNow * 100) + '<small>%（启发式）</small>'],
         ['缺失点砂岩占比', Math.round(m.gapSand * 100) + '<small>% 全井 ' + Math.round(m.allSand * 100) + '%</small>'],
         ['丢弃缺失点 N/G', (q.drop.ng * 100).toFixed(1) + '<small>% 真值 ' + (q.full.ng * 100).toFixed(1) + '%</small>']
       ];
@@ -798,6 +806,8 @@
     });
 
     render();
+    cv.addEventListener('click',function(e){var b=cv.getBoundingClientRect(),g=currentProfile.gaps[0],y=(e.clientY-b.top)/b.height*442;tracePoint=clamp(Math.round((y-22)/362*(NS-1)),g[0],g[1]);paintTrack(state.mech,currentProfile.L,state.mi);cv.dispatchEvent(new Event('tracechange',{bubbles:true}));});
+    return {trace:{read:function(d){return trace(currentProfile.ref,currentProfile.gaps,currentProfile.nb,tracePoint,d);},range:function(){var g=currentProfile.gaps[0];return {min:g[0],max:g[1],value:tracePoint};},select:function(i){tracePoint=i;paintTrack(state.mech,currentProfile.L,state.mi);},worst:function(){var p=currentProfile,g=p.gaps[0],r=fillReg(p.ref,p.gaps),best=g[0];for(var i=g[0];i<=g[1];i++)if(Math.abs(r.den[i]-p.ref.den[i])>Math.abs(r.den[best]-p.ref.den[best]))best=i;return best;}}};
   }
 
   if (typeof window !== 'undefined') {

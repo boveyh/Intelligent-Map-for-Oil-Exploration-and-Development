@@ -11,7 +11,7 @@ for(const id of Object.keys(methods)){
 }
 let callback,disconnected=false,originalUnmounted=false;
 const metric={innerText:'实际指标 1.2'},body={querySelector:()=>metric},live={textContent:''};
-const host={innerHTML:'',querySelector:s=>s==='[data-method-body]'?body:live};
+const host={innerHTML:'',ownerDocument:{createElement:()=>({innerHTML:'',className:''})},insertBefore(){},querySelector:s=>s==='[data-method-body]'?body:live};
 const context={window:{DEMO:()=>({unmount(){originalUnmounted=true;}})},module:{exports:{}},MutationObserver:class{constructor(fn){callback=fn;}observe(){}disconnect(){disconnected=true;}}};
 vm.runInNewContext(wrapSource('','w2-reservoir-param','DEMO'),context);
 const handle=context.module.exports.mount(host,{});

@@ -24,8 +24,10 @@ const central=data=>Buffer.from(data).indexOf(Buffer.from([0x50,0x4b,0x01,0x02])
  for(const [name,re]of [['traversal',/路径/],['duplicates',/重复/],['missing',/清单/],['multiple',/多个清单/],['oversize',/6 MB/],['unsupported',/Store 或 Deflate/]])await assert.rejects(Zip.unpack(bytes(name)),re,name);
  const encrypted=bytes('store');encrypted[6]|=1;encrypted[central(encrypted)+8]|=1;await assert.rejects(Zip.unpack(encrypted),/加密/);
  const corrupt=bytes('store');corrupt[central(corrupt)+16]^=1;await assert.rejects(Zip.unpack(corrupt),/校验失败/);
+ const zip64end=bytes('store'),ze=new DataView(zip64end.buffer);ze.setUint16(zip64end.length-22+8,65535,true);ze.setUint16(zip64end.length-22+10,65535,true);await assert.rejects(Zip.unpack(zip64end),/ZIP64/,'ZIP64 EOCD sentinel');
+ const zip64entry=bytes('store'),zi=new DataView(zip64entry.buffer);zi.setUint32(central(zip64entry)+24,0xFFFFFFFF,true);await assert.rejects(Zip.unpack(zip64entry),/ZIP64/,'ZIP64 entry sentinel');
  const dishonest=bytes('oversize'),view=new DataView(dishonest.buffer);let c=central(dishonest);c+=46+view.getUint16(c+28,true)+view.getUint16(c+30,true)+view.getUint16(c+32,true);view.setUint32(c+24,1,true);
  await assert.rejects(Zip.unpack(dishonest),/大小不符合|6 MB/,'Inflate limit must check actual bytes, not only directory sizes');
  await assert.rejects(Zip.unpack(bytes('deflate').slice(0,-7)),/ZIP/);
- console.log('PASS: Python Store/Deflate ZIP; nested/Unicode paths; binary/empty files; root normalization; duplicate/traversal/encrypted/corrupt/oversize/multiple manifests rejected; bounded inflate');
+ console.log('PASS: Python Store/Deflate ZIP; nested/Unicode paths; binary/empty files; root normalization; duplicate/traversal/encrypted/corrupt/oversize/multiple manifests rejected; ZIP64 EOCD/entry rejected; high-ratio payload rejected by actual expanded-byte limit');
 })().catch(e=>{console.error(e);process.exitCode=1;});

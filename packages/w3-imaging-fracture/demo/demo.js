@@ -110,6 +110,7 @@
     /* 逐像素抖动 */
     for (i = 0; i < R * C; i++) img[i] = clamp(img[i] + gauss(rnd) * p.noise * 0.0012, 0, 1);
 
+    if(p.dropout) for(var rr=0;rr<R;rr++)for(var cc=0;cc<C;cc++)if(cc/C<p.dropout)img[rr*C+cc]=bg;
     return { img: img, truth: truth };
   }
 
@@ -329,9 +330,18 @@
   function learningFilter(sal,cutoff){
     var model=trainClassifier(),candidates=hough(sal,{proposals:true});
     candidates.forEach(function(d){d.proof=explainCandidate(sal,d,model);d.mlScore=d.proof.score;});
-    candidates.sort(function(a,b){return b.mlScore-a.mlScore;});var dets=[];
-    candidates.forEach(function(d){if(d.mlScore>=(cutoff==null?.5:cutoff) && dets.every(function(q){return Math.abs(d.y0-q.y0)>=22;}))dets.push(d);});
+    candidates.sort(function(a,b){return b.mlScore-a.mlScore;});var dets=selectLearning(candidates,cutoff);
     return {model:model,candidates:candidates,dets:dets};
+  }
+  function selectLearning(candidates,cutoff){var dets=[];candidates.slice().sort(function(a,b){return b.mlScore-a.mlScore;}).forEach(function(d){if(d.mlScore>=(cutoff==null?.5:cutoff)&&dets.every(function(q){return Math.abs(d.y0-q.y0)>=22;}))dets.push(d);});return dets;}
+
+  function trace(res,i,delta){
+    var d=res.learning.candidates[i];if(!d)return null;
+    var sal=res.sal;
+    if(delta){sal=new Float32Array(sal);for(var c=0;c<C;c++){var y=Math.round(d.y0+d.A*Math.cos(2*Math.PI*c/C-d.az*Math.PI/180));for(var o=-1;o<=1;o++)if(y+o>=0&&y+o<R)sal[(y+o)*C+c]=clamp(sal[(y+o)*C+c]+delta,0,1);}}
+    var model=res.learning.model,e=explainCandidate(sal,d,model),base=delta?hough(sal):res.dets;
+    var retained=base.some(function(b){return Math.abs(b.y0-d.y0)<7&&Math.abs(b.A-d.A)<10;});
+    return {version:'trace-v1',caseId:'w3-imaging-fracture',index:i,label:(DEPTH0+d.y0*ROWM).toFixed(3)+' m · 路径 '+(i+1),role:'冻结 8 图训练模型；当前图不参与训练',inputs:LEARN_FEATURES.map(function(n,j){return [n,e.x[j],''];}),steps:LEARN_FEATURES.map(function(n,j){return [n+'：z × w',e.z[j]+' × '+model.weights[j+1]+' = '+e.terms[j]];}).concat([['偏置',model.weights[0]],['logit',e.logit],['当前探索阈值',res.p.cutoff==null?.5:res.p.cutoff]]),prediction:{name:'学习筛选分数',value:e.score,unit:'（间隔抑制前，未校准）'},baseline:{name:'同显著度图 Hough 是否提出邻近路径',value:retained?1:0,unit:'（1 是）'},control:{name:'沿此路径显著度偏移',unit:'',min:-.12,max:.12,step:.01},note:'试算在预处理后的显著度图上改动该路径，再调用原分类器与 Hough；不是修改真实井壁图像。留出汇总中学习分支 F1 未胜出，不能补回未提出候选。'};
   }
 
   /* 导出纯函数，供 tools/test-w3.js 在 Node 里复算 */
@@ -339,7 +349,7 @@
     R: R, C: C, SPAN: SPAN, BORE: BORE, ROWM: ROWM,
     dipToA: dipToA, aToDip: aToDip,
     synth: synth, saliency: saliency, hough: hough, naive: naive,
-    evaluate: evaluate, run: run, pathFeatures:pathFeatures, trainClassifier:trainClassifier, explainCandidate:explainCandidate, learningFilter:learningFilter, LEARN_FEATURES:LEARN_FEATURES
+    evaluate: evaluate, run: run, pathFeatures:pathFeatures, trainClassifier:trainClassifier, explainCandidate:explainCandidate, learningFilter:learningFilter, selectLearning:selectLearning, LEARN_FEATURES:LEARN_FEATURES, trace:trace
   };
   if (typeof window !== 'undefined') { window.W3CORE = API; }
 
@@ -510,7 +520,7 @@
     root.appendChild(wrap);
     var learningBox=el('section','w3-learning');
     learningBox.style.cssText='margin:18px 0;padding:15px;border:1px solid #dcded2;border-radius:10px;background:#fcfbf7;font:12px/1.8 system-ui,sans-serif';
-    learningBox.innerHTML='<h3 style="font-size:15px;margin:0 0 8px">标注样本怎样筛选裂缝候选？</h3><div id="w3comparison"></div><p>学习分支先放宽 Hough 搜索，再用其他合成图像的标注候选训练逻辑回归；几何基线保留原搜索规则。下表解释实际候选。</p><label for="w3cutoff">筛选分数阈值（探索） <b id="w3cutofflabel">0.50</b></label><input id="w3cutoff" type="range" min="20" max="80" step="5" value="50" style="width:100%;accent-color:#2f7d6b"><label for="w3candidate">选择候选路径</label><select id="w3candidate" style="display:block;width:100%;margin:8px 0;padding:7px"></select><div id="w3proof"></div><p id="w3training"></p>';
+    learningBox.innerHTML='<p style="padding:10px;background:#fbf3ed;color:#765841"><b>学习分支未胜出的案例。</b>冻结默认方法后，20 张独立合成图：Hough F1 0.852，学习筛选 0.839；误报 10→5，漏检 8→13。本例分析筛选的代价，不宣称胜出。</p><h3 style="font-size:15px;margin:0 0 8px">标注样本怎样筛选裂缝候选？</h3><div id="w3comparison"></div><p>学习分支先放宽 Hough 搜索，再用其他合成图像的标注候选训练逻辑回归；几何基线保留原搜索规则。下表解释实际候选。</p><label for="w3cutoff">筛选分数阈值（探索） <b id="w3cutofflabel">0.50</b></label><input id="w3cutoff" type="range" min="20" max="80" step="5" value="50" style="width:100%;accent-color:#2f7d6b"><label for="w3candidate">选择候选路径</label><select id="w3candidate" style="display:block;width:100%;margin:8px 0;padding:7px"></select><div id="w3proof"></div><p id="w3training"></p>';
     wrap.insertBefore(learningBox,wrap.querySelector('#w3note'));
     var currentResult,candidateIndex=0;
     function evidence(res){
@@ -603,6 +613,7 @@
     root.querySelector('#w3candidate').addEventListener('change',function(e){candidateIndex=+e.target.value;evidence(currentResult);});
 
     render();
+    return {trace:{read:function(d){return trace(currentResult,candidateIndex,d);},range:function(){return {min:0,max:Math.max(0,currentResult.learning.candidates.length-1),value:candidateIndex};},select:function(i){candidateIndex=i;evidence(currentResult);}}};
   }
 
   if (typeof window !== 'undefined') {
@@ -612,7 +623,7 @@
 })();
 
 /* Generated portable explanation; algorithm source above remains unchanged. */
-(function(){var demo=(function install(win,name,info){
+(function(){var demo=(function install(win,name,info,installTrace,guideSteps){
   var original=win[name];
   function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/"/g,'&quot;');}
   function mount(root,api){
@@ -620,11 +631,66 @@
       '<section class="oil-demo-method" aria-label="智能方法与运行证据"><small>本次演示用什么、为什么起作用</small><h3>'+esc(info.name)+'</h3><div class="oil-demo-chain"><span>'+esc(info.input)+'</span><b aria-hidden="true">→</b><span>'+esc(info.operation)+'</span></div><div class="oil-demo-reasons"><div><h4>为什么可能有效</h4><p>'+esc(info.why)+'</p></div><div><h4>在这里怎样验证</h4><p>'+esc(info.try)+'</p></div></div><div class="oil-demo-live"><small>当前运行证据 · 随下方操作更新</small><p data-method-live></p></div></section><div data-method-body></div>';
     var body=root.querySelector('[data-method-body]'),live=root.querySelector('[data-method-live]');
     var mounted=original(body,api);
+    if(info.audit){
+      var audit=info.audit,box=root.ownerDocument.createElement('details');box.className='oil-demo-method';
+      box.innerHTML='<summary><b>生成器敏感性自审 · '+esc(audit.metric)+' · 全部设置</b></summary><p>'+esc(audit.limits)+'</p><div style="overflow:auto"><table style="width:100%;font-size:11px;text-align:left"><thead><tr><th>扰动 / 设置</th><th>基线</th><th>学习</th><th>附加对照</th></tr></thead><tbody>'+audit.series.map(function(s){return '<tr><td>'+esc(s.axis)+' / '+esc(s.value)+'</td><td>'+s.baseline.toFixed(3)+'</td><td>'+s.learn.toFixed(3)+'</td><td>'+esc(s.denOnly!=null?'DEN 回归 '+s.denOnly.toFixed(3):s.grOnly!=null?'GR KNN '+s.grOnly.toFixed(3):s.coverage!=null?'区间覆盖 '+s.coverage.toFixed(3):'—')+'</td></tr>';}).join('')+'</tbody></table></div>'+(audit.heldout?'<p>95% 配对 bootstrap：学习−基线 F1 差区间 ['+audit.heldout.pairedDifference.map(function(v){return v.toFixed(3);}).join(', ')+']。以井/图为单位，冻结训练集；不覆盖真实井分布的不确定性。</p>':'')+'<p>2026-11-03 · 合成条件自审，未做第三方物理校准；全部种子和逐样本见公开审计文件，包内仅嵌入汇总。</p>';
+      root.insertBefore(box,body);
+    }
+    var trace=installTrace(root,body,mounted,guideSteps||[]);
     function refresh(){var metric=body.querySelector(info.selector);live.textContent=metric?(metric.innerText||metric.textContent).replace(/\s+/g,' ').trim().slice(0,380):'操作下方控件，对照模型、基线与测试结果。';}
     refresh();
-    var observer=new MutationObserver(refresh);observer.observe(body,{childList:true,subtree:true,characterData:true});
-    return {unmount:function(){observer.disconnect();if(mounted&&typeof mounted.unmount==='function')mounted.unmount();}};
+    var observer=new MutationObserver(function(){refresh();trace.refresh();});observer.observe(body,{childList:true,subtree:true,characterData:true});
+    return {unmount:function(){observer.disconnect();trace.unmount();if(mounted&&typeof mounted.unmount==='function')mounted.unmount();}};
   }
   win[name]=mount;win.__CASE_MOUNT__=mount;
   return {mount:mount};
-})(window,"W3DEMO",{"name":"Hough 候选＋逻辑回归筛选","input":"合成井壁图像＋其他图像中标注的路径候选","operation":"搜索正弦路径 → 提取连续性/反差 → 按学习分数筛选","why":"单条暗线不一定是天然裂缝。分类器学习路径响应、覆盖与邻域反差的组合，帮助筛掉部分干扰；筛选也可能拒绝真裂缝，且不能补回候选阶段的遗漏。","try":"同图切换 Hough 与学习筛选，再调整阈值；同时看误报和漏检，不只看图面是否更干净。","selector":"#w3comparison"});if(typeof module!=="undefined")module.exports=demo;})();
+})(window,"W3DEMO",{"name":"Hough 候选＋逻辑回归筛选","input":"合成井壁图像＋其他图像中标注的路径候选","operation":"搜索正弦路径 → 提取连续性/反差 → 按学习分数筛选","why":"单条暗线不一定是天然裂缝。分类器学习路径响应、覆盖与邻域反差的组合，帮助筛掉部分干扰；筛选也可能拒绝真裂缝，且不能补回候选阶段的遗漏。","try":"同图切换 Hough 与学习筛选，再调整阈值；同时看误报和漏检，不只看图面是否更干净。","selector":"#w3comparison","audit":{"metric":"F1 ↑","limits":"学习分支留出 F1 未胜出。候选 ROC 以单条候选能否匹配标注为标签，重复候选可同时为正；对象 PR 使用完整匹配和间隔抑制。二者分母不同；扫描属已观察测试集上的事后诊断，不以曲线选新阈值。","heldout":{"baseline":[0.768,0.9322033898305084],"learn":[0.7346938775510204,0.9217391304347826],"pairedDifference":[-0.0921487603305785,0.0577745025792189]},"series":[{"axis":"noiseMultiplier","value":1,"baseline":0.8524590163934426,"learn":0.8392857142857143},{"axis":"noiseMultiplier","value":2,"baseline":0.8346456692913385,"learn":0.78125},{"axis":"noiseMultiplier","value":4,"baseline":0.5974025974025974,"learn":0.7284768211920529},{"axis":"noiseMultiplier","value":8,"baseline":0.41530054644808745,"learn":0.6101694915254238},{"axis":"apertureMultiplier","value":1,"baseline":0.8524590163934426,"learn":0.8392857142857143},{"axis":"apertureMultiplier","value":0.5,"baseline":0.6126126126126126,"learn":0.5813953488372093},{"axis":"apertureMultiplier","value":2,"baseline":0.9133858267716536,"learn":0.8108108108108109},{"axis":"apertureMultiplier","value":3,"baseline":0.8613138686131386,"learn":0.7407407407407407},{"axis":"dropout","value":0,"baseline":0.8524590163934426,"learn":0.8392857142857143},{"axis":"dropout","value":0.15,"baseline":0.8928571428571429,"learn":0.7157894736842105},{"axis":"dropout","value":0.35,"baseline":0.6607142857142857,"learn":0.09090909090909091},{"axis":"dropout","value":0.6,"baseline":0.1935483870967742,"learn":0}]}},function installTrace(root, body, mounted, guideSteps) {
+  if (!mounted || !mounted.trace) return {refresh:function(){},unmount:function(){}};
+  var api=mounted.trace, doc=root.ownerDocument, panel=doc.createElement('section');
+  panel.className='oil-trace';panel.setAttribute('aria-label','单点可追查证据');
+  panel.innerHTML='<style>.oil-trace,.oil-guide{font:12px/1.8 system-ui,sans-serif;color:#34433a;border:1px solid #d3dfd5;background:#fbfcf8;border-radius:9px;padding:14px;margin:16px 0;scroll-margin-top:190px}.oil-trace *,.oil-guide *{box-sizing:border-box}.oil-trace h3{font-size:16px;margin:0 0 5px}.oil-trace-controls{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin:10px 0}.oil-trace label{display:grid;gap:4px;min-width:150px;flex:1}.oil-trace input{width:100%;min-width:0;accent-color:#2f7d6b}.oil-trace button,.oil-guide button{padding:6px 10px;background:#fff;border:1px solid #a8bdb0;color:#235f51;border-radius:5px;cursor:pointer;font:inherit}.oil-trace-grid{display:grid;grid-template-columns:1fr 1.5fr;gap:14px}.oil-trace dl{margin:0}.oil-trace dl>div{display:grid;grid-template-columns:minmax(90px,1fr) minmax(0,2fr);border-bottom:1px solid #e4e8dc;padding:5px 0;gap:8px}.oil-trace dt,.oil-trace dd{margin:0;overflow-wrap:anywhere}.oil-trace-summary{padding:10px;background:#edf4ed;border-radius:5px}.oil-trace small{display:block;color:#607465}.oil-guide{display:flex;gap:10px;align-items:center;flex-wrap:wrap;background:#eff5ec}.oil-guide p{flex:1;min-width:160px;margin:0!important;font-size:12px!important}.oil-guide-target{outline:3px solid #b08850!important;outline-offset:5px;scroll-margin-top:110px}.oil-trace :focus-visible,.oil-guide :focus-visible{outline:3px solid #2f7d6b;outline-offset:3px}@media(max-width:650px){.oil-trace-grid{grid-template-columns:1fr}.oil-trace{padding:10px}.oil-trace-controls{display:grid;grid-template-columns:minmax(0,1fr)}.oil-trace label{min-width:0}}</style><h3>追查这一个判断</h3><small data-trace-role></small><div class="oil-trace-controls"><label>深度 / 候选点 <input type="range" data-trace-point aria-label="单点证据的深度或候选点"></label><label><span data-trace-control-label>输入试算</span><input type="range" value="0" data-trace-delta aria-label="单点输入偏移"></label><button type="button" data-trace-reset>恢复原输入</button><button type="button" data-trace-export>导出本点证据</button><button type="button" data-trace-worst>定位回归误差最大点</button></div><p class="oil-trace-summary" data-trace-summary tabindex="-1" role="status" aria-live="polite" aria-atomic="true"></p><div class="oil-trace-grid"><div><b>实际输入</b><dl data-trace-inputs></dl></div><div><b>真实中间量</b><dl data-trace-steps></dl></div></div><small data-trace-note></small>';
+  root.appendChild(panel);
+  var point=panel.querySelector('[data-trace-point]'),delta=panel.querySelector('[data-trace-delta]'),lastIndex=null;
+  function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/"/g,'&quot;');}
+  function fmt(v){return typeof v==='number'?Number(v.toFixed(5)):String(v).replace(/-?\d+\.\d{6,}/g,function(n){return Number(Number(n).toFixed(5));});}
+  function rows(values){return values.map(function(v){return '<div><dt>'+esc(v[0])+'</dt><dd>'+esc(fmt(v[1]))+(v[2]?' '+esc(v[2]):'')+'</dd></div>';}).join('');}
+  function refresh(){
+    var range=api.range();point.min=range.min;point.max=range.max;point.value=range.value;
+    if(range.value!==lastIndex){delta.value=0;lastIndex=range.value;}
+    var record=api.read(Number(delta.value)||0);
+    if(!record){panel.querySelector('[data-trace-summary]').textContent='当前没有可追查的候选；这是候选生成的失效边界。';return;}
+    var c=record.control;delta.min=c.min;delta.max=c.max;delta.step=c.step;
+    panel.querySelector('[data-trace-control-label]').textContent=c.name+' '+fmt(Number(delta.value))+' '+c.unit+'（单点试算）';
+    panel.querySelector('[data-trace-role]').textContent=record.role+' · trace-v1';
+    panel.querySelector('[data-trace-inputs]').innerHTML=rows(record.inputs);
+    panel.querySelector('[data-trace-steps]').innerHTML=rows(record.steps);
+    panel.querySelector('[data-trace-summary]').textContent=record.label+'：'+record.prediction.name+' '+fmt(record.prediction.value)+' '+record.prediction.unit+'；'+record.baseline.name+' '+fmt(record.baseline.value)+' '+record.baseline.unit;
+    panel.querySelector('[data-trace-note]').textContent=record.note;
+    // The exact structured record also supports external reproducibility checks.
+    record.trialDelta=Number(delta.value)||0;panel.traceRecord=record;
+  }
+  point.addEventListener('input',function(){api.select(Number(point.value));delta.value=0;refresh();});
+  delta.addEventListener('input',refresh);
+  panel.querySelector('[data-trace-reset]').addEventListener('click',function(){delta.value=0;refresh();});
+  panel.querySelector('[data-trace-export]').addEventListener('click',function(){if(!panel.traceRecord)return;var a=doc.createElement('a');a.href='data:application/json;charset=utf-8,'+encodeURIComponent(JSON.stringify(panel.traceRecord,null,2));a.download=panel.traceRecord.caseId+'-point-'+panel.traceRecord.index+'.json';a.click();});
+  var worst=panel.querySelector('[data-trace-worst]');worst.hidden=!api.worst;
+  worst.addEventListener('click',function(){api.select(api.worst());delta.value=0;refresh();panel.querySelector('[data-trace-summary]').focus();});
+  function onProfile(){refresh();panel.scrollIntoView({block:'center',behavior:'auto'});}
+  body.addEventListener('tracechange',onProfile);
+  var guide=doc.createElement('nav');guide.className='oil-guide';guide.setAttribute('aria-label','30—60 秒演示路径');
+  guide.innerHTML='<b>30—60 秒演示路径</b><p data-guide-text role="status" aria-live="polite">按三步检查输入、判断依据与传统对照。完成时间需在真人测试中记录。</p><button type="button" data-guide-next>开始引导</button><button type="button" data-guide-stop hidden>结束引导</button>';
+  root.insertBefore(guide,body);
+  var step=-1,target=null,originalTabIndex=null;
+  function clearTarget(){if(target){target.classList.remove('oil-guide-target');if(originalTabIndex===null)target.removeAttribute('tabindex');else target.setAttribute('tabindex',originalTabIndex);target=null;}}
+  function stop(){clearTarget();step=-1;guide.querySelector('[data-guide-next]').textContent='重新引导';guide.querySelector('[data-guide-stop]').hidden=true;}
+  guide.querySelector('[data-guide-stop]').addEventListener('click',stop);
+  guide.querySelector('[data-guide-next]').addEventListener('click',function(){
+    clearTarget();step++;
+    if(step>=guideSteps.length){stop();guide.querySelector('[data-guide-text]').textContent='请复述：用了什么输入？哪个中间量支持判断？传统方法在同一点输出什么？完成引导不等于测试通过。';return;}
+    var s=guideSteps[step];guide.querySelector('[data-guide-text]').textContent=(step+1)+'/'+guideSteps.length+' · '+s[1];
+    guide.querySelector('[data-guide-next]').textContent=step===guideSteps.length-1?'完成引导':'下一步';guide.querySelector('[data-guide-stop]').hidden=false;
+    target=root.querySelector(s[0]);if(target){originalTabIndex=target.getAttribute('tabindex');target.setAttribute('tabindex','0');target.classList.add('oil-guide-target');target.scrollIntoView({behavior:'auto',block:'center'});target.focus({preventScroll:true});}
+  });
+  refresh();
+  return {refresh:refresh,unmount:function(){clearTarget();body.removeEventListener('tracechange',onProfile);}};
+},[["#w3cutoff","读未胜出结论，再改阈值看误报/漏检。"],["[data-trace-point]","选一条候选，读四个真实路径特征及贡献。"],["[data-trace-delta]","改变预处理路径响应，比较分类器与 Hough；解释筛选会漏掉什么。"]]);if(typeof module!=="undefined")module.exports=demo;})();

@@ -75,7 +75,7 @@
       '<a href="#/">总览</a><a href="#/chain">作业链</a><a href="#/method/cv">按方法反查</a></div>' +
       '<div class="ftr-col"><h5>系统</h5>' +
       '<a href="#/cases">案例库（' + s.registered + ' 个已接入）</a>' +
-      '<a href="#/guide">接入新案例</a></div>' +
+      '<a href="#/guide">接入新案例</a><a href="docs/evidence.html">生成器审计与证据</a></div>' +
       '<div class="ftr-col"><h5>参与</h5>' +
       '<p>发现问题或想补一个场景？</p>' +
       '<a href="mailto:' + esc(A.meta.email) + '">' + esc(A.meta.email) + '</a></div>' +
@@ -189,7 +189,7 @@
         '<div class="hw-kpi' + (kp ? '' : ' empty') + '">' +
         (kp && kp.k ? '<span class="k">' + esc(kp.k) + '</span>' : '') +
         '<span class="v">' + esc(c.id === 'welllog-layer' ? '框架样例 · 原始口径' : (kp ? kp.v : (c.algorithmType || '查看方法与输出'))) + '</span></div>' +
-        '<div class="hw-evidence">' + (c.id === 'welllog-layer' ? '框架自带样例，不计新增案例' : (c.imported ? '外部导入案例 · 证据见正文' : '合成数据实验 · 指标条件见正文')) + '</div>' +
+        '<div class="hw-evidence">' + (c.id === 'welllog-layer' ? '框架自带样例，不计新增案例' : (c.imported ? '外部导入案例 · 证据见正文' : (c.id==='w3-imaging-fracture'?'学习分支未胜出 · 误报/漏检取舍':(c.id==='w5-normalization'?'配套前处理 · 不计五个学习主例':'合成数据实验 · 指标条件见正文')))) + '</div>' +
         '<div class="hw-foot">' + mts.map(caseChip).join('') +
         '<span class="hw-go">案例</span></div>' +
         '</a>';
@@ -1017,11 +1017,22 @@
     mountedKey = '';
   }
 
-  function render() {
+  var renderEpoch=0;
+  async function render() {
+    var epoch=++renderEpoch;
     var r = parseHash();
     var p = r.parts;
     unmountCurrent();
     window.scrollTo(0, 0);
+    if((p[0]==='cases'||p[0]==='admin')&&global.BuiltinCases){try{await Promise.all(Cases.list().map(function(c){return global.BuiltinCases.ensure(c);}));}catch(error){if(epoch===renderEpoch)view.innerHTML=header()+notFound(error.message)+footer();return;}if(epoch!==renderEpoch)return;}
+    if(p[0]==='scene' && global.BuiltinCases){
+      var choices=Cases.bySceneAll(p[1]),selected=choices.filter(function(c){return c.id===r.q.case;})[0]||choices[0];
+      if(selected&&selected.__builtinAssets){
+        view.innerHTML=header()+'<main class="wrap" style="padding:100px 0" role="status">正在加载所选案例…</main>'+footer();
+        try{await global.BuiltinCases.ensure(selected);}catch(error){if(epoch===renderEpoch)view.innerHTML=header()+notFound(error.message)+footer();return;}
+        if(epoch!==renderEpoch)return;
+      }
+    }
 
     var html;
     if (!p.length) html = homeHTML();

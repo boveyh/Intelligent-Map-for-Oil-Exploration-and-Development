@@ -536,7 +536,7 @@
 })();
 
 /* Generated portable explanation; algorithm source above remains unchanged. */
-(function(){var demo=(function install(win,name,info){
+(function(){var demo=(function install(win,name,info,installTrace,guideSteps){
   var original=win[name];
   function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/"/g,'&quot;');}
   function mount(root,api){
@@ -544,11 +544,66 @@
       '<section class="oil-demo-method" aria-label="智能方法与运行证据"><small>本次演示用什么、为什么起作用</small><h3>'+esc(info.name)+'</h3><div class="oil-demo-chain"><span>'+esc(info.input)+'</span><b aria-hidden="true">→</b><span>'+esc(info.operation)+'</span></div><div class="oil-demo-reasons"><div><h4>为什么可能有效</h4><p>'+esc(info.why)+'</p></div><div><h4>在这里怎样验证</h4><p>'+esc(info.try)+'</p></div></div><div class="oil-demo-live"><small>当前运行证据 · 随下方操作更新</small><p data-method-live></p></div></section><div data-method-body></div>';
     var body=root.querySelector('[data-method-body]'),live=root.querySelector('[data-method-live]');
     var mounted=original(body,api);
+    if(info.audit){
+      var audit=info.audit,box=root.ownerDocument.createElement('details');box.className='oil-demo-method';
+      box.innerHTML='<summary><b>生成器敏感性自审 · '+esc(audit.metric)+' · 全部设置</b></summary><p>'+esc(audit.limits)+'</p><div style="overflow:auto"><table style="width:100%;font-size:11px;text-align:left"><thead><tr><th>扰动 / 设置</th><th>基线</th><th>学习</th><th>附加对照</th></tr></thead><tbody>'+audit.series.map(function(s){return '<tr><td>'+esc(s.axis)+' / '+esc(s.value)+'</td><td>'+s.baseline.toFixed(3)+'</td><td>'+s.learn.toFixed(3)+'</td><td>'+esc(s.denOnly!=null?'DEN 回归 '+s.denOnly.toFixed(3):s.grOnly!=null?'GR KNN '+s.grOnly.toFixed(3):s.coverage!=null?'区间覆盖 '+s.coverage.toFixed(3):'—')+'</td></tr>';}).join('')+'</tbody></table></div>'+(audit.heldout?'<p>95% 配对 bootstrap：学习−基线 F1 差区间 ['+audit.heldout.pairedDifference.map(function(v){return v.toFixed(3);}).join(', ')+']。以井/图为单位，冻结训练集；不覆盖真实井分布的不确定性。</p>':'')+'<p>2026-11-03 · 合成条件自审，未做第三方物理校准；全部种子和逐样本见公开审计文件，包内仅嵌入汇总。</p>';
+      root.insertBefore(box,body);
+    }
+    var trace=installTrace(root,body,mounted,guideSteps||[]);
     function refresh(){var metric=body.querySelector(info.selector);live.textContent=metric?(metric.innerText||metric.textContent).replace(/\s+/g,' ').trim().slice(0,380):'操作下方控件，对照模型、基线与测试结果。';}
     refresh();
-    var observer=new MutationObserver(refresh);observer.observe(body,{childList:true,subtree:true,characterData:true});
-    return {unmount:function(){observer.disconnect();if(mounted&&typeof mounted.unmount==='function')mounted.unmount();}};
+    var observer=new MutationObserver(function(){refresh();trace.refresh();});observer.observe(body,{childList:true,subtree:true,characterData:true});
+    return {unmount:function(){observer.disconnect();trace.unmount();if(mounted&&typeof mounted.unmount==='function')mounted.unmount();}};
   }
   win[name]=mount;win.__CASE_MOUNT__=mount;
   return {mount:mount};
-})(window,"C1DEMO",{"name":"标定样本的多特征最近质心分类","input":"四段已评级样本的幅度、能量与周向代理量","operation":"形成四类特征质心 → 判别其余 36 段","why":"幅度相近的胶结状态，在额外特征上可能不同。样本标定的多变量距离能利用这些差异，但周向量是合成代理输入，常规 CBL/VDL 不直接提供它。","try":"对照单幅度阈值与多特征法，只对未标定段评分；调参会重新标定，不能当作冻结模型跨井验证。","selector":".c1-kpi"});if(typeof module!=="undefined")module.exports=demo;})();
+})(window,"C1DEMO",{"name":"标定样本的多特征最近质心分类","input":"四段已评级样本的幅度、能量与周向代理量","operation":"形成四类特征质心 → 判别其余 36 段","why":"幅度相近的胶结状态，在额外特征上可能不同。样本标定的多变量距离能利用这些差异，但周向量是合成代理输入，常规 CBL/VDL 不直接提供它。","try":"对照单幅度阈值与多特征法，只对未标定段评分；调参会重新标定，不能当作冻结模型跨井验证。","selector":".c1-kpi"},function installTrace(root, body, mounted, guideSteps) {
+  if (!mounted || !mounted.trace) return {refresh:function(){},unmount:function(){}};
+  var api=mounted.trace, doc=root.ownerDocument, panel=doc.createElement('section');
+  panel.className='oil-trace';panel.setAttribute('aria-label','单点可追查证据');
+  panel.innerHTML='<style>.oil-trace,.oil-guide{font:12px/1.8 system-ui,sans-serif;color:#34433a;border:1px solid #d3dfd5;background:#fbfcf8;border-radius:9px;padding:14px;margin:16px 0;scroll-margin-top:190px}.oil-trace *,.oil-guide *{box-sizing:border-box}.oil-trace h3{font-size:16px;margin:0 0 5px}.oil-trace-controls{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin:10px 0}.oil-trace label{display:grid;gap:4px;min-width:150px;flex:1}.oil-trace input{width:100%;min-width:0;accent-color:#2f7d6b}.oil-trace button,.oil-guide button{padding:6px 10px;background:#fff;border:1px solid #a8bdb0;color:#235f51;border-radius:5px;cursor:pointer;font:inherit}.oil-trace-grid{display:grid;grid-template-columns:1fr 1.5fr;gap:14px}.oil-trace dl{margin:0}.oil-trace dl>div{display:grid;grid-template-columns:minmax(90px,1fr) minmax(0,2fr);border-bottom:1px solid #e4e8dc;padding:5px 0;gap:8px}.oil-trace dt,.oil-trace dd{margin:0;overflow-wrap:anywhere}.oil-trace-summary{padding:10px;background:#edf4ed;border-radius:5px}.oil-trace small{display:block;color:#607465}.oil-guide{display:flex;gap:10px;align-items:center;flex-wrap:wrap;background:#eff5ec}.oil-guide p{flex:1;min-width:160px;margin:0!important;font-size:12px!important}.oil-guide-target{outline:3px solid #b08850!important;outline-offset:5px;scroll-margin-top:110px}.oil-trace :focus-visible,.oil-guide :focus-visible{outline:3px solid #2f7d6b;outline-offset:3px}@media(max-width:650px){.oil-trace-grid{grid-template-columns:1fr}.oil-trace{padding:10px}.oil-trace-controls{display:grid;grid-template-columns:minmax(0,1fr)}.oil-trace label{min-width:0}}</style><h3>追查这一个判断</h3><small data-trace-role></small><div class="oil-trace-controls"><label>深度 / 候选点 <input type="range" data-trace-point aria-label="单点证据的深度或候选点"></label><label><span data-trace-control-label>输入试算</span><input type="range" value="0" data-trace-delta aria-label="单点输入偏移"></label><button type="button" data-trace-reset>恢复原输入</button><button type="button" data-trace-export>导出本点证据</button><button type="button" data-trace-worst>定位回归误差最大点</button></div><p class="oil-trace-summary" data-trace-summary tabindex="-1" role="status" aria-live="polite" aria-atomic="true"></p><div class="oil-trace-grid"><div><b>实际输入</b><dl data-trace-inputs></dl></div><div><b>真实中间量</b><dl data-trace-steps></dl></div></div><small data-trace-note></small>';
+  root.appendChild(panel);
+  var point=panel.querySelector('[data-trace-point]'),delta=panel.querySelector('[data-trace-delta]'),lastIndex=null;
+  function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/"/g,'&quot;');}
+  function fmt(v){return typeof v==='number'?Number(v.toFixed(5)):String(v).replace(/-?\d+\.\d{6,}/g,function(n){return Number(Number(n).toFixed(5));});}
+  function rows(values){return values.map(function(v){return '<div><dt>'+esc(v[0])+'</dt><dd>'+esc(fmt(v[1]))+(v[2]?' '+esc(v[2]):'')+'</dd></div>';}).join('');}
+  function refresh(){
+    var range=api.range();point.min=range.min;point.max=range.max;point.value=range.value;
+    if(range.value!==lastIndex){delta.value=0;lastIndex=range.value;}
+    var record=api.read(Number(delta.value)||0);
+    if(!record){panel.querySelector('[data-trace-summary]').textContent='当前没有可追查的候选；这是候选生成的失效边界。';return;}
+    var c=record.control;delta.min=c.min;delta.max=c.max;delta.step=c.step;
+    panel.querySelector('[data-trace-control-label]').textContent=c.name+' '+fmt(Number(delta.value))+' '+c.unit+'（单点试算）';
+    panel.querySelector('[data-trace-role]').textContent=record.role+' · trace-v1';
+    panel.querySelector('[data-trace-inputs]').innerHTML=rows(record.inputs);
+    panel.querySelector('[data-trace-steps]').innerHTML=rows(record.steps);
+    panel.querySelector('[data-trace-summary]').textContent=record.label+'：'+record.prediction.name+' '+fmt(record.prediction.value)+' '+record.prediction.unit+'；'+record.baseline.name+' '+fmt(record.baseline.value)+' '+record.baseline.unit;
+    panel.querySelector('[data-trace-note]').textContent=record.note;
+    // The exact structured record also supports external reproducibility checks.
+    record.trialDelta=Number(delta.value)||0;panel.traceRecord=record;
+  }
+  point.addEventListener('input',function(){api.select(Number(point.value));delta.value=0;refresh();});
+  delta.addEventListener('input',refresh);
+  panel.querySelector('[data-trace-reset]').addEventListener('click',function(){delta.value=0;refresh();});
+  panel.querySelector('[data-trace-export]').addEventListener('click',function(){if(!panel.traceRecord)return;var a=doc.createElement('a');a.href='data:application/json;charset=utf-8,'+encodeURIComponent(JSON.stringify(panel.traceRecord,null,2));a.download=panel.traceRecord.caseId+'-point-'+panel.traceRecord.index+'.json';a.click();});
+  var worst=panel.querySelector('[data-trace-worst]');worst.hidden=!api.worst;
+  worst.addEventListener('click',function(){api.select(api.worst());delta.value=0;refresh();panel.querySelector('[data-trace-summary]').focus();});
+  function onProfile(){refresh();panel.scrollIntoView({block:'center',behavior:'auto'});}
+  body.addEventListener('tracechange',onProfile);
+  var guide=doc.createElement('nav');guide.className='oil-guide';guide.setAttribute('aria-label','30—60 秒演示路径');
+  guide.innerHTML='<b>30—60 秒演示路径</b><p data-guide-text role="status" aria-live="polite">按三步检查输入、判断依据与传统对照。完成时间需在真人测试中记录。</p><button type="button" data-guide-next>开始引导</button><button type="button" data-guide-stop hidden>结束引导</button>';
+  root.insertBefore(guide,body);
+  var step=-1,target=null,originalTabIndex=null;
+  function clearTarget(){if(target){target.classList.remove('oil-guide-target');if(originalTabIndex===null)target.removeAttribute('tabindex');else target.setAttribute('tabindex',originalTabIndex);target=null;}}
+  function stop(){clearTarget();step=-1;guide.querySelector('[data-guide-next]').textContent='重新引导';guide.querySelector('[data-guide-stop]').hidden=true;}
+  guide.querySelector('[data-guide-stop]').addEventListener('click',stop);
+  guide.querySelector('[data-guide-next]').addEventListener('click',function(){
+    clearTarget();step++;
+    if(step>=guideSteps.length){stop();guide.querySelector('[data-guide-text]').textContent='请复述：用了什么输入？哪个中间量支持判断？传统方法在同一点输出什么？完成引导不等于测试通过。';return;}
+    var s=guideSteps[step];guide.querySelector('[data-guide-text]').textContent=(step+1)+'/'+guideSteps.length+' · '+s[1];
+    guide.querySelector('[data-guide-next]').textContent=step===guideSteps.length-1?'完成引导':'下一步';guide.querySelector('[data-guide-stop]').hidden=false;
+    target=root.querySelector(s[0]);if(target){originalTabIndex=target.getAttribute('tabindex');target.setAttribute('tabindex','0');target.classList.add('oil-guide-target');target.scrollIntoView({behavior:'auto',block:'center'});target.focus({preventScroll:true});}
+  });
+  refresh();
+  return {refresh:refresh,unmount:function(){clearTarget();body.removeEventListener('tracechange',onProfile);}};
+},[]);if(typeof module!=="undefined")module.exports=demo;})();

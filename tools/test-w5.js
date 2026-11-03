@@ -1,7 +1,7 @@
 /* w5 缺失段补全：产出正文引用的全部指标，可复算
    用法：node tools/test-w5.js */
 global.window = {};
-require('D:/Intelligent-Map-for-Oil-Exploration-and-Development/cases/w5-completion/demo/demo.js');
+require('../cases/w5-completion/demo/demo.js');
 const W = global.window.W5CORE;
 const f = (v) => v.toFixed(2);
 

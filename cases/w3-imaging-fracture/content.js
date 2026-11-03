@@ -225,7 +225,7 @@ module.exports = function (K) {
 
   /* ---------------- 数据清单 ---------------- */
   return {
-    id:'w3-imaging-fracture',sceneId:'w3',title:'成像测井裂缝识别',summary:'几何搜索提出路径，再用已标注样本学习筛选；比较保留、误报与漏检',status:'ready',version:'1.1.0',updated:'2026-11-01',methods:['cv'],demoGlobal:'W3DEMO',
+    id:'w3-imaging-fracture',sceneId:'w3',title:'裂缝智能筛选的代价分析',summary:'学习分支未胜出的案例：误报减少、漏检增加，追查候选筛选的代价',status:'ready',version:'1.2.0',updated:'2026-11-03',methods:['cv'],demoGlobal:'W3DEMO',
     tabs:{
       background:{label:'专业背景',lede:'井壁展开图中的裂缝、层理和诱导条带可能相似。本例先按几何关系提出路径，再用其他图像中已标注的候选训练筛选器，给解释员一份可追查依据的裂缝候选。',judge:[
         {label:'任务类型',value:'候选检测与分类',desc:'Hough + 监督逻辑回归'},

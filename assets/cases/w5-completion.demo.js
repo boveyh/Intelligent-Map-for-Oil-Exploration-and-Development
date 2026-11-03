@@ -113,7 +113,7 @@
       lent.push(b.lent);
 
       var pv = p + b.vug;                       /* 密度读到的孔隙度 */
-      den.push((pv) * 1.0 + (1 - pv) * L.rma + gauss(rnd) * 0.014);
+      den.push((pv) * 1.0 + (1 - pv) * L.rma + gauss(rnd) * 0.014 * (o.noiseScale || 1) + (d >= (o.shiftStart == null ? 26 : o.shiftStart) && d < (o.shiftEnd == null ? 34 : o.shiftEnd) ? (o.denShift || 0) : 0));
       ac.push((p * 620 + (1 - p) * L.acma) * L.loose + gauss(rnd) * 5.5);
       gr.push(L.gr + gauss(rnd) * L.grs);
       cnl.push(L.cnl * 0.6 + p * 1.6 + gauss(rnd) * 0.012);
@@ -420,12 +420,19 @@
     };
   }
 
+  function trace(ref,gaps,nb,i,delta){
+    var mask=maskOf(gaps);if(!mask[i])return null;
+    var q=Object.assign({},ref,{gr:ref.gr.slice()});q.gr[i]+=delta||0;
+    var model=fillReg(ref,gaps).model,x=[1,(q.gr[i]-70)/30,(q.ac[i]-260)/60,(q.cnl[i]-.2)/.1],terms=x.map(function(v,j){return v*model.coef[j];}),prediction=predReg(model,q,i),linear=fillLinear(q,gaps),neighbor=fillNeighbor(q,gaps,nb);
+    return {version:'trace-v1',caseId:'w5-completion',index:i,label:(2400+ref.z[i]).toFixed(3)+' m',role:'本井可见段拟合；选中点 DEN 遮蔽检验（非跨井测试）',inputs:[['GR',q.gr[i],'API'],['AC',q.ac[i],'μs/m'],['CNL',q.cnl[i],'v/v']],steps:['截距','GR','AC','CNL'].map(function(n,j){return [n+'：x × β',x[j]+' × '+model.coef[j]+' = '+terms[j]];}).concat([['可见段残差标准差',model.sd],['邻井借值',neighbor.den[i]],['拟合段 n',mask.filter(function(v){return !v;}).length],['90% 残差区间半宽（未校准）',1.645*model.sd]]),prediction:{name:'多曲线回归 DEN',value:prediction,unit:'g/cm³'},baseline:{name:'同点两端线性插值',value:linear.den[i],unit:'g/cm³'},control:{name:'本点 GR 偏移',unit:'API',min:-60,max:60,step:3},note:'真值 DEN 不进入遮蔽点推理；模型只用可见段。区间为残差启发式，覆盖不保证 90%。此处解释固定 26 m 主剖面的回归分支；上方 RMSE 是多位置缺口扫描，样本集合不同。其他曲线方法可在上方切换。'};
+  }
+
   var API = {
     LITH: LITH, NL: NL, BEDS: BEDS, DZ: DZ, BOT: BOT, NS: NS, GAP0: GAP0, GRCUT: GRCUT,
     buildWell: buildWell, gapsFor: gapsFor, sandFrac: sandFrac, maskOf: maskOf,
     fillLinear: fillLinear, fillNeighbor: fillNeighbor, fillReg: fillReg, fillAuto: fillAuto,
     predReg: predReg, evalGaps: evalGaps, scan: scan, mnar: mnar, ng: ng, PU: PU,
-    AUTO_TH: AUTO_TH, fitReg: fitReg, fill: fill, diag: diag
+    AUTO_TH: AUTO_TH, fitReg: fitReg, fill: fill, diag: diag,trace:trace
   };
   if (typeof window !== 'undefined') { window.W5CORE = API; }
 
@@ -485,7 +492,7 @@
       root.appendChild(st);
     }
 
-    var state = { L: 2, mech: 'washout', mi: 'reg' };
+    var state = { L: 2, mech: 'washout', mi: 'reg' }, currentProfile,tracePoint=Math.round(GAP0/DZ);
     var cache = {};
     function getScan(mech) {
       if (!cache[mech]) cache[mech] = scan(mech);
@@ -504,7 +511,7 @@
 
     var ctl = el('div', 'w5-ctl');
     ctl.innerHTML =
-      '<div class="w5-c"><label>缺失长度 <b id="w5lL">2.0 m</b></label><input id="w5sL" type="range" min="5" max="80" step="5" value="20"></div>' +
+      '<div class="w5-c"><label for="w5sL">缺失长度 <b id="w5lL">2.0 m</b></label><input id="w5sL" type="range" min="5" max="80" step="5" value="20"></div>' +
       '<div class="w5-c"><label>缺失机制</label><div class="w5-btns">' +
       '<button class="w5-b on" data-m="random">随机</button><button class="w5-b" data-m="washout">扩径</button><button class="w5-b" data-m="casing">套管</button></div></div>' +
       '<div class="w5-c"><label>补全方法</label><div class="w5-btns">' +
@@ -530,7 +537,7 @@
       var n = Math.max(1, Math.round(L / DZ));
       var i0 = Math.round(GAP0 / DZ), i1 = i0 + n - 1;
       var gaps = [[i0, i1]];
-      var res = mi === 'reg' ? fillReg(ref, gaps) : mi === 'nb' ? fillNeighbor(ref, gaps, nb) : fillLinear(ref, gaps);
+      var res = fill(ref,gaps,nb,mi);currentProfile={ref:ref,nb:nb,gaps:gaps,res:res,L:L};tracePoint=clamp(tracePoint,i0,i1);
 
       var x0 = 62, x1 = W - 20, y0 = 22, y1 = H - 58;
       var DMIN = 2.20, DMAX = 2.76;
@@ -616,6 +623,7 @@
       g.fillText('岩性', 23, 12);
 
       /* 图例 */
+      g.strokeStyle='#315c48';g.lineWidth=1;g.setLineDash([3,3]);g.beginPath();g.moveTo(x0,Y(ref.z[tracePoint]));g.lineTo(x1,Y(ref.z[tracePoint]));g.stroke();g.setLineDash([]);g.fillStyle='#315c48';g.textAlign='left';g.fillText('单点 '+(2400+ref.z[tracePoint]).toFixed(3)+' m',x0+4,Y(ref.z[tracePoint])-5);
       g.font = '9.5px system-ui,sans-serif';
       g.textAlign = 'left';
       var lg = [['#5d666d', '实测'], [MW[mi], '补全'], ['#c9c2b0', '真实值']];
@@ -712,7 +720,7 @@
       var covNow = mi === 'reg' ? sc.cr[idx] : mi === 'nb' ? sc.cn[idx] : mi === 'auto' ? sc.ca[idx] : sc.cl[idx];
       var k = [
         [MN[mi] + ' RMSE', fmt(rmseNow) + '<small>p.u.</small>'],
-        ['区间覆盖率', Math.round(covNow * 100) + '<small>%（名义 90）</small>'],
+        ['区间覆盖率', Math.round(covNow * 100) + '<small>%（启发式）</small>'],
         ['缺失点砂岩占比', Math.round(m.gapSand * 100) + '<small>% 全井 ' + Math.round(m.allSand * 100) + '%</small>'],
         ['丢弃缺失点 N/G', (q.drop.ng * 100).toFixed(1) + '<small>% 真值 ' + (q.full.ng * 100).toFixed(1) + '%</small>']
       ];
@@ -798,6 +806,8 @@
     });
 
     render();
+    cv.addEventListener('click',function(e){var b=cv.getBoundingClientRect(),g=currentProfile.gaps[0],y=(e.clientY-b.top)/b.height*442;tracePoint=clamp(Math.round((y-22)/362*(NS-1)),g[0],g[1]);paintTrack(state.mech,currentProfile.L,state.mi);cv.dispatchEvent(new Event('tracechange',{bubbles:true}));});
+    return {trace:{read:function(d){return trace(currentProfile.ref,currentProfile.gaps,currentProfile.nb,tracePoint,d);},range:function(){var g=currentProfile.gaps[0];return {min:g[0],max:g[1],value:tracePoint};},select:function(i){tracePoint=i;paintTrack(state.mech,currentProfile.L,state.mi);},worst:function(){var p=currentProfile,g=p.gaps[0],r=fillReg(p.ref,p.gaps),best=g[0];for(var i=g[0];i<=g[1];i++)if(Math.abs(r.den[i]-p.ref.den[i])>Math.abs(r.den[best]-p.ref.den[best]))best=i;return best;}}};
   }
 
   if (typeof window !== 'undefined') {
@@ -807,7 +817,7 @@
 })();
 
 /* Generated portable explanation; algorithm source above remains unchanged. */
-(function(){var demo=(function install(win,name,info){
+(function(){var demo=(function install(win,name,info,installTrace,guideSteps){
   var original=win[name];
   function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/"/g,'&quot;');}
   function mount(root,api){
@@ -815,11 +825,66 @@
       '<section class="oil-demo-method" aria-label="智能方法与运行证据"><small>本次演示用什么、为什么起作用</small><h3>'+esc(info.name)+'</h3><div class="oil-demo-chain"><span>'+esc(info.input)+'</span><b aria-hidden="true">→</b><span>'+esc(info.operation)+'</span></div><div class="oil-demo-reasons"><div><h4>为什么可能有效</h4><p>'+esc(info.why)+'</p></div><div><h4>在这里怎样验证</h4><p>'+esc(info.try)+'</p></div></div><div class="oil-demo-live"><small>当前运行证据 · 随下方操作更新</small><p data-method-live></p></div></section><div data-method-body></div>';
     var body=root.querySelector('[data-method-body]'),live=root.querySelector('[data-method-live]');
     var mounted=original(body,api);
+    if(info.audit){
+      var audit=info.audit,box=root.ownerDocument.createElement('details');box.className='oil-demo-method';
+      box.innerHTML='<summary><b>生成器敏感性自审 · '+esc(audit.metric)+' · 全部设置</b></summary><p>'+esc(audit.limits)+'</p><div style="overflow:auto"><table style="width:100%;font-size:11px;text-align:left"><thead><tr><th>扰动 / 设置</th><th>基线</th><th>学习</th><th>附加对照</th></tr></thead><tbody>'+audit.series.map(function(s){return '<tr><td>'+esc(s.axis)+' / '+esc(s.value)+'</td><td>'+s.baseline.toFixed(3)+'</td><td>'+s.learn.toFixed(3)+'</td><td>'+esc(s.denOnly!=null?'DEN 回归 '+s.denOnly.toFixed(3):s.grOnly!=null?'GR KNN '+s.grOnly.toFixed(3):s.coverage!=null?'区间覆盖 '+s.coverage.toFixed(3):'—')+'</td></tr>';}).join('')+'</tbody></table></div>'+(audit.heldout?'<p>95% 配对 bootstrap：学习−基线 F1 差区间 ['+audit.heldout.pairedDifference.map(function(v){return v.toFixed(3);}).join(', ')+']。以井/图为单位，冻结训练集；不覆盖真实井分布的不确定性。</p>':'')+'<p>2026-11-03 · 合成条件自审，未做第三方物理校准；全部种子和逐样本见公开审计文件，包内仅嵌入汇总。</p>';
+      root.insertBefore(box,body);
+    }
+    var trace=installTrace(root,body,mounted,guideSteps||[]);
     function refresh(){var metric=body.querySelector(info.selector);live.textContent=metric?(metric.innerText||metric.textContent).replace(/\s+/g,' ').trim().slice(0,380):'操作下方控件，对照模型、基线与测试结果。';}
     refresh();
-    var observer=new MutationObserver(refresh);observer.observe(body,{childList:true,subtree:true,characterData:true});
-    return {unmount:function(){observer.disconnect();if(mounted&&typeof mounted.unmount==='function')mounted.unmount();}};
+    var observer=new MutationObserver(function(){refresh();trace.refresh();});observer.observe(body,{childList:true,subtree:true,characterData:true});
+    return {unmount:function(){observer.disconnect();trace.unmount();if(mounted&&typeof mounted.unmount==='function')mounted.unmount();}};
   }
   win[name]=mount;win.__CASE_MOUNT__=mount;
   return {mount:mount};
-})(window,"W5DEMO",{"name":"多元线性回归 · 缺失曲线重建","input":"当前井可见段的 GR、AC、CNL 与 DEN 配对样本","operation":"拟合 DEN 回归系数 → 用仍可观测曲线估计遮蔽段","why":"相关曲线仍携带岩性与孔隙信息，长缺失段可以借助这些信息重建，而线性插值只连接两端。关系变化时回归也会失配；补全值始终是估计。","try":"增加缺失长度，对照插值、邻井借值与多曲线回归的误差和区间覆盖，检查曲线平滑是否真代表准确。","selector":".w5-kpi"});if(typeof module!=="undefined")module.exports=demo;})();
+})(window,"W5DEMO",{"name":"多元线性回归 · 缺失曲线重建","input":"当前井可见段的 GR、AC、CNL 与 DEN 配对样本","operation":"拟合 DEN 回归系数 → 用仍可观测曲线估计遮蔽段","why":"相关曲线仍携带岩性与孔隙信息，长缺失段可以借助这些信息重建，而线性插值只连接两端。关系变化时回归也会失配；补全值始终是估计。","try":"增加缺失长度，对照插值、邻井借值与多曲线回归的误差和区间覆盖，检查曲线平滑是否真代表准确。","selector":".w5-kpi","audit":{"metric":"遮蔽 RMSE / p.u. ↓","limits":"主任务是本井可见段拟合和遮蔽段检验，不冒称未见井测试。另列邻井冻结回归诊断；各井共享固定 BEDS，不能作为未见地质层序证据。90% 残差带未校准，插值/邻井区间也只是启发式。","series":[{"axis":"noiseScale","value":1,"baseline":6.652294626669468,"learn":1.4985057114081501,"coverage":0.978125},{"axis":"noiseScale","value":2,"baseline":6.793727171461469,"learn":1.7324406575076563,"coverage":0.965625},{"axis":"noiseScale","value":4,"baseline":7.263164446940235,"learn":2.427666149799448,"coverage":0.94375},{"axis":"noiseScale","value":8,"baseline":8.782533265501794,"learn":4.147310771591433,"coverage":0.915625},{"axis":"denShift","value":0,"baseline":6.652294626669468,"learn":1.4985057114081501,"coverage":0.978125},{"axis":"denShift","value":0.04,"baseline":5.804556528529935,"learn":3.6790338112365006,"coverage":0.3},{"axis":"denShift","value":0.08,"baseline":5.313591011624712,"learn":6.026189589130476,"coverage":0.003125},{"axis":"denShift","value":0.16,"baseline":5.711528349729522,"learn":10.786287851363094,"coverage":0},{"axis":"gapLength","value":0.5,"baseline":0.4313772524730641,"learn":1.0375722853951646,"coverage":1},{"axis":"gapLength","value":2,"baseline":0.6197834668184765,"learn":1.10877270441301,"coverage":1},{"axis":"gapLength","value":4,"baseline":0.6489871254632362,"learn":1.3085203342827507,"coverage":0.98125},{"axis":"gapLength","value":8,"baseline":6.652294626669468,"learn":1.4985057114081501,"coverage":0.978125},{"axis":"mechanism","value":"random","baseline":11.789350923624365,"learn":2.214990301072896,"coverage":0.7625},{"axis":"mechanism","value":"washout","baseline":10.28259751646668,"learn":1.7768461273411382,"coverage":0.9322916666666666},{"axis":"mechanism","value":"casing","baseline":10.05079962334498,"learn":1.732629186821716,"coverage":0.9375}]}},function installTrace(root, body, mounted, guideSteps) {
+  if (!mounted || !mounted.trace) return {refresh:function(){},unmount:function(){}};
+  var api=mounted.trace, doc=root.ownerDocument, panel=doc.createElement('section');
+  panel.className='oil-trace';panel.setAttribute('aria-label','单点可追查证据');
+  panel.innerHTML='<style>.oil-trace,.oil-guide{font:12px/1.8 system-ui,sans-serif;color:#34433a;border:1px solid #d3dfd5;background:#fbfcf8;border-radius:9px;padding:14px;margin:16px 0;scroll-margin-top:190px}.oil-trace *,.oil-guide *{box-sizing:border-box}.oil-trace h3{font-size:16px;margin:0 0 5px}.oil-trace-controls{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin:10px 0}.oil-trace label{display:grid;gap:4px;min-width:150px;flex:1}.oil-trace input{width:100%;min-width:0;accent-color:#2f7d6b}.oil-trace button,.oil-guide button{padding:6px 10px;background:#fff;border:1px solid #a8bdb0;color:#235f51;border-radius:5px;cursor:pointer;font:inherit}.oil-trace-grid{display:grid;grid-template-columns:1fr 1.5fr;gap:14px}.oil-trace dl{margin:0}.oil-trace dl>div{display:grid;grid-template-columns:minmax(90px,1fr) minmax(0,2fr);border-bottom:1px solid #e4e8dc;padding:5px 0;gap:8px}.oil-trace dt,.oil-trace dd{margin:0;overflow-wrap:anywhere}.oil-trace-summary{padding:10px;background:#edf4ed;border-radius:5px}.oil-trace small{display:block;color:#607465}.oil-guide{display:flex;gap:10px;align-items:center;flex-wrap:wrap;background:#eff5ec}.oil-guide p{flex:1;min-width:160px;margin:0!important;font-size:12px!important}.oil-guide-target{outline:3px solid #b08850!important;outline-offset:5px;scroll-margin-top:110px}.oil-trace :focus-visible,.oil-guide :focus-visible{outline:3px solid #2f7d6b;outline-offset:3px}@media(max-width:650px){.oil-trace-grid{grid-template-columns:1fr}.oil-trace{padding:10px}.oil-trace-controls{display:grid;grid-template-columns:minmax(0,1fr)}.oil-trace label{min-width:0}}</style><h3>追查这一个判断</h3><small data-trace-role></small><div class="oil-trace-controls"><label>深度 / 候选点 <input type="range" data-trace-point aria-label="单点证据的深度或候选点"></label><label><span data-trace-control-label>输入试算</span><input type="range" value="0" data-trace-delta aria-label="单点输入偏移"></label><button type="button" data-trace-reset>恢复原输入</button><button type="button" data-trace-export>导出本点证据</button><button type="button" data-trace-worst>定位回归误差最大点</button></div><p class="oil-trace-summary" data-trace-summary tabindex="-1" role="status" aria-live="polite" aria-atomic="true"></p><div class="oil-trace-grid"><div><b>实际输入</b><dl data-trace-inputs></dl></div><div><b>真实中间量</b><dl data-trace-steps></dl></div></div><small data-trace-note></small>';
+  root.appendChild(panel);
+  var point=panel.querySelector('[data-trace-point]'),delta=panel.querySelector('[data-trace-delta]'),lastIndex=null;
+  function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/"/g,'&quot;');}
+  function fmt(v){return typeof v==='number'?Number(v.toFixed(5)):String(v).replace(/-?\d+\.\d{6,}/g,function(n){return Number(Number(n).toFixed(5));});}
+  function rows(values){return values.map(function(v){return '<div><dt>'+esc(v[0])+'</dt><dd>'+esc(fmt(v[1]))+(v[2]?' '+esc(v[2]):'')+'</dd></div>';}).join('');}
+  function refresh(){
+    var range=api.range();point.min=range.min;point.max=range.max;point.value=range.value;
+    if(range.value!==lastIndex){delta.value=0;lastIndex=range.value;}
+    var record=api.read(Number(delta.value)||0);
+    if(!record){panel.querySelector('[data-trace-summary]').textContent='当前没有可追查的候选；这是候选生成的失效边界。';return;}
+    var c=record.control;delta.min=c.min;delta.max=c.max;delta.step=c.step;
+    panel.querySelector('[data-trace-control-label]').textContent=c.name+' '+fmt(Number(delta.value))+' '+c.unit+'（单点试算）';
+    panel.querySelector('[data-trace-role]').textContent=record.role+' · trace-v1';
+    panel.querySelector('[data-trace-inputs]').innerHTML=rows(record.inputs);
+    panel.querySelector('[data-trace-steps]').innerHTML=rows(record.steps);
+    panel.querySelector('[data-trace-summary]').textContent=record.label+'：'+record.prediction.name+' '+fmt(record.prediction.value)+' '+record.prediction.unit+'；'+record.baseline.name+' '+fmt(record.baseline.value)+' '+record.baseline.unit;
+    panel.querySelector('[data-trace-note]').textContent=record.note;
+    // The exact structured record also supports external reproducibility checks.
+    record.trialDelta=Number(delta.value)||0;panel.traceRecord=record;
+  }
+  point.addEventListener('input',function(){api.select(Number(point.value));delta.value=0;refresh();});
+  delta.addEventListener('input',refresh);
+  panel.querySelector('[data-trace-reset]').addEventListener('click',function(){delta.value=0;refresh();});
+  panel.querySelector('[data-trace-export]').addEventListener('click',function(){if(!panel.traceRecord)return;var a=doc.createElement('a');a.href='data:application/json;charset=utf-8,'+encodeURIComponent(JSON.stringify(panel.traceRecord,null,2));a.download=panel.traceRecord.caseId+'-point-'+panel.traceRecord.index+'.json';a.click();});
+  var worst=panel.querySelector('[data-trace-worst]');worst.hidden=!api.worst;
+  worst.addEventListener('click',function(){api.select(api.worst());delta.value=0;refresh();panel.querySelector('[data-trace-summary]').focus();});
+  function onProfile(){refresh();panel.scrollIntoView({block:'center',behavior:'auto'});}
+  body.addEventListener('tracechange',onProfile);
+  var guide=doc.createElement('nav');guide.className='oil-guide';guide.setAttribute('aria-label','30—60 秒演示路径');
+  guide.innerHTML='<b>30—60 秒演示路径</b><p data-guide-text role="status" aria-live="polite">按三步检查输入、判断依据与传统对照。完成时间需在真人测试中记录。</p><button type="button" data-guide-next>开始引导</button><button type="button" data-guide-stop hidden>结束引导</button>';
+  root.insertBefore(guide,body);
+  var step=-1,target=null,originalTabIndex=null;
+  function clearTarget(){if(target){target.classList.remove('oil-guide-target');if(originalTabIndex===null)target.removeAttribute('tabindex');else target.setAttribute('tabindex',originalTabIndex);target=null;}}
+  function stop(){clearTarget();step=-1;guide.querySelector('[data-guide-next]').textContent='重新引导';guide.querySelector('[data-guide-stop]').hidden=true;}
+  guide.querySelector('[data-guide-stop]').addEventListener('click',stop);
+  guide.querySelector('[data-guide-next]').addEventListener('click',function(){
+    clearTarget();step++;
+    if(step>=guideSteps.length){stop();guide.querySelector('[data-guide-text]').textContent='请复述：用了什么输入？哪个中间量支持判断？传统方法在同一点输出什么？完成引导不等于测试通过。';return;}
+    var s=guideSteps[step];guide.querySelector('[data-guide-text]').textContent=(step+1)+'/'+guideSteps.length+' · '+s[1];
+    guide.querySelector('[data-guide-next]').textContent=step===guideSteps.length-1?'完成引导':'下一步';guide.querySelector('[data-guide-stop]').hidden=false;
+    target=root.querySelector(s[0]);if(target){originalTabIndex=target.getAttribute('tabindex');target.setAttribute('tabindex','0');target.classList.add('oil-guide-target');target.scrollIntoView({behavior:'auto',block:'center'});target.focus({preventScroll:true});}
+  });
+  refresh();
+  return {refresh:refresh,unmount:function(){clearTarget();body.removeEventListener('tracechange',onProfile);}};
+},[["#w5sL","拉长缺口，再比较回归、插值和邻井。"],["[data-trace-worst]","定位本剖面遮蔽区回归误差最大点，读输入及三项贡献。"],["[data-trace-delta]","只改本点 GR，说明补全为何变化；DEN 真值不能进入推理。"]]);if(typeof module!=="undefined")module.exports=demo;})();

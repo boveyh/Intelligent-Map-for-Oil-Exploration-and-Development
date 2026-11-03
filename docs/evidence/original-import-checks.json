@@ -1,0 +1,62 @@
+{
+  "date": "2026-11-03",
+  "rows": [
+    {
+      "id": "c1-cement",
+      "originalUploaderAccepted": true,
+      "methodPanelMounted": true,
+      "traceWorks": null
+    },
+    {
+      "id": "m1-cuttings",
+      "originalUploaderAccepted": true,
+      "methodPanelMounted": true,
+      "traceWorks": null
+    },
+    {
+      "id": "pr1-dynamometer",
+      "originalUploaderAccepted": true,
+      "methodPanelMounted": true,
+      "traceWorks": null
+    },
+    {
+      "id": "w1-boundary-learning",
+      "originalUploaderAccepted": true,
+      "methodPanelMounted": true,
+      "traceWorks": true
+    },
+    {
+      "id": "w2-reservoir-param",
+      "originalUploaderAccepted": true,
+      "methodPanelMounted": true,
+      "traceWorks": true
+    },
+    {
+      "id": "w3-imaging-fracture",
+      "originalUploaderAccepted": true,
+      "methodPanelMounted": true,
+      "traceWorks": true
+    },
+    {
+      "id": "w4-lithology",
+      "originalUploaderAccepted": true,
+      "methodPanelMounted": true,
+      "traceWorks": true
+    },
+    {
+      "id": "w5-completion",
+      "originalUploaderAccepted": true,
+      "methodPanelMounted": true,
+      "traceWorks": true
+    },
+    {
+      "id": "w5-normalization",
+      "originalUploaderAccepted": true,
+      "methodPanelMounted": true,
+      "traceWorks": null
+    }
+  ],
+  "restoredAfterReload": 9,
+  "errors": [],
+  "source": "unmodified course site served on independent origin"
+}

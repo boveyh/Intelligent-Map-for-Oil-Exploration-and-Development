@@ -1,6 +1,6 @@
 /* w3 参数探测：确认检测器真的工作，并给正文里的曲线提供实测数据 */
 global.window = {};
-require('D:/Intelligent-Map-for-Oil-Exploration-and-Development/cases/w3-imaging-fracture/demo/demo.js');
+require('../cases/w3-imaging-fracture/demo/demo.js');
 const W = global.window.W3CORE;
 
 function line(tag, r) {

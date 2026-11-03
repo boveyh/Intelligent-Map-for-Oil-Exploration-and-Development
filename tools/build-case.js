@@ -88,7 +88,7 @@ function pluginSource(def) {
     '    },\n' +
     '    unmount: function () { if (live && live.unmount) live.unmount(); live = null; }\n' +
     '  };\n' +
-    '  Cases.register(D);\n' +
+    '  var current=Cases.get(D.id); if(current && current.__lazyBuiltin && !current.imported){Object.assign(current,D);delete current.__lazyBuiltin;}else{Cases.register(D); }\n' +
     '})();\n';
 }
 
@@ -176,9 +176,10 @@ function patchIndex(ids) {
   html = html.replace(new RegExp('[ \\t]*' + B + '[\\s\\S]*?' + E + '\\n?', 'g'), '');
 
   const block = ids.length
-    ? [B, '<script src="assets/cases/welllog-layer.visual.js?v=20261102-release"></script>'].concat(ids.map((id) => '<script src="assets/cases/' + id + '.case.js?v=20261102-release"></script>\n' +
-      '<script src="assets/cases/' + id + '.demo.js?v=20261102-release"></script>'))
-      .concat([E, '']).join('\n')
+    ? [B, '<script src="assets/cases/welllog-layer.visual.js?v=20261103-evidence"></script>',
+       '<script src="assets/cases/catalog.js?v=20261103-evidence"></script>',
+       '<script src="assets/cases/w4-lithology.demo.js?v=20261103-evidence"></script>',
+       '<script src="assets/core/builtin-loader.js?v=20261103-evidence"></script>', E, ''].join('\n')
     : '';
 
   const marker = '<!-- ↑ 新案例加在这里';
@@ -225,6 +226,8 @@ function main() {
   const allPlugins = fs.readdirSync(path.join(SITE, 'assets/cases'))
     .filter((f) => f.endsWith('.case.js') && !f.startsWith('_') && f !== 'welllog-layer.case.js')
     .map((f) => f.replace(/\.case\.js$/, ''));
+  const catalog=allPlugins.sort().map(id=>{const d=loadContent(id);return {id:d.id,sceneId:d.sceneId,title:d.title,summary:d.summary,previewImage:d.previewImage,algorithmType:d.algorithmType,methods:d.methods,status:d.status,version:d.version,updated:d.updated,__lazyBuiltin:true,__builtinAssets:true,__demoGlobal:d.demoGlobal,tabs:{background:{judge:d.tabs.background.judge},workflow:{},demo:{}}};});
+  fs.writeFileSync(path.join(SITE,'assets/cases/catalog.js'),'/* Generated lightweight built-in catalog. */\n'+catalog.map(d=>'Cases.register('+JSON.stringify(d)+');').join('\n')+'\n');
   patchIndex(allPlugins.sort());
 
   console.log('\n产物：packages/ 与 assets/cases/，index.html 已更新（' + allPlugins.length + ' 个插件）');

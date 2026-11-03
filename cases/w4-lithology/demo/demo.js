@@ -126,9 +126,9 @@
   function feats(q, z) { return z ? [q.zgr, q.zden] : [(q.gr - 40) / 60, (q.den - 2.5) * 10]; }
 
   function explainKNN(train, q, z) {
-    var a = feats(q, z), best = [];
+    var a = z === 'gr' ? [(q.gr-40)/60,0] : feats(q, z), best = [];
     for (var i = 0; i < train.length; i++) {
-      var b = feats(train[i], z);
+      var b = z === 'gr' ? [(train[i].gr-40)/60,0] : feats(train[i], z);
       var d = (a[0] - b[0]) * (a[0] - b[0]) + (a[1] - b[1]) * (a[1] - b[1]);
       if (best.length < K) { best.push({ d: d, f: train[i].facies, index: i }); best.sort(function (x, y) { return x.d - y.d; }); }
       else if (d < best[K - 1].d) { best[K - 1] = { d: d, f: train[i].facies, index: i }; best.sort(function (x, y) { return x.d - y.d; }); }
@@ -250,12 +250,18 @@
     return { errors: errors, sandThickness: sand * 0.125, trueSandThickness: trueSand * 0.125 };
   }
 
+  function trace(r,i,delta,standard){
+    var q=Object.assign({},r.test[i]),well=r.wells[TESTW];q.gr+=delta||0;q.zgr=(q.gr-well.mg)/well.sg;
+    var e=explainKNN(r.train,q,standard!==false),raw=explainKNN(r.train,q,false);
+    return {version:'trace-v1',caseId:'w4-lithology',index:i,label:q.depth.toFixed(3)+' m',role:'未见井；井内无标签标准化使用整井曲线',inputs:[['GR',q.gr,'API'],['DEN',q.den,'g/cm³']],steps:[['实际距离输入',e.features.join(' / ')],['固定量纲缩放 KNN',FACIES[raw.prediction].name],['原距离最近邻',raw.neighbors[0].distance]].concat(e.neighbors.map(function(n,j){return ['近邻 '+(j+1)+'：井 '+n.sample.well+' / '+n.sample.depth+' m',FACIES[n.facies].name+'；d='+n.distance];})).concat(e.votes.map(function(v,j){return [FACIES[j].name+'票数',v];})),prediction:{name:(standard===false?'固定量纲缩放':'井内标准化')+' KNN',value:FACIES[e.prediction].name,unit:'（'+e.votes[e.prediction]+'/5票）'},baseline:{name:'同点 GR 分档',value:FACIES[predictGR(r.th,q)].name,unit:''},control:{name:'本点 GR 偏移',unit:'API',min:-60,max:60,step:3},note:'只扰动当前 GR，冻结训练集和本井均值/标准差。邻居与投票读取原 KNN 函数；投票份额不是正确概率。不同缩放坐标下的距离数值不能直接当准确性比较，应看邻居身份、票数和独立评价。'};
+  }
+
   var API = {
     FACIES: FACIES, NF: NF, NW: NW, K: K, TESTW: TESTW,
     buildWells: buildWells, grThresholds: grThresholds, predictGR: predictGR,
     predictKNN: predictKNN, explainKNN: explainKNN, predictBox: predictBox, boxModel: boxModel,
     GBINS: GBINS, DBINS: DBINS,
-    confusion: confusion, macroF1: macroF1, run: run, profileSummary: profileSummary
+    confusion: confusion, macroF1: macroF1, run: run, profileSummary: profileSummary,trace:trace
   };
   if (typeof window !== 'undefined') { window.W4CORE = API; }
 
@@ -615,6 +621,7 @@
     });
 
     render();
+    return {trace:{read:function(d){return trace(currentResult,state.sample,d,state.mi!==2);},range:function(){return {min:0,max:currentResult.test.length-1,value:state.sample};},select:function(i){state.sample=i;render(true);}}};
   }
 
   if (typeof window !== 'undefined') {

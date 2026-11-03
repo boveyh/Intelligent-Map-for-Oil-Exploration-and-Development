@@ -5,8 +5,8 @@
 
    它让读者亲手验证三件事：
      1. 密度公式 φ=(ρma-ρb)/(ρma-ρf) 在高泥质段为什么会崩；
-     2. 学习法相对公式法的收益有多大（RMSE 3.7 → 1.4 p.u.）；
-     3. 为什么"随机划分"的 R² 是自欺欺人 —— 近邻同井率 96% vs 0%。
+     2. 学习法相对公式法的收益有多大（默认整井留出 RMSE 3.74 → 1.54 p.u.）；
+     3. 为什么"随机划分"的 R² 是自欺欺人 —— 最近一个邻居同井率 54% vs 0%。
 
    挂载方式：
      插件模式  window.W2DEMO(root, ctx)
@@ -20,9 +20,8 @@
   /* ---------- 常量（与 tools/probe-w2.js 保持一致） ---------- */
   var SEED = 20261023, NW = 12, NPTS = 220, K = 5;
   var TESTW = [1, 6];          // 固定留出的两口井
-  /* 训练井按"相带互补性"贪心排序（离线算好，见 tools/probe-w2.js）：
-     第 1 口就选了与测试井最像的那口，所以滑杆拉到 1 时 R² 不会塌到 0。 */
-  var WELL_ORDER = [7, 4, 5, 8, 11, 0, 9, 10, 2, 3];
+  // Fixed well-ID order, chosen without looking at test wells or their labels.
+  var WELL_ORDER = [0, 2, 3, 4, 5, 7, 8, 9, 10, 11];
   var DEPTH0 = 2100, STEP = 0.5;
 
   var C = {
@@ -45,8 +44,9 @@
   /* ---------- 合成 12 口井 ----------
      每口井有各自的仪器刻度差（DEN / GR）与相带位置，
      这正是"跨井泛化"真正要面对的差异。 */
-  function buildWells() {
-    var rnd = mulberry32(SEED);
+  function buildWells(options) {
+    options = options || {};
+    var rnd = mulberry32(options.seed || SEED);
     function gauss() {
       var u = 0, v = 0;
       while (u === 0) u = rnd();
@@ -86,6 +86,13 @@
           });
         }
       }
+      if (TESTW.indexOf(w) >= 0) pts.forEach(function (q, j) {
+        q.den += (options.denShift || 0);
+        q.gr += (options.grShift || 0);
+        q.cnl += (options.cnlShift || 0);
+        if(options.noiseScale) { q.den += Math.sin(j*1.73+w)*options.noiseScale*.02; q.gr += Math.cos(j*2.17+w)*options.noiseScale*10; }
+        q.formula=clamp((2.65-q.den)/1.65,0,.45);
+      });
       wells.push({ id: w, pts: pts, biasDen: biasDen });
     }
     return wells;
@@ -114,44 +121,34 @@
     return { mu: mu, sd: sd };
   }
 
-  function knnPredict(train, test) {
-    var s = standardize(train), i, j;
-    var X = new Array(train.length);
-    for (i = 0; i < train.length; i++) {
-      var p = train[i];
-      X[i] = [
-        (p.den - s.mu[0]) / s.sd[0],
-        (p.gr - s.mu[1]) / s.sd[1],
-        (p.cnl - s.mu[2]) / s.sd[2]
-      ];
-    }
-    var out = new Array(test.length);
-    var sameWell = 0;
-    for (i = 0; i < test.length; i++) {
-      var q = test[i];
-      var qx = [
-        (q.den - s.mu[0]) / s.sd[0],
-        (q.gr - s.mu[1]) / s.sd[1],
-        (q.cnl - s.mu[2]) / s.sd[2]
-      ];
-      var best = [], bi = 0;
-      for (j = 0; j < X.length; j++) {
-        var dx = X[j][0] - qx[0], dy = X[j][1] - qx[1], dz = X[j][2] - qx[2];
-        var d = dx * dx + dy * dy + dz * dz;
-        if (best.length < K) {
-          best.push({ d: d, i: j });
-          if (best.length === K) best.sort(function (a, b) { return a.d - b.d; });
-        } else if (d < best[K - 1].d) {
-          best[K - 1] = { d: d, i: j };
-          best.sort(function (a, b) { return a.d - b.d; });
-        }
-      }
-      if (train[best[0].i].well === q.well) sameWell++;
-      var sum = 0;
-      for (var m = 0; m < best.length; m++) sum += train[best[m].i].phi;
-      out[i] = sum / best.length;
-    }
-    return { pred: out, sameWell: sameWell / test.length };
+  function fitKNN(train) {
+    var s=standardize(train);
+    return {train:train,mu:s.mu,sd:s.sd,X:train.map(function(p){return [p.den,p.gr,p.cnl].map(function(v,j){return (v-s.mu[j])/s.sd[j];});})};
+  }
+  function explainKNN(model,q) {
+    var x=[q.den,q.gr,q.cnl],z=x.map(function(v,j){return (v-model.mu[j])/model.sd[j];}),best=[];
+    model.X.forEach(function(a,i){
+      var terms=a.map(function(v,j){return (v-z[j])*(v-z[j]);}),d=terms.reduce(function(a,b){return a+b;},0);
+      if(best.length<K){best.push({d:d,i:i,terms:terms});best.sort(function(a,b){return a.d-b.d;});}
+      else if(d<best[K-1].d){best[K-1]={d:d,i:i,terms:terms};best.sort(function(a,b){return a.d-b.d;});}
+    });
+    var neighbors=best.map(function(n){return {sample:model.train[n.i],distance:Math.sqrt(n.d),terms:n.terms};});
+    return {x:x,z:z,neighbors:neighbors,prediction:neighbors.reduce(function(a,n){return a+n.sample.phi;},0)/neighbors.length};
+  }
+  function knnPredict(train,test) {
+    var model=fitKNN(train),same=0;
+    var pred=test.map(function(q){var e=explainKNN(model,q);if(e.neighbors[0].sample.well===q.well)same++;return e.prediction;});
+    return {pred:pred,sameWell:same/test.length,model:model};
+  }
+  function fitDen(train) {
+    var x=train.reduce(function(a,p){return a+p.den;},0)/train.length,y=train.reduce(function(a,p){return a+p.phi;},0)/train.length;
+    var cov=0,variance=0;train.forEach(function(p){cov+=(p.den-x)*(p.phi-y);variance+=(p.den-x)*(p.den-x);});
+    var slope=cov/(variance||1);return {intercept:y-slope*x,slope:slope};
+  }
+  function trace(ev,i,delta) {
+    var q=Object.assign({},ev.profileTruth[i]);q.den+=delta||0;
+    var e=explainKNN(ev.model,q),one=ev.denModel.intercept+ev.denModel.slope*q.den;
+    return {version:'trace-v1',caseId:'w2-reservoir-param',index:i,label:q.depth.toFixed(3)+' m · WELL-02',role:ev.split==='well'?'整井留出；训练不含本井':'随机划分：本井样点可能参与训练',inputs:[['DEN',q.den,'g/cm³'],['GR',q.gr,'API'],['CNL',q.cnl,'v/v']],steps:[['标准化 DEN/GR/CNL',e.z.join(' / ')]].concat(e.neighbors.map(function(n,j){return ['近邻 '+(j+1)+'：井 '+(n.sample.well+1)+' / '+n.sample.depth+' m','d='+n.distance+'；φ='+n.sample.phi+'；三项平方距离='+n.terms.join(' + ')];})).concat([['DEN 单曲线回归',one],['DEN 回归截距/斜率',ev.denModel.intercept+' / '+ev.denModel.slope]]),prediction:{name:'五近邻孔隙度均值',value:e.prediction*100,unit:'p.u.'},baseline:{name:'同点密度公式',value:clamp((2.65-q.den)/1.65,0,.45)*100,unit:'p.u.'},control:{name:'本点 DEN 偏移',unit:'g/cm³',min:-.15,max:.15,step:.01},note:'孔隙度仅由训练邻居标签取均值；当前点岩心标签仅事后评分。输入试算冻结训练统计量；不更新全井分数。'};
   }
 
   /* ---------- 指标 ---------- */
@@ -200,6 +197,7 @@
     var profile = knnPredict(train, wells[profileWell].pts);
 
     var res = knnPredict(train, test);
+    var denModel=fitDen(train),denPred=test.map(function(q){return denModel.intercept+denModel.slope*q.den;});
     var yt = [], yp = [], yf = [], vsh = [];
     for (i = 0; i < test.length; i++) {
       yt.push(test[i].phi);
@@ -235,7 +233,7 @@
     for (i = 0; i < test.length; i += stepS) scat.push([yt[i], yp[i]]);
 
     return {
-      n: test.length,
+      n: test.length, train: train, test: test, model: res.model, denModel: denModel, denRMSE: rmse(yt,denPred), denR2: r2(yt,denPred),
       r2: r2(yt, yp), rmse: rmse(yt, yp),
       r2f: r2(yt, yf), rmseF: rmse(yt, yf),
       sameWell: res.sameWell, bins: bins, scat: scat,
@@ -289,6 +287,7 @@
     s += '<polyline points="' + pth.join(' ') + '" fill="none" stroke="' + C.ink + '" stroke-width="1.1" stroke-opacity=".5"/>';
     s += '<polyline points="' + pml.join(' ') + '" fill="none" stroke="#ffffff" stroke-width="3.4" stroke-linejoin="round"/>';
     s += '<polyline points="' + pml.join(' ') + '" fill="none" stroke="' + C.jade + '" stroke-width="1.9" stroke-linejoin="round"/>';
+    if(ev.tracePoint!=null){var selected=ev.tracePoint;s+='<path d="M'+x0+' '+ty(selected)+'H'+x1+'" stroke="#315c48" stroke-dasharray="3 3"/><circle cx="'+tx(ev.profile[selected])+'" cy="'+ty(selected)+'" r="4" fill="#fff" stroke="#315c48" stroke-width="2"/><text x="'+x0+'" y="'+(ty(selected)-7)+'" font-size="10">单点 '+pts[selected].depth.toFixed(1)+' m</text>';}
 
     /* 图例 */
     s += '<line x1="96" y1="14" x2="120" y2="14" stroke="' + C.ink + '" stroke-width="1.2" stroke-opacity=".6"/>';
@@ -401,19 +400,19 @@
   /* ---------- 挂载 ---------- */
   function mount(root) {
     var wells = buildWells();
-    var state = { n: 10, split: 'well' };
+    var state = { n: 10, split: 'well' }, currentResult, tracePoint=0;
 
     root.innerHTML =
       '<div class="w2">' +
       '<style>' + CSS + '</style>' +
       '<div class="w2-head"><div>' +
       '<div class="w2-kick">INTERACTIVE · 储层参数解释</div>' +
-      '<h3 class="w2-h3">同一段曲线，为什么公式法会崩、学习法不会</h3>' +
+      '<h3 class="w2-h3">同一口留出井：多曲线能否改善孔隙度解释？</h3>' +
       '<p class="w2-sub">拖动滑杆改变建模用井数，切换划分方式，看 R²、误差分布和"近邻同井率"怎么变。</p>' +
       '</div></div>' +
 
       '<div class="w2-ctl">' +
-      '<div><label>建模井数</label><input id="w2n" type="range" min="1" max="10" step="1" value="10">' +
+      '<div><label for="w2n">建模井数</label><input id="w2n" type="range" min="1" max="10" step="1" value="10">' +
       '<span class="w2-num" id="w2nv">10 口</span></div>' +
       '<div><label>训练/测试划分</label><div class="w2-seg" id="w2seg">' +
       '<button data-s="well" class="on">按井划分</button><button data-s="random">随机划分</button></div></div>' +
@@ -421,7 +420,7 @@
       '</div>' +
 
       '<div class="w2-grid">' +
-      '<div class="w2-panel"><div class="w2-pt"><span>剖面 · WELL-01</span><span>φ 0—0.36</span></div><div id="w2prof"></div></div>' +
+      '<div class="w2-panel"><div class="w2-pt"><span>剖面 · WELL-02（留出井）</span><span>φ 0—0.36</span></div><div id="w2prof"></div></div>' +
       '<div>' +
       '<div class="w2-kpi" id="w2kpi"></div>' +
       '<div class="w2-panel" style="margin-bottom:12px"><div class="w2-pt"><span>预测 vs 真实</span><span id="w2scn"></span></div><div id="w2scat"></div></div>' +
@@ -434,7 +433,7 @@
     var $ = function (id) { return root.querySelector('#' + id); };
 
     function render() {
-      var ev = evaluate(wells, state.n, state.split);
+      var ev = evaluate(wells, state.n, state.split);currentResult=ev;
 
       $('w2prof').innerHTML = drawProfile(ev);
       $('w2scat').innerHTML = drawScatter(ev);
@@ -449,20 +448,8 @@
 
       var note = $('w2note');
       var clean = ev.bins[0];
-      if (state.split === 'random') {
-        note.className = 'w2-note warn';
-        note.innerHTML = '<b>随机划分在抄答案。</b>测试点最近的 ' + K + ' 个训练点里，有 ' + pct(ev.sameWell) +
-          ' 来自同一口井、同一深度附近。所以 R² 看着漂亮（' + ev.r2.toFixed(3) +
-          '），但它证明的是"模型记住了这口井"，不是"模型学会了物理"。换成按井划分，同井率归零，R² 才是能对外交付的数。';
-      } else {
-        note.className = 'w2-note';
-        note.innerHTML = '<b>按井划分是唯一诚实的口径。</b>测试井完全没参与训练，近邻同井率为 ' + pct(ev.sameWell) +
-          '。此时 R² = ' + ev.r2.toFixed(3) + '、RMSE = ' + p10(ev.rmse) + ' p.u.，密度公式是 ' + p10(ev.rmseF) +
-          ' p.u.。但差距<b>不是均匀分布的</b>：干净砂岩段（Vsh&lt;0.15）公式只差 ' + p10(clean ? clean.fm : 0) +
-          ' p.u.，一到泥质段就拉开到 ' + p10(ev.bins[3] ? ev.bins[3].fm : 0) + ' p.u. —— 公式法不是"错"，是<b>只在它的假设成立的地方对</b>。' +
-          '把建模井数从 10 口拖到 1 口，R² 只从 0.92 掉到 0.81；5 口以后基本持平，个别井还会因为刻度差带来轻微回退。这 10 口井是按相带互补性挑的，<b>选井比堆井重要</b>；' +
-          '真实项目里你不知道哪口最像，所以才要按井交叉验证来估这个上界。';
-      }
+      note.className='w2-note'+(state.split==='random'?' warn':'');
+      note.innerHTML='<b>'+(state.split==='random'?'随机点划分：不证明跨井泛化。':'整井留出：训练排除 WELL-02 和 WELL-07。')+'</b> 最近的一个训练邻居来自同井的测试点比例 '+pct(ev.sameWell)+'。同一测试集：多曲线 KNN RMSE '+p10(ev.rmse)+' p.u. / R² '+ev.r2.toFixed(3)+'；DEN 单曲线回归 '+p10(ev.denRMSE)+' p.u. / R² '+ev.denR2.toFixed(3)+'；密度公式 '+p10(ev.rmseF)+' p.u.。训练井按固定井号递增加入，没有按测试相似性选井。差值只支持当前合成条件，不是额外曲线的因果证明。';
     }
 
     $('w2n').addEventListener('input', function () {
@@ -484,17 +471,19 @@
     });
 
     render();
+    $('w2prof').addEventListener('click',function(e){var bounds=this.getBoundingClientRect(),y=(e.clientY-bounds.top)/bounds.height*472;tracePoint=clamp(Math.round((y-54)/342*(NPTS-1)),0,NPTS-1);currentResult.tracePoint=tracePoint;this.innerHTML=drawProfile(currentResult);this.dispatchEvent(new Event('tracechange',{bubbles:true}));});
+    return {trace:{read:function(d){return trace(currentResult,tracePoint,d);},range:function(){return {min:0,max:NPTS-1,value:tracePoint};},select:function(i){tracePoint=i;currentResult.tracePoint=i;$('w2prof').innerHTML=drawProfile(currentResult);},worst:function(){var ev=currentResult,best=0;ev.profile.forEach(function(v,i){if(Math.abs(v-ev.profileTruth[i].phi)>Math.abs(ev.profile[best]-ev.profileTruth[best].phi))best=i;});return best;}}};
   }
 
   window.W2DEMO = mount;
   window.__CASE_MOUNT__ = mount;
   /* 调试出口：Node 侧可直接拿到数据与图，用于自测指标与 SVG 结构 */
-  window.__W2TEST__ = { buildWells: buildWells, evaluate: evaluate, draw: { profile: drawProfile, scatter: drawScatter, bins: drawBins } };
+  window.__W2TEST__ = { buildWells: buildWells, evaluate: evaluate, fitKNN:fitKNN, explainKNN:explainKNN, fitDen:fitDen, trace:trace, r2:r2, rmse:rmse, TESTW:TESTW, WELL_ORDER:WELL_ORDER, draw: { profile: drawProfile, scatter: drawScatter, bins: drawBins } };
 
 })();
 
 /* Generated portable explanation; algorithm source above remains unchanged. */
-(function(){var demo=(function install(win,name,info){
+(function(){var demo=(function install(win,name,info,installTrace,guideSteps){
   var original=win[name];
   function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/"/g,'&quot;');}
   function mount(root,api){
@@ -502,11 +491,66 @@
       '<section class="oil-demo-method" aria-label="智能方法与运行证据"><small>本次演示用什么、为什么起作用</small><h3>'+esc(info.name)+'</h3><div class="oil-demo-chain"><span>'+esc(info.input)+'</span><b aria-hidden="true">→</b><span>'+esc(info.operation)+'</span></div><div class="oil-demo-reasons"><div><h4>为什么可能有效</h4><p>'+esc(info.why)+'</p></div><div><h4>在这里怎样验证</h4><p>'+esc(info.try)+'</p></div></div><div class="oil-demo-live"><small>当前运行证据 · 随下方操作更新</small><p data-method-live></p></div></section><div data-method-body></div>';
     var body=root.querySelector('[data-method-body]'),live=root.querySelector('[data-method-live]');
     var mounted=original(body,api);
+    if(info.audit){
+      var audit=info.audit,box=root.ownerDocument.createElement('details');box.className='oil-demo-method';
+      box.innerHTML='<summary><b>生成器敏感性自审 · '+esc(audit.metric)+' · 全部设置</b></summary><p>'+esc(audit.limits)+'</p><div style="overflow:auto"><table style="width:100%;font-size:11px;text-align:left"><thead><tr><th>扰动 / 设置</th><th>基线</th><th>学习</th><th>附加对照</th></tr></thead><tbody>'+audit.series.map(function(s){return '<tr><td>'+esc(s.axis)+' / '+esc(s.value)+'</td><td>'+s.baseline.toFixed(3)+'</td><td>'+s.learn.toFixed(3)+'</td><td>'+esc(s.denOnly!=null?'DEN 回归 '+s.denOnly.toFixed(3):s.grOnly!=null?'GR KNN '+s.grOnly.toFixed(3):s.coverage!=null?'区间覆盖 '+s.coverage.toFixed(3):'—')+'</td></tr>';}).join('')+'</tbody></table></div>'+(audit.heldout?'<p>95% 配对 bootstrap：学习−基线 F1 差区间 ['+audit.heldout.pairedDifference.map(function(v){return v.toFixed(3);}).join(', ')+']。以井/图为单位，冻结训练集；不覆盖真实井分布的不确定性。</p>':'')+'<p>2026-11-03 · 合成条件自审，未做第三方物理校准；全部种子和逐样本见公开审计文件，包内仅嵌入汇总。</p>';
+      root.insertBefore(box,body);
+    }
+    var trace=installTrace(root,body,mounted,guideSteps||[]);
     function refresh(){var metric=body.querySelector(info.selector);live.textContent=metric?(metric.innerText||metric.textContent).replace(/\s+/g,' ').trim().slice(0,380):'操作下方控件，对照模型、基线与测试结果。';}
     refresh();
-    var observer=new MutationObserver(refresh);observer.observe(body,{childList:true,subtree:true,characterData:true});
-    return {unmount:function(){observer.disconnect();if(mounted&&typeof mounted.unmount==='function')mounted.unmount();}};
+    var observer=new MutationObserver(function(){refresh();trace.refresh();});observer.observe(body,{childList:true,subtree:true,characterData:true});
+    return {unmount:function(){observer.disconnect();trace.unmount();if(mounted&&typeof mounted.unmount==='function')mounted.unmount();}};
   }
   win[name]=mount;win.__CASE_MOUNT__=mount;
   return {mount:mount};
-})(window,"W2DEMO",{"name":"KNN 五近邻回归 · 孔隙度预测","input":"训练井 DEN、GR、CNL＋岩心孔隙度标签","operation":"按训练统计量标准化 → 找五个近邻 → 取其孔隙度均值","why":"密度公式采用固定骨架假设；多曲线相似样本还包含泥质等响应信息。相似曲线组合的已知孔隙度提供局部参考，但刻度漂移、样本覆盖不足仍会降低效果。","try":"比较学习法与密度公式在泥质段的误差；切换按井/随机划分，观察同井近邻造成的评价偏差。","selector":".w2-kpi"});if(typeof module!=="undefined")module.exports=demo;})();
+})(window,"W2DEMO",{"name":"KNN 五近邻回归 · 孔隙度预测","input":"训练井 DEN、GR、CNL＋岩心孔隙度标签","operation":"按训练统计量标准化 → 找五个近邻 → 取其孔隙度均值","why":"密度公式采用固定骨架假设；多曲线相似样本还包含泥质等响应信息。相似曲线组合的已知孔隙度提供局部参考。但本轮审计中，DEN 单曲线回归优于多曲线 KNN；更多输入和更复杂方法不自动带来收益。刻度漂移、样本覆盖不足仍会降低效果。","try":"比较学习法与密度公式在泥质段的误差；切换按井/随机划分，观察同井近邻造成的评价偏差。","selector":".w2-kpi","audit":{"metric":"RMSE / p.u. ↓","limits":"DEN 公式采用固定砂岩骨架，DEN 单变量回归由同一训练集拟合且在基准上优于多曲线 KNN；不能只与经验公式比。输入/方法对照是生成器条件结果，不是因果证明。训练顺序改为固定井号。","series":[{"axis":"denShift","value":0,"baseline":4.202658072030184,"learn":2.6233537683158588,"denOnly":1.4317415926711485},{"axis":"denShift","value":0.03,"baseline":5.8164804514674,"learn":2.815861358261079,"denOnly":1.8494453316924921},{"axis":"denShift","value":0.07,"baseline":7.99890725849762,"learn":3.797368142174224,"denOnly":3.423926792162391},{"axis":"denShift","value":0.12,"baseline":10.618736248656116,"learn":5.315918774907545,"denOnly":5.701641303907388},{"axis":"cnlShift","value":0,"baseline":4.202658072030184,"learn":2.6233537683158588,"denOnly":1.4317415926711485},{"axis":"cnlShift","value":0.04,"baseline":4.202658072030184,"learn":2.5448782238277814,"denOnly":1.4317415926711485},{"axis":"cnlShift","value":0.08,"baseline":4.202658072030184,"learn":2.884852623885255,"denOnly":1.4317415926711485},{"axis":"cnlShift","value":0.16,"baseline":4.202658072030184,"learn":3.8813455875630556,"denOnly":1.4317415926711485},{"axis":"noiseScale","value":0,"baseline":4.202658072030184,"learn":2.6233537683158588,"denOnly":1.4317415926711485},{"axis":"noiseScale","value":1,"baseline":4.2887548352813365,"learn":2.7341486111103905,"denOnly":1.588982237458524},{"axis":"noiseScale","value":2,"baseline":4.525084005302272,"learn":2.9785492865850047,"denOnly":1.9810195106178108},{"axis":"noiseScale","value":4,"baseline":5.349230537100369,"learn":3.7558708192699295,"denOnly":3.0817795777074237}]}},function installTrace(root, body, mounted, guideSteps) {
+  if (!mounted || !mounted.trace) return {refresh:function(){},unmount:function(){}};
+  var api=mounted.trace, doc=root.ownerDocument, panel=doc.createElement('section');
+  panel.className='oil-trace';panel.setAttribute('aria-label','单点可追查证据');
+  panel.innerHTML='<style>.oil-trace,.oil-guide{font:12px/1.8 system-ui,sans-serif;color:#34433a;border:1px solid #d3dfd5;background:#fbfcf8;border-radius:9px;padding:14px;margin:16px 0;scroll-margin-top:190px}.oil-trace *,.oil-guide *{box-sizing:border-box}.oil-trace h3{font-size:16px;margin:0 0 5px}.oil-trace-controls{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin:10px 0}.oil-trace label{display:grid;gap:4px;min-width:150px;flex:1}.oil-trace input{width:100%;min-width:0;accent-color:#2f7d6b}.oil-trace button,.oil-guide button{padding:6px 10px;background:#fff;border:1px solid #a8bdb0;color:#235f51;border-radius:5px;cursor:pointer;font:inherit}.oil-trace-grid{display:grid;grid-template-columns:1fr 1.5fr;gap:14px}.oil-trace dl{margin:0}.oil-trace dl>div{display:grid;grid-template-columns:minmax(90px,1fr) minmax(0,2fr);border-bottom:1px solid #e4e8dc;padding:5px 0;gap:8px}.oil-trace dt,.oil-trace dd{margin:0;overflow-wrap:anywhere}.oil-trace-summary{padding:10px;background:#edf4ed;border-radius:5px}.oil-trace small{display:block;color:#607465}.oil-guide{display:flex;gap:10px;align-items:center;flex-wrap:wrap;background:#eff5ec}.oil-guide p{flex:1;min-width:160px;margin:0!important;font-size:12px!important}.oil-guide-target{outline:3px solid #b08850!important;outline-offset:5px;scroll-margin-top:110px}.oil-trace :focus-visible,.oil-guide :focus-visible{outline:3px solid #2f7d6b;outline-offset:3px}@media(max-width:650px){.oil-trace-grid{grid-template-columns:1fr}.oil-trace{padding:10px}.oil-trace-controls{display:grid;grid-template-columns:minmax(0,1fr)}.oil-trace label{min-width:0}}</style><h3>追查这一个判断</h3><small data-trace-role></small><div class="oil-trace-controls"><label>深度 / 候选点 <input type="range" data-trace-point aria-label="单点证据的深度或候选点"></label><label><span data-trace-control-label>输入试算</span><input type="range" value="0" data-trace-delta aria-label="单点输入偏移"></label><button type="button" data-trace-reset>恢复原输入</button><button type="button" data-trace-export>导出本点证据</button><button type="button" data-trace-worst>定位回归误差最大点</button></div><p class="oil-trace-summary" data-trace-summary tabindex="-1" role="status" aria-live="polite" aria-atomic="true"></p><div class="oil-trace-grid"><div><b>实际输入</b><dl data-trace-inputs></dl></div><div><b>真实中间量</b><dl data-trace-steps></dl></div></div><small data-trace-note></small>';
+  root.appendChild(panel);
+  var point=panel.querySelector('[data-trace-point]'),delta=panel.querySelector('[data-trace-delta]'),lastIndex=null;
+  function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/"/g,'&quot;');}
+  function fmt(v){return typeof v==='number'?Number(v.toFixed(5)):String(v).replace(/-?\d+\.\d{6,}/g,function(n){return Number(Number(n).toFixed(5));});}
+  function rows(values){return values.map(function(v){return '<div><dt>'+esc(v[0])+'</dt><dd>'+esc(fmt(v[1]))+(v[2]?' '+esc(v[2]):'')+'</dd></div>';}).join('');}
+  function refresh(){
+    var range=api.range();point.min=range.min;point.max=range.max;point.value=range.value;
+    if(range.value!==lastIndex){delta.value=0;lastIndex=range.value;}
+    var record=api.read(Number(delta.value)||0);
+    if(!record){panel.querySelector('[data-trace-summary]').textContent='当前没有可追查的候选；这是候选生成的失效边界。';return;}
+    var c=record.control;delta.min=c.min;delta.max=c.max;delta.step=c.step;
+    panel.querySelector('[data-trace-control-label]').textContent=c.name+' '+fmt(Number(delta.value))+' '+c.unit+'（单点试算）';
+    panel.querySelector('[data-trace-role]').textContent=record.role+' · trace-v1';
+    panel.querySelector('[data-trace-inputs]').innerHTML=rows(record.inputs);
+    panel.querySelector('[data-trace-steps]').innerHTML=rows(record.steps);
+    panel.querySelector('[data-trace-summary]').textContent=record.label+'：'+record.prediction.name+' '+fmt(record.prediction.value)+' '+record.prediction.unit+'；'+record.baseline.name+' '+fmt(record.baseline.value)+' '+record.baseline.unit;
+    panel.querySelector('[data-trace-note]').textContent=record.note;
+    // The exact structured record also supports external reproducibility checks.
+    record.trialDelta=Number(delta.value)||0;panel.traceRecord=record;
+  }
+  point.addEventListener('input',function(){api.select(Number(point.value));delta.value=0;refresh();});
+  delta.addEventListener('input',refresh);
+  panel.querySelector('[data-trace-reset]').addEventListener('click',function(){delta.value=0;refresh();});
+  panel.querySelector('[data-trace-export]').addEventListener('click',function(){if(!panel.traceRecord)return;var a=doc.createElement('a');a.href='data:application/json;charset=utf-8,'+encodeURIComponent(JSON.stringify(panel.traceRecord,null,2));a.download=panel.traceRecord.caseId+'-point-'+panel.traceRecord.index+'.json';a.click();});
+  var worst=panel.querySelector('[data-trace-worst]');worst.hidden=!api.worst;
+  worst.addEventListener('click',function(){api.select(api.worst());delta.value=0;refresh();panel.querySelector('[data-trace-summary]').focus();});
+  function onProfile(){refresh();panel.scrollIntoView({block:'center',behavior:'auto'});}
+  body.addEventListener('tracechange',onProfile);
+  var guide=doc.createElement('nav');guide.className='oil-guide';guide.setAttribute('aria-label','30—60 秒演示路径');
+  guide.innerHTML='<b>30—60 秒演示路径</b><p data-guide-text role="status" aria-live="polite">按三步检查输入、判断依据与传统对照。完成时间需在真人测试中记录。</p><button type="button" data-guide-next>开始引导</button><button type="button" data-guide-stop hidden>结束引导</button>';
+  root.insertBefore(guide,body);
+  var step=-1,target=null,originalTabIndex=null;
+  function clearTarget(){if(target){target.classList.remove('oil-guide-target');if(originalTabIndex===null)target.removeAttribute('tabindex');else target.setAttribute('tabindex',originalTabIndex);target=null;}}
+  function stop(){clearTarget();step=-1;guide.querySelector('[data-guide-next]').textContent='重新引导';guide.querySelector('[data-guide-stop]').hidden=true;}
+  guide.querySelector('[data-guide-stop]').addEventListener('click',stop);
+  guide.querySelector('[data-guide-next]').addEventListener('click',function(){
+    clearTarget();step++;
+    if(step>=guideSteps.length){stop();guide.querySelector('[data-guide-text]').textContent='请复述：用了什么输入？哪个中间量支持判断？传统方法在同一点输出什么？完成引导不等于测试通过。';return;}
+    var s=guideSteps[step];guide.querySelector('[data-guide-text]').textContent=(step+1)+'/'+guideSteps.length+' · '+s[1];
+    guide.querySelector('[data-guide-next]').textContent=step===guideSteps.length-1?'完成引导':'下一步';guide.querySelector('[data-guide-stop]').hidden=false;
+    target=root.querySelector(s[0]);if(target){originalTabIndex=target.getAttribute('tabindex');target.setAttribute('tabindex','0');target.classList.add('oil-guide-target');target.scrollIntoView({behavior:'auto',block:'center'});target.focus({preventScroll:true});}
+  });
+  refresh();
+  return {refresh:refresh,unmount:function(){clearTarget();body.removeEventListener('tracechange',onProfile);}};
+},[["#w2n","确认整井留出，改变训练井数量。"],["[data-trace-worst]","定位本剖面回归误差最大点，查看五个邻居。"],["[data-trace-delta]","改本点 DEN，解释距离与孔隙度均值的变化，并对照公式。"]]);if(typeof module!=="undefined")module.exports=demo;})();

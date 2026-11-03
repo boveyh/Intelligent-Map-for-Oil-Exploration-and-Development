@@ -1,7 +1,7 @@
 /* w3 成像裂缝识别：产出正文里引用的全部指标，可复算
    用法：node tools/test-w3.js */
 global.window = {};
-require('D:/Intelligent-Map-for-Oil-Exploration-and-Development/cases/w3-imaging-fracture/demo/demo.js');
+require('../cases/w3-imaging-fracture/demo/demo.js');
 const W = global.window.W3CORE;
 
 function rnd(a, b, s) {

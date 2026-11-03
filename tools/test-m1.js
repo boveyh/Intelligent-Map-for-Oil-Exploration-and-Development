@@ -1,6 +1,6 @@
 /* m1 岩屑识别：产出正文引用的全部指标，可复算 */
 global.window = {};
-require('D:/Intelligent-Map-for-Oil-Exploration-and-Development/cases/m1-cuttings/demo/demo.js');
+require('../cases/m1-cuttings/demo/demo.js');
 const M = global.window.M1CORE;
 const pct = (v) => (v * 100).toFixed(1) + '%';
 

@@ -1,0 +1,17 @@
+{
+  "date": "2026-11-03",
+  "rows": [
+    {
+      "test": "lazy script failure and retry / w2 profile click",
+      "passed": true
+    },
+    {
+      "test": "w5 non-tabulated gap length / stable trace mask / profile click",
+      "passed": true
+    },
+    {
+      "test": "original firstbreak ZIP slider changes actual SVG",
+      "passed": true
+    }
+  ]
+}

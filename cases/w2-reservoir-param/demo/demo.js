@@ -5,8 +5,8 @@
 
    它让读者亲手验证三件事：
      1. 密度公式 φ=(ρma-ρb)/(ρma-ρf) 在高泥质段为什么会崩；
-     2. 学习法相对公式法的收益有多大（RMSE 3.7 → 1.4 p.u.）；
-     3. 为什么"随机划分"的 R² 是自欺欺人 —— 近邻同井率 96% vs 0%。
+     2. 学习法相对公式法的收益有多大（默认整井留出 RMSE 3.74 → 1.54 p.u.）；
+     3. 为什么"随机划分"的 R² 是自欺欺人 —— 最近一个邻居同井率 54% vs 0%。
 
    挂载方式：
      插件模式  window.W2DEMO(root, ctx)
@@ -20,9 +20,8 @@
   /* ---------- 常量（与 tools/probe-w2.js 保持一致） ---------- */
   var SEED = 20261023, NW = 12, NPTS = 220, K = 5;
   var TESTW = [1, 6];          // 固定留出的两口井
-  /* 训练井按"相带互补性"贪心排序（离线算好，见 tools/probe-w2.js）：
-     第 1 口就选了与测试井最像的那口，所以滑杆拉到 1 时 R² 不会塌到 0。 */
-  var WELL_ORDER = [7, 4, 5, 8, 11, 0, 9, 10, 2, 3];
+  // Fixed well-ID order, chosen without looking at test wells or their labels.
+  var WELL_ORDER = [0, 2, 3, 4, 5, 7, 8, 9, 10, 11];
   var DEPTH0 = 2100, STEP = 0.5;
 
   var C = {
@@ -45,8 +44,9 @@
   /* ---------- 合成 12 口井 ----------
      每口井有各自的仪器刻度差（DEN / GR）与相带位置，
      这正是"跨井泛化"真正要面对的差异。 */
-  function buildWells() {
-    var rnd = mulberry32(SEED);
+  function buildWells(options) {
+    options = options || {};
+    var rnd = mulberry32(options.seed || SEED);
     function gauss() {
       var u = 0, v = 0;
       while (u === 0) u = rnd();
@@ -86,6 +86,13 @@
           });
         }
       }
+      if (TESTW.indexOf(w) >= 0) pts.forEach(function (q, j) {
+        q.den += (options.denShift || 0);
+        q.gr += (options.grShift || 0);
+        q.cnl += (options.cnlShift || 0);
+        if(options.noiseScale) { q.den += Math.sin(j*1.73+w)*options.noiseScale*.02; q.gr += Math.cos(j*2.17+w)*options.noiseScale*10; }
+        q.formula=clamp((2.65-q.den)/1.65,0,.45);
+      });
       wells.push({ id: w, pts: pts, biasDen: biasDen });
     }
     return wells;
@@ -114,44 +121,34 @@
     return { mu: mu, sd: sd };
   }
 
-  function knnPredict(train, test) {
-    var s = standardize(train), i, j;
-    var X = new Array(train.length);
-    for (i = 0; i < train.length; i++) {
-      var p = train[i];
-      X[i] = [
-        (p.den - s.mu[0]) / s.sd[0],
-        (p.gr - s.mu[1]) / s.sd[1],
-        (p.cnl - s.mu[2]) / s.sd[2]
-      ];
-    }
-    var out = new Array(test.length);
-    var sameWell = 0;
-    for (i = 0; i < test.length; i++) {
-      var q = test[i];
-      var qx = [
-        (q.den - s.mu[0]) / s.sd[0],
-        (q.gr - s.mu[1]) / s.sd[1],
-        (q.cnl - s.mu[2]) / s.sd[2]
-      ];
-      var best = [], bi = 0;
-      for (j = 0; j < X.length; j++) {
-        var dx = X[j][0] - qx[0], dy = X[j][1] - qx[1], dz = X[j][2] - qx[2];
-        var d = dx * dx + dy * dy + dz * dz;
-        if (best.length < K) {
-          best.push({ d: d, i: j });
-          if (best.length === K) best.sort(function (a, b) { return a.d - b.d; });
-        } else if (d < best[K - 1].d) {
-          best[K - 1] = { d: d, i: j };
-          best.sort(function (a, b) { return a.d - b.d; });
-        }
-      }
-      if (train[best[0].i].well === q.well) sameWell++;
-      var sum = 0;
-      for (var m = 0; m < best.length; m++) sum += train[best[m].i].phi;
-      out[i] = sum / best.length;
-    }
-    return { pred: out, sameWell: sameWell / test.length };
+  function fitKNN(train) {
+    var s=standardize(train);
+    return {train:train,mu:s.mu,sd:s.sd,X:train.map(function(p){return [p.den,p.gr,p.cnl].map(function(v,j){return (v-s.mu[j])/s.sd[j];});})};
+  }
+  function explainKNN(model,q) {
+    var x=[q.den,q.gr,q.cnl],z=x.map(function(v,j){return (v-model.mu[j])/model.sd[j];}),best=[];
+    model.X.forEach(function(a,i){
+      var terms=a.map(function(v,j){return (v-z[j])*(v-z[j]);}),d=terms.reduce(function(a,b){return a+b;},0);
+      if(best.length<K){best.push({d:d,i:i,terms:terms});best.sort(function(a,b){return a.d-b.d;});}
+      else if(d<best[K-1].d){best[K-1]={d:d,i:i,terms:terms};best.sort(function(a,b){return a.d-b.d;});}
+    });
+    var neighbors=best.map(function(n){return {sample:model.train[n.i],distance:Math.sqrt(n.d),terms:n.terms};});
+    return {x:x,z:z,neighbors:neighbors,prediction:neighbors.reduce(function(a,n){return a+n.sample.phi;},0)/neighbors.length};
+  }
+  function knnPredict(train,test) {
+    var model=fitKNN(train),same=0;
+    var pred=test.map(function(q){var e=explainKNN(model,q);if(e.neighbors[0].sample.well===q.well)same++;return e.prediction;});
+    return {pred:pred,sameWell:same/test.length,model:model};
+  }
+  function fitDen(train) {
+    var x=train.reduce(function(a,p){return a+p.den;},0)/train.length,y=train.reduce(function(a,p){return a+p.phi;},0)/train.length;
+    var cov=0,variance=0;train.forEach(function(p){cov+=(p.den-x)*(p.phi-y);variance+=(p.den-x)*(p.den-x);});
+    var slope=cov/(variance||1);return {intercept:y-slope*x,slope:slope};
+  }
+  function trace(ev,i,delta) {
+    var q=Object.assign({},ev.profileTruth[i]);q.den+=delta||0;
+    var e=explainKNN(ev.model,q),one=ev.denModel.intercept+ev.denModel.slope*q.den;
+    return {version:'trace-v1',caseId:'w2-reservoir-param',index:i,label:q.depth.toFixed(3)+' m · WELL-02',role:ev.split==='well'?'整井留出；训练不含本井':'随机划分：本井样点可能参与训练',inputs:[['DEN',q.den,'g/cm³'],['GR',q.gr,'API'],['CNL',q.cnl,'v/v']],steps:[['标准化 DEN/GR/CNL',e.z.join(' / ')]].concat(e.neighbors.map(function(n,j){return ['近邻 '+(j+1)+'：井 '+(n.sample.well+1)+' / '+n.sample.depth+' m','d='+n.distance+'；φ='+n.sample.phi+'；三项平方距离='+n.terms.join(' + ')];})).concat([['DEN 单曲线回归',one],['DEN 回归截距/斜率',ev.denModel.intercept+' / '+ev.denModel.slope]]),prediction:{name:'五近邻孔隙度均值',value:e.prediction*100,unit:'p.u.'},baseline:{name:'同点密度公式',value:clamp((2.65-q.den)/1.65,0,.45)*100,unit:'p.u.'},control:{name:'本点 DEN 偏移',unit:'g/cm³',min:-.15,max:.15,step:.01},note:'孔隙度仅由训练邻居标签取均值；当前点岩心标签仅事后评分。输入试算冻结训练统计量；不更新全井分数。'};
   }
 
   /* ---------- 指标 ---------- */
@@ -200,6 +197,7 @@
     var profile = knnPredict(train, wells[profileWell].pts);
 
     var res = knnPredict(train, test);
+    var denModel=fitDen(train),denPred=test.map(function(q){return denModel.intercept+denModel.slope*q.den;});
     var yt = [], yp = [], yf = [], vsh = [];
     for (i = 0; i < test.length; i++) {
       yt.push(test[i].phi);
@@ -235,7 +233,7 @@
     for (i = 0; i < test.length; i += stepS) scat.push([yt[i], yp[i]]);
 
     return {
-      n: test.length,
+      n: test.length, train: train, test: test, model: res.model, denModel: denModel, denRMSE: rmse(yt,denPred), denR2: r2(yt,denPred),
       r2: r2(yt, yp), rmse: rmse(yt, yp),
       r2f: r2(yt, yf), rmseF: rmse(yt, yf),
       sameWell: res.sameWell, bins: bins, scat: scat,
@@ -289,6 +287,7 @@
     s += '<polyline points="' + pth.join(' ') + '" fill="none" stroke="' + C.ink + '" stroke-width="1.1" stroke-opacity=".5"/>';
     s += '<polyline points="' + pml.join(' ') + '" fill="none" stroke="#ffffff" stroke-width="3.4" stroke-linejoin="round"/>';
     s += '<polyline points="' + pml.join(' ') + '" fill="none" stroke="' + C.jade + '" stroke-width="1.9" stroke-linejoin="round"/>';
+    if(ev.tracePoint!=null){var selected=ev.tracePoint;s+='<path d="M'+x0+' '+ty(selected)+'H'+x1+'" stroke="#315c48" stroke-dasharray="3 3"/><circle cx="'+tx(ev.profile[selected])+'" cy="'+ty(selected)+'" r="4" fill="#fff" stroke="#315c48" stroke-width="2"/><text x="'+x0+'" y="'+(ty(selected)-7)+'" font-size="10">单点 '+pts[selected].depth.toFixed(1)+' m</text>';}
 
     /* 图例 */
     s += '<line x1="96" y1="14" x2="120" y2="14" stroke="' + C.ink + '" stroke-width="1.2" stroke-opacity=".6"/>';
@@ -401,19 +400,19 @@
   /* ---------- 挂载 ---------- */
   function mount(root) {
     var wells = buildWells();
-    var state = { n: 10, split: 'well' };
+    var state = { n: 10, split: 'well' }, currentResult, tracePoint=0;
 
     root.innerHTML =
       '<div class="w2">' +
       '<style>' + CSS + '</style>' +
       '<div class="w2-head"><div>' +
       '<div class="w2-kick">INTERACTIVE · 储层参数解释</div>' +
-      '<h3 class="w2-h3">同一段曲线，为什么公式法会崩、学习法不会</h3>' +
+      '<h3 class="w2-h3">同一口留出井：多曲线能否改善孔隙度解释？</h3>' +
       '<p class="w2-sub">拖动滑杆改变建模用井数，切换划分方式，看 R²、误差分布和"近邻同井率"怎么变。</p>' +
       '</div></div>' +
 
       '<div class="w2-ctl">' +
-      '<div><label>建模井数</label><input id="w2n" type="range" min="1" max="10" step="1" value="10">' +
+      '<div><label for="w2n">建模井数</label><input id="w2n" type="range" min="1" max="10" step="1" value="10">' +
       '<span class="w2-num" id="w2nv">10 口</span></div>' +
       '<div><label>训练/测试划分</label><div class="w2-seg" id="w2seg">' +
       '<button data-s="well" class="on">按井划分</button><button data-s="random">随机划分</button></div></div>' +
@@ -421,7 +420,7 @@
       '</div>' +
 
       '<div class="w2-grid">' +
-      '<div class="w2-panel"><div class="w2-pt"><span>剖面 · WELL-01</span><span>φ 0—0.36</span></div><div id="w2prof"></div></div>' +
+      '<div class="w2-panel"><div class="w2-pt"><span>剖面 · WELL-02（留出井）</span><span>φ 0—0.36</span></div><div id="w2prof"></div></div>' +
       '<div>' +
       '<div class="w2-kpi" id="w2kpi"></div>' +
       '<div class="w2-panel" style="margin-bottom:12px"><div class="w2-pt"><span>预测 vs 真实</span><span id="w2scn"></span></div><div id="w2scat"></div></div>' +
@@ -434,7 +433,7 @@
     var $ = function (id) { return root.querySelector('#' + id); };
 
     function render() {
-      var ev = evaluate(wells, state.n, state.split);
+      var ev = evaluate(wells, state.n, state.split);currentResult=ev;
 
       $('w2prof').innerHTML = drawProfile(ev);
       $('w2scat').innerHTML = drawScatter(ev);
@@ -449,20 +448,8 @@
 
       var note = $('w2note');
       var clean = ev.bins[0];
-      if (state.split === 'random') {
-        note.className = 'w2-note warn';
-        note.innerHTML = '<b>随机划分在抄答案。</b>测试点最近的 ' + K + ' 个训练点里，有 ' + pct(ev.sameWell) +
-          ' 来自同一口井、同一深度附近。所以 R² 看着漂亮（' + ev.r2.toFixed(3) +
-          '），但它证明的是"模型记住了这口井"，不是"模型学会了物理"。换成按井划分，同井率归零，R² 才是能对外交付的数。';
-      } else {
-        note.className = 'w2-note';
-        note.innerHTML = '<b>按井划分是唯一诚实的口径。</b>测试井完全没参与训练，近邻同井率为 ' + pct(ev.sameWell) +
-          '。此时 R² = ' + ev.r2.toFixed(3) + '、RMSE = ' + p10(ev.rmse) + ' p.u.，密度公式是 ' + p10(ev.rmseF) +
-          ' p.u.。但差距<b>不是均匀分布的</b>：干净砂岩段（Vsh&lt;0.15）公式只差 ' + p10(clean ? clean.fm : 0) +
-          ' p.u.，一到泥质段就拉开到 ' + p10(ev.bins[3] ? ev.bins[3].fm : 0) + ' p.u. —— 公式法不是"错"，是<b>只在它的假设成立的地方对</b>。' +
-          '把建模井数从 10 口拖到 1 口，R² 只从 0.92 掉到 0.81；5 口以后基本持平，个别井还会因为刻度差带来轻微回退。这 10 口井是按相带互补性挑的，<b>选井比堆井重要</b>；' +
-          '真实项目里你不知道哪口最像，所以才要按井交叉验证来估这个上界。';
-      }
+      note.className='w2-note'+(state.split==='random'?' warn':'');
+      note.innerHTML='<b>'+(state.split==='random'?'随机点划分：不证明跨井泛化。':'整井留出：训练排除 WELL-02 和 WELL-07。')+'</b> 最近的一个训练邻居来自同井的测试点比例 '+pct(ev.sameWell)+'。同一测试集：多曲线 KNN RMSE '+p10(ev.rmse)+' p.u. / R² '+ev.r2.toFixed(3)+'；DEN 单曲线回归 '+p10(ev.denRMSE)+' p.u. / R² '+ev.denR2.toFixed(3)+'；密度公式 '+p10(ev.rmseF)+' p.u.。训练井按固定井号递增加入，没有按测试相似性选井。差值只支持当前合成条件，不是额外曲线的因果证明。';
     }
 
     $('w2n').addEventListener('input', function () {
@@ -484,11 +471,13 @@
     });
 
     render();
+    $('w2prof').addEventListener('click',function(e){var bounds=this.getBoundingClientRect(),y=(e.clientY-bounds.top)/bounds.height*472;tracePoint=clamp(Math.round((y-54)/342*(NPTS-1)),0,NPTS-1);currentResult.tracePoint=tracePoint;this.innerHTML=drawProfile(currentResult);this.dispatchEvent(new Event('tracechange',{bubbles:true}));});
+    return {trace:{read:function(d){return trace(currentResult,tracePoint,d);},range:function(){return {min:0,max:NPTS-1,value:tracePoint};},select:function(i){tracePoint=i;currentResult.tracePoint=i;$('w2prof').innerHTML=drawProfile(currentResult);},worst:function(){var ev=currentResult,best=0;ev.profile.forEach(function(v,i){if(Math.abs(v-ev.profileTruth[i].phi)>Math.abs(ev.profile[best]-ev.profileTruth[best].phi))best=i;});return best;}}};
   }
 
   window.W2DEMO = mount;
   window.__CASE_MOUNT__ = mount;
   /* 调试出口：Node 侧可直接拿到数据与图，用于自测指标与 SVG 结构 */
-  window.__W2TEST__ = { buildWells: buildWells, evaluate: evaluate, draw: { profile: drawProfile, scatter: drawScatter, bins: drawBins } };
+  window.__W2TEST__ = { buildWells: buildWells, evaluate: evaluate, fitKNN:fitKNN, explainKNN:explainKNN, fitDen:fitDen, trace:trace, r2:r2, rmse:rmse, TESTW:TESTW, WELL_ORDER:WELL_ORDER, draw: { profile: drawProfile, scatter: drawScatter, bins: drawBins } };
 
 })();

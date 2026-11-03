@@ -1,6 +1,6 @@
 /* m1 岩屑识别：补充探针 —— 混淆矩阵 / 分置信度准确率 / 类别可分性 */
 global.window = {};
-require('D:/Intelligent-Map-for-Oil-Exploration-and-Development/cases/m1-cuttings/demo/demo.js');
+require('../cases/m1-cuttings/demo/demo.js');
 const M = global.window.M1CORE;
 const pct = (v) => (v * 100).toFixed(1) + '%';
 

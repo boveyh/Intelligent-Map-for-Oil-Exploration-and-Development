@@ -175,5 +175,5 @@
     },
     unmount: function () { if (live && live.unmount) live.unmount(); live = null; }
   };
-  Cases.register(D);
+  var current=Cases.get(D.id); if(current && current.__lazyBuiltin && !current.imported){Object.assign(current,D);delete current.__lazyBuiltin;}else{Cases.register(D); }
 })();
