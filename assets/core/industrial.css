@@ -96,6 +96,27 @@ button,a,input,select,textarea{-webkit-tap-highlight-color:transparent}
 .home-sample summary::marker{font-size:10px;color:var(--jade)}
 .home-sample[open] summary{color:var(--jade-d)}
 .home-extensions{background:#eef2f4;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+/* Quiet geological context below the hero. One static asset, confined to the margins. */
+.home-page :is(.home-main,.home-extensions,.home-directory){
+  --contour-edge:clamp(48px,calc((100vw - var(--maxw))/2 + 70px),360px);
+  position:relative;isolation:isolate;background-color:var(--paper);
+}
+.home-page .home-extensions{background-color:#eaf0f2}
+.home-page :is(.home-main,.home-extensions,.home-directory)::before,
+.home-page :is(.home-main,.home-extensions,.home-directory)::after{
+  content:'';position:absolute;top:0;bottom:0;left:0;width:var(--contour-edge);
+  z-index:-1;pointer-events:none;
+  background-image:url('../models/geological-contours.svg');
+  background-repeat:repeat-y;background-size:640px 760px;background-position:-28px 35px;
+  opacity:.25;
+  mask-image:linear-gradient(90deg,#000,transparent);
+  -webkit-mask-image:linear-gradient(90deg,#000,transparent);
+}
+.home-page :is(.home-main,.home-extensions,.home-directory)::after{
+  left:auto;right:0;transform:scaleX(-1);background-position:-15px 230px;
+}
+.home-page .home-extensions::before{background-position:-28px 160px}
+.home-page .home-directory::before,.home-page .home-directory::after{opacity:.18}
 .home-directory-row{grid-template-columns:150px minmax(0,1fr);padding:23px 0;border-top-color:var(--line)}
 .home-directory-row h3{color:var(--ink-2);font-weight:600}
 .home-directory-row a{border-radius:4px;min-height:36px;padding:8px 12px;transition:border-color .18s,background .18s}
@@ -207,6 +228,9 @@ button,a,input,select,textarea{-webkit-tap-highlight-color:transparent}
   .nav a.on::after{bottom:0;height:2px}
   .nav-add{padding:7px 10px;font-size:11px;min-height:34px}
   .home-page .hero{padding:32px 0 38px}
+  .home-page :is(.home-main,.home-extensions,.home-directory){--contour-edge:56px}
+  .home-page :is(.home-main,.home-extensions,.home-directory)::before,
+  .home-page :is(.home-main,.home-extensions,.home-directory)::after{opacity:.18}
   .home-page .hero-grid{grid-template-columns:minmax(0,1fr);gap:30px}
   .home-page .hero::before{background-image:linear-gradient(180deg,rgb(245 248 249 / .96) 0%,rgb(245 248 249 / .86) 40%,rgb(245 248 249 / .32) 72%,#f5f8f9 100%),url('../models/home-strata-background.webp');background-size:cover,auto 100%;background-position:center,62% center}
   .home-page .hero h1{font-size:36px;line-height:1.25;margin-top:16px;margin-bottom:20px}
