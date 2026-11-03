@@ -1,0 +1,26 @@
+[
+  {
+    "width": 1440,
+    "button": {
+      "w": 36,
+      "h": 15.296875,
+      "label": "播放演示",
+      "background": "rgb(255, 255, 255)",
+      "color": "rgb(121, 130, 138)",
+      "fontSize": "9px"
+    },
+    "overflow": false
+  },
+  {
+    "width": 375,
+    "button": {
+      "w": 36,
+      "h": 15.296875,
+      "label": "播放演示",
+      "background": "rgb(255, 255, 255)",
+      "color": "rgb(121, 130, 138)",
+      "fontSize": "9px"
+    },
+    "overflow": false
+  }
+]

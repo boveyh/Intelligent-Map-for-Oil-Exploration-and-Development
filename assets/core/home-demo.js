@@ -5,10 +5,11 @@
   function html() {
     return '<aside class="home-case" aria-label="岩性识别精选案例">' +
       '<div class="home-case-head"><div><span>精选案例 · 测井 × KNN</span><h2>岩性识别 · 从曲线到岩性柱</h2></div><a href="#/scene/w4?case=w4-lithology&tab=demo" aria-label="打开岩性识别完整演示">↗</a></div>' +
+      '<div class="home-case-transport"><button type="button" data-home-pause aria-pressed="true" aria-controls="home-case-viz">播放岩性判断过程</button></div>' +
       '<div class="home-case-choices" role="group" aria-label="首页岩性方法"><button type="button" data-home-method="raw" aria-pressed="false">原始曲线</button><button type="button" data-home-method="standard" aria-pressed="true">井内标准化</button><button type="button" data-home-point>换个井段</button></div>' +
       '<div class="home-case-playback"><i aria-hidden="true"></i><span data-home-step>01 读取当前井段</span><span data-home-mode>待播放 · 首次静止</span></div>' +
       '<div class="home-case-viz" id="home-case-viz"></div><p class="home-case-result" id="home-case-result" aria-live="off"></p>' +
-      '<div class="home-case-foot"><span>合成样点 · 实际近邻投票</span><button type="button" data-home-pause aria-pressed="true">播放演示</button><a href="#/scene/w4?case=w4-lithology&tab=demo">进入完整对照 →</a></div></aside>';
+      '<div class="home-case-foot"><span>合成样点 · 实际近邻投票</span><a href="#/scene/w4?case=w4-lithology&tab=demo">进入完整对照 →</a></div></aside>';
   }
   function mount(root) {
     if (!root || !global.W4CORE) return;
@@ -27,7 +28,7 @@
     }
     function syncMotion() {
       root.classList.toggle('paused',paused||document.hidden||!visible);
-      pauseButton.textContent=paused?'播放演示':'暂停演示';
+      pauseButton.textContent=paused?'播放岩性判断过程':'暂停演示过程';
       pauseButton.setAttribute('aria-pressed',String(paused));
       root.querySelector('[data-home-mode]').textContent=paused?'已暂停 · 可手动切换':'自动演示 · 15 秒一段';
       root.querySelector('#home-case-result').setAttribute('aria-live',paused?'polite':'off');

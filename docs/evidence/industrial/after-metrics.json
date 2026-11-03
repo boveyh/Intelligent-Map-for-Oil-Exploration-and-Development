@@ -1,0 +1,26 @@
+[
+  {
+    "width": 1440,
+    "button": {
+      "w": 368,
+      "h": 48,
+      "label": "播放岩性判断过程",
+      "background": "rgb(23, 109, 102)",
+      "color": "rgb(255, 255, 255)",
+      "fontSize": "14px"
+    },
+    "overflow": false
+  },
+  {
+    "width": 375,
+    "button": {
+      "w": 305,
+      "h": 48,
+      "label": "播放岩性判断过程",
+      "background": "rgb(23, 109, 102)",
+      "color": "rgb(255, 255, 255)",
+      "fontSize": "14px"
+    },
+    "overflow": false
+  }
+]

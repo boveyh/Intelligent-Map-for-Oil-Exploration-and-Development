@@ -1,0 +1,272 @@
+{
+  "date": "2026-11-03",
+  "base": "http://127.0.0.1:8014/",
+  "rows": [
+    {
+      "width": 1440,
+      "name": "home",
+      "overflow": false,
+      "clipped": [],
+      "brokenImages": 0,
+      "playButton": {
+        "width": 368,
+        "height": 48,
+        "fontSize": 14,
+        "contrast": 6.147992356022653
+      },
+      "keyboardPlayback": true,
+      "actualPhase": true,
+      "manualDepth": true,
+      "originalImportAndZIP": true
+    },
+    {
+      "width": 1440,
+      "name": "cases",
+      "overflow": false,
+      "clipped": [],
+      "brokenImages": 0
+    },
+    {
+      "width": 1440,
+      "name": "stage",
+      "overflow": false,
+      "clipped": [],
+      "brokenImages": 0
+    },
+    {
+      "width": 1440,
+      "name": "w4-bg",
+      "overflow": false,
+      "clipped": [],
+      "brokenImages": 0
+    },
+    {
+      "width": 1440,
+      "name": "w4-flow",
+      "overflow": false,
+      "clipped": [],
+      "brokenImages": 0
+    },
+    {
+      "width": 1440,
+      "name": "w4-demo",
+      "overflow": false,
+      "clipped": [],
+      "brokenImages": 0
+    },
+    {
+      "width": 1440,
+      "name": "d2-demo",
+      "overflow": false,
+      "clipped": [],
+      "brokenImages": 0
+    },
+    {
+      "width": 1440,
+      "name": "guide",
+      "overflow": false,
+      "clipped": [],
+      "brokenImages": 0
+    },
+    {
+      "width": 1024,
+      "name": "home",
+      "overflow": false,
+      "clipped": [],
+      "brokenImages": 0,
+      "playButton": {
+        "width": 333,
+        "height": 48,
+        "fontSize": 14,
+        "contrast": 6.147992356022653
+      },
+      "keyboardPlayback": true,
+      "actualPhase": true,
+      "manualDepth": true,
+      "originalImportAndZIP": true
+    },
+    {
+      "width": 1024,
+      "name": "cases",
+      "overflow": false,
+      "clipped": [],
+      "brokenImages": 0
+    },
+    {
+      "width": 1024,
+      "name": "stage",
+      "overflow": false,
+      "clipped": [],
+      "brokenImages": 0
+    },
+    {
+      "width": 1024,
+      "name": "w4-bg",
+      "overflow": false,
+      "clipped": [],
+      "brokenImages": 0
+    },
+    {
+      "width": 1024,
+      "name": "w4-flow",
+      "overflow": false,
+      "clipped": [],
+      "brokenImages": 0
+    },
+    {
+      "width": 1024,
+      "name": "w4-demo",
+      "overflow": false,
+      "clipped": [],
+      "brokenImages": 0
+    },
+    {
+      "width": 1024,
+      "name": "d2-demo",
+      "overflow": false,
+      "clipped": [],
+      "brokenImages": 0
+    },
+    {
+      "width": 1024,
+      "name": "guide",
+      "overflow": false,
+      "clipped": [],
+      "brokenImages": 0
+    },
+    {
+      "width": 768,
+      "name": "home",
+      "overflow": false,
+      "clipped": [],
+      "brokenImages": 0,
+      "playButton": {
+        "width": 304,
+        "height": 48,
+        "fontSize": 14,
+        "contrast": 6.147992356022653
+      },
+      "keyboardPlayback": true,
+      "actualPhase": true,
+      "manualDepth": true,
+      "originalImportAndZIP": true
+    },
+    {
+      "width": 768,
+      "name": "cases",
+      "overflow": false,
+      "clipped": [],
+      "brokenImages": 0
+    },
+    {
+      "width": 768,
+      "name": "stage",
+      "overflow": false,
+      "clipped": [],
+      "brokenImages": 0
+    },
+    {
+      "width": 768,
+      "name": "w4-bg",
+      "overflow": false,
+      "clipped": [],
+      "brokenImages": 0
+    },
+    {
+      "width": 768,
+      "name": "w4-flow",
+      "overflow": false,
+      "clipped": [],
+      "brokenImages": 0
+    },
+    {
+      "width": 768,
+      "name": "w4-demo",
+      "overflow": false,
+      "clipped": [],
+      "brokenImages": 0
+    },
+    {
+      "width": 768,
+      "name": "d2-demo",
+      "overflow": false,
+      "clipped": [],
+      "brokenImages": 0
+    },
+    {
+      "width": 768,
+      "name": "guide",
+      "overflow": false,
+      "clipped": [],
+      "brokenImages": 0
+    },
+    {
+      "width": 375,
+      "name": "home",
+      "overflow": false,
+      "clipped": [],
+      "brokenImages": 0,
+      "playButton": {
+        "width": 305,
+        "height": 48,
+        "fontSize": 14,
+        "contrast": 6.147992356022653
+      },
+      "keyboardPlayback": true,
+      "actualPhase": true,
+      "manualDepth": true,
+      "originalImportAndZIP": true
+    },
+    {
+      "width": 375,
+      "name": "cases",
+      "overflow": false,
+      "clipped": [],
+      "brokenImages": 0
+    },
+    {
+      "width": 375,
+      "name": "stage",
+      "overflow": false,
+      "clipped": [],
+      "brokenImages": 0
+    },
+    {
+      "width": 375,
+      "name": "w4-bg",
+      "overflow": false,
+      "clipped": [],
+      "brokenImages": 0
+    },
+    {
+      "width": 375,
+      "name": "w4-flow",
+      "overflow": false,
+      "clipped": [],
+      "brokenImages": 0
+    },
+    {
+      "width": 375,
+      "name": "w4-demo",
+      "overflow": false,
+      "clipped": [],
+      "brokenImages": 0
+    },
+    {
+      "width": 375,
+      "name": "d2-demo",
+      "overflow": false,
+      "clipped": [],
+      "brokenImages": 0
+    },
+    {
+      "width": 375,
+      "name": "guide",
+      "overflow": false,
+      "clipped": [],
+      "brokenImages": 0
+    }
+  ],
+  "errors": [],
+  "scope": "Presentation and native keyboard checks; no changes to case logic."
+}
