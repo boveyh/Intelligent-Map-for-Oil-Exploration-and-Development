@@ -22,14 +22,15 @@ const original=process.env.OIL_ORIGINAL_URL||'http://127.0.0.1:8015/';
    await page.locator('.oil-demo-method').first().waitFor();
    const trace=page.locator('.oil-trace');let traceWorks=null;
    if(await trace.count()){
-    const a=await trace.evaluate(el=>el.traceRecord);await trace.locator('[data-trace-delta]').focus();await page.keyboard.press('ArrowRight');
+    assert.strictEqual(await trace.locator('[data-trace-delta]').inputValue(),'0','Initial counterfactual must be zero');
+    const a=await trace.evaluate(el=>el.traceRecord);await trace.locator('[data-trace-delta]').focus();await page.keyboard.press('ArrowLeft');
     const b=await trace.evaluate(el=>el.traceRecord);assert.notDeepStrictEqual(a.inputs,b.inputs);traceWorks=true;
    }
    rows.push({id,originalUploaderAccepted:true,methodPanelMounted:true,traceWorks});console.log('Imported into original',id);
   }
   assert(!errors.length,errors.join(';'));await page.reload({waitUntil:'networkidle'});
-  const restored=await page.evaluate(()=>Cases.list().filter(c=>c.imported).length);assert.strictEqual(restored,9);
+  const restored=await page.evaluate(()=>Cases.list().filter(c=>c.imported).length);assert.strictEqual(restored,fs.readdirSync('packages').length);
   const out='shots/review-2026-11-03';fs.mkdirSync(out,{recursive:true});fs.writeFileSync(path.join(out,'original-import-checks.json'),JSON.stringify({date:'2026-11-03',rows,restoredAfterReload:restored,errors,source:'unmodified course site served on independent origin'},null,2));
-  console.log('PASS: nine original uploads, five live traces, reload restores nine imports');
+  console.log('PASS: all original uploads accepted; live traces and reload persistence');
  }finally{await browser.close();}
 })().catch(e=>{console.error(e);process.exitCode=1;});

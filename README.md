@@ -5,7 +5,7 @@
 
 2026-11-03：新增五主例单点可追查、分步引导、生成器敏感性自审与案例懒加载。用户决定不开展真人测试，教学效果未验证。公开审计见 [查看器](docs/evidence.html) / [完整报告](docs/evidence/generator-audit.md)，真人测试方案见 [PROTOCOL](docs/teaching-test/PROTOCOL.md)。
 
-当前：9 个自制案例 + 1 个框架样例；测井有 5 个主要学习案例、1 个标准化配套案例与原框架样例。13 个环节、61 个原场景，w6/w7 已淘汰。首页按测井任务组织，其他案例和外部导入继续自动显示。
+当前：22 个自制案例 + 1 个框架样例，共23个；13个模块各新增一例、全部有自制案例。测井有5个主要学习案例、1个标准化配套、1个跨井对比扩展与原框架样例。13 个环节、61 个原场景，w6/w7 已淘汰。首页按测井任务组织，其他案例按十三模块展开，外部导入继续自动显示。
 在线入口：[GitHub Pages](https://boveyh.github.io/Intelligent-Map-for-Oil-Exploration-and-Development/)。项目说明、作业要求对照、改进路线与 AI 评分指令见 [Proposal](docs/PROPOSAL.md)。
 核查、案例评价、局限和后续优先级见 [PLAN.md](PLAN.md)。
 已核查的优秀项目及具体借鉴方式见 [智能化案例参考与改进](docs/2026-10-31-智能化案例参考与改进.md)。
@@ -23,8 +23,9 @@ python -m http.server 8014 --bind 127.0.0.1
 - cases/<id>/content.js：背景、流程、说明的源文件。
 - cases/<id>/demo/demo.js：独立算法演示，自带样式。
 - cases/shared/visual-story.js：模型图和“输入—介入—输出—影响”说明的构建源。
-- cases/shared/demo-method.js：九个自制演示的实际方法、作用机制、验证操作与运行证据；构建时写入独立包。
-- assets/models/：十张独立场景模型图、提示词与用途说明。
+- cases/shared/demo-method.js：22个自制演示的实际方法、作用机制、验证操作与运行证据；构建时写入独立包。
+- assets/models/：23张独立场景模型图、提示词与用途说明。
+- cases/expansion/：十三个新增任务的生成器、模型、数值工具、场景渲染和内容模板。
 - assets/cases/：生成的插件，勿手改。
 - packages/<id>/：生成的可导入包。背景模型图已内嵌，不需接收方改主站。
 - assets/core/：原站点外壳、注册、导入与演示宿主。
@@ -33,6 +34,7 @@ python -m http.server 8014 --bind 127.0.0.1
 ## 构建与核查
 
 ```sh
+node tools/build-expansion.js
 node tools/build-case.js
 node tools/validate.js
 node tools/check-visual-story.js
@@ -43,6 +45,8 @@ node tools/check-home-animation.js
 node tools/check-demo-method.js
 node tools/check-single-point-trace.js
 node tools/audit-generators.js
+node tools/check-expansion.js
+node tools/audit-expansion.js
 node tools/check-case-zip.js
 ```
 
@@ -63,3 +67,5 @@ AI 模型图只解释空间关系，不是工程仿真计算或测量结果。�
 w3 保留 Hough 几何基线，并增加由标注合成图像训练的候选分类器；独立留出中误报减少、漏检增加，整体 F1 略低于基线。多井标准化是数据质量配套，不统称深度学习。
 
 2026-11-01 已用下载的原站实际导入并运行九个自制包，并将原 firstbreak 包导入改版站核对交互和刷新恢复。原上传器、注册表、演示宿主及样例文件与下载原版的哈希一致。页面与互导记录见 [验收与历史边界](docs/evidence/acceptance-2026-11-03.md)。
+
+2026-11-03 扩展：13个新任务全部接入。新增13张统一风格图片，23例23张独立主图。新增18例单点体系中的13例，117组条件/936次留出运行，保留学习输给规则的档位。详见[新增验收](docs/evidence/expansion-acceptance-2026-11-03.md)和[扩展审计](docs/evidence/expansion-audit.md)。原站同时保存全部包时曾遇到存储上限；现将旧展示图统一压至960×640，完整22包实际导入并刷新恢复，未修改原上传器或存储协议。

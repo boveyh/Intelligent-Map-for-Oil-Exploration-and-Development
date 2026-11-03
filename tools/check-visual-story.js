@@ -36,10 +36,11 @@ for (let method = 0; method < 4; method++) {
 const { stories } = require('../cases/shared/visual-story.js');
 const { createHash } = require('crypto');
 const keys = Object.keys(stories);
-assert.strictEqual(keys.length, 10, 'All ten cases need a model');
-assert.strictEqual(new Set(keys.map(id => stories[id].image)).size, 10, 'Cases share an image key');
+const expected=10+require('../cases/expansion/catalog').definitions.length;
+assert.strictEqual(keys.length, expected, 'Every case needs a model');
+assert.strictEqual(new Set(keys.map(id => stories[id].image)).size, expected, 'Cases share an image key');
 const hashes = keys.map(id => createHash('sha256').update(fs.readFileSync(path.join(ROOT, 'assets/models', stories[id].image + '.webp'))).digest('hex'));
-assert.strictEqual(new Set(hashes).size, 10, 'Cases share the same image content');
+assert.strictEqual(new Set(hashes).size, expected, 'Cases share the same image content');
 require('../assets/data.js');
 const A = window.ATLAS;
 assert.strictEqual(A.allScenes.length, 61);
@@ -59,4 +60,4 @@ for (const id of Object.keys(stories)) {
 }
 const overlay = fs.readFileSync(path.join(ROOT, 'assets/cases/welllog-layer.visual.js'), 'utf8');
 assert(overlay.includes('data:image/webp;base64,') && !/oil-scan|oil-play|oilscan/.test(overlay));
-console.log('PASS: exact KNN evidence and unchanged metrics; AI task panels; 10 unique images; 61 scenes; 9 portable packages');
+console.log('PASS: exact KNN evidence and unchanged metrics; AI task panels; '+expected+' unique images; 61 scenes; '+(expected-1)+' portable packages');

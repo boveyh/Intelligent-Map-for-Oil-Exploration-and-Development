@@ -21,3 +21,25 @@
 上传包背景图使用内嵌 data URL，接收方无需复制模型目录或修改主站。
 
 2026-11-01 新增首页装饰背景 `home-strata-background.webp`（源图同名 PNG），由内置 image_gen 生成。主题为暖砂岩/青绿色地层剖面和测井探头，顶部留白；页面用渐变保护文字可读性。它只由首页 CSS 引用，不计入十张案例专属主图，也不打入案例包。生成提示词见 `home-strata-background.prompt.txt`。
+
+## 2026-11-03 扩展与包体优化
+
+新增十三张由内置image_gen生成的独立概念图；全部使用暖白、砂岩/页岩、金属、青绿色和柔和光照。960×640 WebP，13张总计1,074,532字节。完整提示词、源摘要和输出摘要见[prompts-expansion-2026-11-03.json](prompts-expansion-2026-11-03.json)。图片按分镜逐张检查，构图不同；数值图和回放由实际数据绘制，不把概念图冒充仿真。
+
+|新案例|专属图片|
+|---|---|
+|钻井多参数异常预警|drilling-warning.webp|
+|地震剖面断层智能识别|seismic-fault.webp|
+|管道泄漏识别与区段定位|pipeline-leak.webp|
+|产品质量在线软测量|quality-soft-sensor.webp|
+|地球化学组合异常识别|geochem.webp|
+|分段滑套智能调控|zonal-control.webp|
+|射孔弹型候选智能排序|charge-ranking.webp|
+|套管局部变形智能识别|casing-deformation.webp|
+|化学驱配方主动筛选|formulation-search.webp|
+|气测异常事件智能识别|gas-events.webp|
+|跨井地层智能对比|crosswell-correlation.webp|
+|固井顶替方案智能筛选|cement-displacement.webp|
+|产量智能预测与区间检验|production-forecast.webp|
+
+原十图只做960×640缩放和WebP80格式压缩，2,197,332→987,918字节，内容和构图保留；原文件可从git历史恢复，转换摘要见[optimization-2026-11-03.json](optimization-2026-11-03.json)。解决原上传器同时持久化22包时的容量问题，不改上传协议。23张案例主图各自唯一；首页装饰背景不计案例图。

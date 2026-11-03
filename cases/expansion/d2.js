@@ -1,0 +1,15 @@
+'use strict';
+module.exports=function createDrilling(S){
+  const id='d2-drilling-warning',N=180,names=['过去五点返出/注入流差','过去五点池体积斜率','过去五点压力变化','泵状态','过去五点流差波动'];let fitted;
+  function generate(seed,o={}){const rnd=S.random(seed),noise=o.a==null?1:o.a,drift=o.b||0,lag=Math.round(o.c||0),flow=[],pit=[],pressure=[],pump=[],truth=[];let volume=0;
+    for(let t=0;t<N;t++){const event=(t>=55&&t<84)?S.clip((t-55)/10,0,1):(t>=130&&t<156)?S.clip((t-130)/8,0,1):0,operation=(t>=28&&t<38)||(t>=100&&t<109);truth.push(event>.25?1:0);flow.push(.22*event+(operation?.36:0)+S.gaussian(rnd)*.06*noise);volume+=.13*event+(operation?.015:0)+drift*.018+S.gaussian(rnd)*.035*noise;pit.push(volume);pressure.push(100-1.3*event-(operation?.6:0)+Math.sin(t*.1)*.15+S.gaussian(rnd)*.09*noise);pump.push(operation?1.3:1);}
+    return{flow:flow.map((_,t)=>flow[Math.max(0,t-lag)]),pit,pressure,pump,truth,seed};
+  }
+  function features(w,t){const a=Math.max(0,t-4),f=w.flow.slice(a,t+1),n=t-a||1;return[S.mean(f),(w.pit[t]-w.pit[a])/n,w.pressure[t]-w.pressure[a],w.pump[t],Math.sqrt(S.mean(f.map(v=>(v-S.mean(f))**2)))];}
+  const rule=x=>x[0]/.22+x[1]/.12-x[2]/1.2-(x[3]-1)*2;
+  function model(){if(fitted)return fitted;const X=[],y=[],seeds=Array.from({length:10},(_,i)=>1101+i*29);seeds.forEach(seed=>{const w=generate(seed);for(let t=5;t<N;t++){X.push(features(w,t));y.push(w.truth[t]);}});const m=S.fitLogistic(X,y),cal=[];for(let j=0;j<4;j++){const w=generate(5101+j*31);for(let t=5;t<N;t++)cal.push({x:features(w,t),y:w.truth[t]});}const normals=cal.filter(q=>!q.y);return fitted={m,seeds,cut:S.quantile(normals.map(q=>S.proof(m,q.x).value),.97),baseCut:S.quantile(normals.map(q=>q.x[0]),.97),ruleCut:S.quantile(normals.map(q=>rule(q.x)),.97)};}
+  function run(o={}){const f=model(),w=generate(o.seed||61001,o),points=[];for(let t=5;t<N;t++){const x=features(w,t);points.push({x,truth:w.truth[t],pred:S.proof(f.m,x).value,base:x[0],alt:rule(x),t,label:'回放 '+t+' s'});}const alerts=S.causalSmooth(points.map(p=>p.pred>=f.cut)),base=S.causalSmooth(points.map(p=>p.base>=f.baseCut)),alt=S.causalSmooth(points.map(p=>p.alt>=f.ruleCut)),m=S.eventScore(points.map(p=>p.truth),alerts),b=S.eventScore(points.map(p=>p.truth),base),c=S.eventScore(points.map(p=>p.truth),alt);points.forEach((p,i)=>p.alert=alerts[i]);
+    return{points,model:f.m,featureNames:names,role:'10 口合成训练井；4 口开发井标定；当前井 '+w.seed+' 未见，标签仅评分',predictionName:'逻辑分数，阈值 '+f.cut.toFixed(3),baselineName:'同点流差，阈值 '+f.baseCut.toFixed(3),control:{name:'当前窗口平均流差试算',unit:'归一量',min:-.3,max:.3,step:.02},note:'当前与过去五点形成输入，模型与阈值冻结；连续三点越限才形成告警。当前分数不等于未来事故概率。单点试算不改变整段评分。',explain:x=>S.proof(f.m,x),baseline:x=>x[0],metrics:[['事件 F1',m.f1],['单信号 / 组合规则 F1',b.f1.toFixed(3)+' / '+c.f1.toFixed(3)],['学习误报 / 漏报',m.fp+' / '+m.fn],['相对异常起点时差',m.delay==null?'未检出':m.delay.toFixed(1)+' s']],scores:{learn:m.f1,baseline:b.f1,alternate:c.f1},view:{kind:'drill',series:[w.flow,w.pit.map((v,i)=>i?v-w.pit[i-1]:0),w.pressure.map(v=>(100-v)/4)],alerts,truth:points.map(p=>p.truth)},w,threshold:f.cut};
+  }
+  return{id,run,generate,features,model,trace:(r,i,d)=>S.record(id,r,i,d)};
+};

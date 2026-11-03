@@ -1,0 +1,10 @@
+{
+  "base": "http://127.0.0.1:8014/",
+  "homeModules": 13,
+  "allNewEntries": true,
+  "auditCases": 18,
+  "auditSettings": 179,
+  "allNewAxesAndTables": true,
+  "reducedMotionSuspendsReplay": true,
+  "errors": []
+}

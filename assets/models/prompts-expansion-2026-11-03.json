@@ -1,0 +1,135 @@
+{
+  "date": "2026-11-03",
+  "assets": [
+    {
+      "id": "d2-drilling-warning",
+      "file": "drilling-warning.webp",
+      "tool": "built-in imagegen",
+      "prompt": "A single landscape 3:2 scientific concept model illustration for a petroleum AI case website, same visual family as a warm ivory studio 3D cutaway with layered grey shale and honey sandstone, brushed steel equipment, restrained jade teal highlights, soft diffuse light, realistic miniature materials with slightly simplified animated-film geometry. Subject: drilling circulation anomaly monitoring, a distinctive cutaway drilling rig well column with rotating drill pipe, a small surface mud tank, visible separate intake and return pipes and three tiny unobtrusive sensor nodes; teal liquid paths linking rig and tank, cross section earth layers. Tell the input-observation relationship clearly. No words, numbers, letters, charts, scanning beams, interfaces or logos. One coherent object scene, uncluttered warm off-white background, fully contained model, not a collage, not a screenshot, conceptual spatial model only.",
+      "source_sha256": "a75438cf4c03b9cbbce73422bfd7e7e3d05f66bfe5ba689ce5e8bd3740bab283",
+      "webp_sha256": "d5e1f98d796b185be3986369db2ac9bd47a309dedcde51f901dde450fdf66386",
+      "webp_bytes": 78042,
+      "conversion": "format/downscale only; scene content unchanged"
+    },
+    {
+      "id": "g2-geochem-anomaly",
+      "file": "geochem.webp",
+      "tool": "built-in imagegen",
+      "prompt": "Create one unique landscape 3:2 scientific concept illustration for a petroleum AI case website. Visual style MUST be consistent across this collection: warm ivory studio backdrop, layered grey shale and honey sandstone when geological, brushed matte steel, restrained jade teal accents and translucent amber liquids, soft diffuse studio lighting, realistic miniature textures with gently simplified animated-film geometry, crisp cutaway relationships, fully contained scene with small clean margins. Not a collage. No text, letters, numbers, logos, charts, grids, user interfaces, scanning beams, or big arrows. Spatial concept image, not claimed as calibrated physics. Subject: A square terrain sampling field cutaway, staggered small soil sample tubes at geolocated points and a cluster of teal sample markers, two exposed mineral strata, a compact sample tray beside the terrain; a spatial sampling study, no drilling rig.",
+      "source_sha256": "8e7547ec12a16b336c037f033cab3a4f1692b9a0cc6de1189972a1d7f4f6fe00",
+      "webp_sha256": "7acf305ce9c4860c98e1d1822d00450a10d40e55bd3dc903f7aa4654efd102a8",
+      "webp_bytes": 116194,
+      "conversion": "format/downscale only; scene content unchanged"
+    },
+    {
+      "id": "s1-seismic-fault",
+      "file": "seismic-fault.webp",
+      "tool": "built-in imagegen",
+      "prompt": "Create one unique landscape 3:2 scientific concept illustration for a petroleum AI case website. Visual style MUST be consistent across this collection: warm ivory studio backdrop, layered grey shale and honey sandstone when geological, brushed matte steel, restrained jade teal accents and translucent amber liquids, soft diffuse studio lighting, realistic miniature textures with gently simplified animated-film geometry, crisp cutaway relationships, fully contained scene with small clean margins. Not a collage. No text, letters, numbers, logos, charts, grids, user interfaces, scanning beams, or big arrows. Spatial concept image, not claimed as calibrated physics. Subject: An exposed block of alternating layered shale and sandstone offset by TWO intersecting fault planes, with a small geophone line at the surface and one vertical rectangular seismic section card physically beside it showing corresponding bent bands. No well or drilling equipment. Clear displaced layers and geometry.",
+      "source_sha256": "21af27dd4b725ce7f788d7221f692b66be8a54d983d72a7996a8a145fd380b4d",
+      "webp_sha256": "98225e7f9f42c37b38c3b9c69214131ea7ad01e53e64868c3617439ab10e9642",
+      "webp_bytes": 85676,
+      "conversion": "format/downscale only; scene content unchanged"
+    },
+    {
+      "id": "m2-gas-events",
+      "file": "gas-events.webp",
+      "tool": "built-in imagegen",
+      "prompt": "Create one unique landscape 3:2 scientific concept illustration for a petroleum AI case website. Visual style MUST be consistent across this collection: warm ivory studio backdrop, layered grey shale and honey sandstone when geological, brushed matte steel, restrained jade teal accents and translucent amber liquids, soft diffuse studio lighting, realistic miniature textures with gently simplified animated-film geometry, crisp cutaway relationships, fully contained scene with small clean margins. Not a collage. No text, letters, numbers, logos, charts, grids, user interfaces, scanning beams, or big arrows. Spatial concept image, not claimed as calibrated physics. Subject: A compact mud gas logging bench: a steel mud-gas separator and three transparent gas collection columns of different heights connected to a return pipe beside a small rock cutaway, a gas analysis sample rack, a few jade bubbles in transparent tubes. No computer screen.",
+      "source_sha256": "0112db0a7e7c21fff995fd28be9ee69259f0b3c861321a737c7d0cf03d7799d6",
+      "webp_sha256": "16890e8d54fb1d740ddedc46813746666e955e892452b41c5fc1a0ae3d77b76a",
+      "webp_bytes": 63794,
+      "conversion": "format/downscale only; scene content unchanged"
+    },
+    {
+      "id": "w1-crosswell-correlation",
+      "file": "crosswell-correlation.webp",
+      "tool": "built-in imagegen",
+      "prompt": "Create one unique landscape 3:2 scientific concept illustration for a petroleum AI case website. Visual style MUST be consistent across this collection: warm ivory studio backdrop, layered grey shale and honey sandstone when geological, brushed matte steel, restrained jade teal accents and translucent amber liquids, soft diffuse studio lighting, realistic miniature textures with gently simplified animated-film geometry, crisp cutaway relationships, fully contained scene with small clean margins. Not a collage. No text, letters, numbers, logos, charts, grids, user interfaces, scanning beams, or big arrows. Spatial concept image, not claimed as calibrated physics. Subject: Two separated slender rock-core columns, with different layer thicknesses but shared sequence, standing in an elongated common sediment cutaway. Three restrained jade ribbon-like bands physically connect corresponding layer horizons across the gap, showing cross-well correlation. No pore-space inset or single-well logging probe.",
+      "source_sha256": "1bd852e9b6e7771ba853fd15fea6d4f4a252e2eee51eacc7068e77d8dc54a974",
+      "webp_sha256": "b7eae01ca64f20e4dbb2111ed4f5ff2d7395ead1148e3e07f5bb7314e77feaad",
+      "webp_bytes": 94526,
+      "conversion": "format/downscale only; scene content unchanged"
+    },
+    {
+      "id": "c2-cement-displacement",
+      "file": "cement-displacement.webp",
+      "tool": "built-in imagegen",
+      "prompt": "Create one unique landscape 3:2 scientific concept illustration for a petroleum AI case website. Visual style MUST be consistent across this collection: warm ivory studio backdrop, layered grey shale and honey sandstone when geological, brushed matte steel, restrained jade teal accents and translucent amber liquids, soft diffuse studio lighting, realistic miniature textures with gently simplified animated-film geometry, crisp cutaway relationships, fully contained scene with small clean margins. Not a collage. No text, letters, numbers, logos, charts, grids, user interfaces, scanning beams, or big arrows. Spatial concept image, not claimed as calibrated physics. Subject: An eccentric steel casing inside a clearly cutaway cylindrical borehole, reveal the annular space half-filled with jade cement slurry displacing amber drilling mud upward. Distinct unequal annular channels and a small cementing pump manifold alongside. Close but fully contained model, no text.",
+      "source_sha256": "bd05504320aae0bba87429ba5300d3d679b4f7eed6b6e5aa09b7d26ceda6ebd1",
+      "webp_sha256": "8586f5961f4a7aa4370f399edac2dc74456ec19e61c402f518cbec3accd9eb7d",
+      "webp_bytes": 80612,
+      "conversion": "format/downscale only; scene content unchanged"
+    },
+    {
+      "id": "co4-zonal-control",
+      "file": "zonal-control.webp",
+      "tool": "built-in imagegen",
+      "prompt": "Create one unique landscape 3:2 scientific concept illustration for a petroleum AI case website. Visual style MUST be consistent across this collection: warm ivory studio backdrop, layered grey shale and honey sandstone when geological, brushed matte steel, restrained jade teal accents and translucent amber liquids, soft diffuse studio lighting, realistic miniature textures with gently simplified animated-film geometry, crisp cutaway relationships, fully contained scene with small clean margins. Not a collage. No text, letters, numbers, logos, charts, grids, user interfaces, scanning beams, or big arrows. Spatial concept image, not claimed as calibrated physics. Subject: A horizontal multizone completion tube through THREE isolated sandstone compartments, with three distinct steel sliding sleeves and small teal valve collars, visible blue-teal water and warm amber oil inflows from different zones. An isolated three-branch well model, no drilling rig.",
+      "source_sha256": "1bbcb890fcc5dafbd4590fdcaed9b36961c7909fb1ba02595b9313bf9fb4d037",
+      "webp_sha256": "1b33b01df6eb410efb8bfc0e6333c55946ba56e9d2917e8815d977a7c1c64330",
+      "webp_bytes": 110074,
+      "conversion": "format/downscale only; scene content unchanged"
+    },
+    {
+      "id": "p3-charge-ranking",
+      "file": "charge-ranking.webp",
+      "tool": "built-in imagegen",
+      "prompt": "Create one unique landscape 3:2 scientific concept illustration for a petroleum AI case website. Visual style MUST be consistent across this collection: warm ivory studio backdrop, layered grey shale and honey sandstone when geological, brushed matte steel, restrained jade teal accents and translucent amber liquids, soft diffuse studio lighting, realistic miniature textures with gently simplified animated-film geometry, crisp cutaway relationships, fully contained scene with small clean margins. Not a collage. No text, letters, numbers, logos, charts, grids, user interfaces, scanning beams, or big arrows. Spatial concept image, not claimed as calibrated physics. Subject: Three different generic unbranded perforating charge cross-section miniatures arranged next to three sandstone target tiles with visibly different entry holes and tunnel depths, matte steel and copper housings, teal slim selection cradle; technical concept, no explosion or flames.",
+      "source_sha256": "d826ea345a9f7efcc801bf914fee77ddebc41d0183da875d2e33a5ade8049598",
+      "webp_sha256": "ad0c0a96c888378ce4e6a8427d5a26e1efedfac549e056502653f4e4572ed7ee",
+      "webp_bytes": 83362,
+      "conversion": "format/downscale only; scene content unchanged"
+    },
+    {
+      "id": "pr2-production-forecast",
+      "file": "production-forecast.webp",
+      "tool": "built-in imagegen",
+      "prompt": "Create one unique landscape 3:2 scientific concept illustration for a petroleum AI case website. Visual style MUST be consistent across this collection: warm ivory studio backdrop, layered grey shale and honey sandstone when geological, brushed matte steel, restrained jade teal accents and translucent amber liquids, soft diffuse studio lighting, realistic miniature textures with gently simplified animated-film geometry, crisp cutaway relationships, fully contained scene with small clean margins. Not a collage. No text, letters, numbers, logos, charts, grids, user interfaces, scanning beams, or big arrows. Spatial concept image, not claimed as calibrated physics. Subject: A compact producing well and layered reservoir cutaway connected by steel pipes to THREE graduated-looking transparent collection vessels containing different warm amber oil levels, no actual numbers or tick labels, small jade monitoring nodes; no pumpjack.",
+      "source_sha256": "5b473fb9f1834122dc07c21d79c8cce4e02a11a31c554312ec93807fd081f76a",
+      "webp_sha256": "d3dd5f3740eed936c345b7fe7acd02e7420db673088785584cc7e1b7e4bb4a93",
+      "webp_bytes": 93534,
+      "conversion": "format/downscale only; scene content unchanged"
+    },
+    {
+      "id": "wo3-casing-deformation",
+      "file": "casing-deformation.webp",
+      "tool": "built-in imagegen",
+      "prompt": "Create one unique landscape 3:2 scientific concept illustration for a petroleum AI case website. Visual style MUST be consistent across this collection: warm ivory studio backdrop, layered grey shale and honey sandstone when geological, brushed matte steel, restrained jade teal accents and translucent amber liquids, soft diffuse studio lighting, realistic miniature textures with gently simplified animated-film geometry, crisp cutaway relationships, fully contained scene with small clean margins. Not a collage. No text, letters, numbers, logos, charts, grids, user interfaces, scanning beams, or big arrows. Spatial concept image, not claimed as calibrated physics. Subject: An upright steel casing segment cut open longitudinally to reveal a multi-arm caliper probe; the casing has one visibly oval zone and one localized inward dent. A separate single circular cross-section ring shows the radial measuring arms touching the inner wall. No corrosion heatmap or crack scanning.",
+      "source_sha256": "53f692598e54511fb6fabd0de94b924346b9fb7206b5a9cbb2941b8ef55117a0",
+      "webp_sha256": "0d6f054dfc553c127fbcebf2cf09a9e15f795850d03f29c94631397a7afe9f98",
+      "webp_bytes": 55022,
+      "conversion": "format/downscale only; scene content unchanged"
+    },
+    {
+      "id": "e3-formulation-search",
+      "file": "formulation-search.webp",
+      "tool": "built-in imagegen",
+      "prompt": "Create one unique landscape 3:2 scientific concept illustration for a petroleum AI case website. Visual style MUST be consistent across this collection: warm ivory studio backdrop, layered grey shale and honey sandstone when geological, brushed matte steel, restrained jade teal accents and translucent amber liquids, soft diffuse studio lighting, realistic miniature textures with gently simplified animated-film geometry, crisp cutaway relationships, fully contained scene with small clean margins. Not a collage. No text, letters, numbers, logos, charts, grids, user interfaces, scanning beams, or big arrows. Spatial concept image, not claimed as calibrated physics. Subject: A laboratory miniature for formulation screening: a sandstone core plug holder with connected syringe pumps, three neat glass experimental vials containing distinct amber oil and jade aqueous layers, one selected vial in a teal cradle and two unused small vials behind. No chart or formulas.",
+      "source_sha256": "819021b3369a0735e13361305727faed404c1be1b41137648d0bbc31ab98c5eb",
+      "webp_sha256": "073db7e0a74070ae821c1e7d55e9ab6b9ceda3979d6c3e042c64faafded084d4",
+      "webp_bytes": 53086,
+      "conversion": "format/downscale only; scene content unchanged"
+    },
+    {
+      "id": "t1-pipeline-leak",
+      "file": "pipeline-leak.webp",
+      "tool": "built-in imagegen",
+      "prompt": "Create one unique landscape 3:2 scientific concept illustration for a petroleum AI case website. Visual style MUST be consistent across this collection: warm ivory studio backdrop, layered grey shale and honey sandstone when geological, brushed matte steel, restrained jade teal accents and translucent amber liquids, soft diffuse studio lighting, realistic miniature textures with gently simplified animated-film geometry, crisp cutaway relationships, fully contained scene with small clean margins. Not a collage. No text, letters, numbers, logos, charts, grids, user interfaces, scanning beams, or big arrows. Spatial concept image, not claimed as calibrated physics. Subject: An L-shaped steel oil pipeline with FOUR small jade sensor collars on a cutaway trench base, a single small downward leak at one elbow feeding a visible amber seep patch in sand, separate upstream and downstream short pipe branches; coherent spatial sensor localization model.",
+      "source_sha256": "fd7ca9740665604ac38a9f20e4b27b3d65bf5fb6929cd01443f8a1bc056bc44b",
+      "webp_sha256": "65c294f6d02c5b42433d496b5074f8c2caa573974542c72fbc5c0c5019bcda3a",
+      "webp_bytes": 98594,
+      "conversion": "format/downscale only; scene content unchanged"
+    },
+    {
+      "id": "r5-quality-soft-sensor",
+      "file": "quality-soft-sensor.webp",
+      "tool": "built-in imagegen",
+      "prompt": "Create one unique landscape 3:2 scientific concept illustration for a petroleum AI case website. Visual style MUST be consistent across this collection: warm ivory studio backdrop, layered grey shale and honey sandstone when geological, brushed matte steel, restrained jade teal accents and translucent amber liquids, soft diffuse studio lighting, realistic miniature textures with gently simplified animated-film geometry, crisp cutaway relationships, fully contained scene with small clean margins. Not a collage. No text, letters, numbers, logos, charts, grids, user interfaces, scanning beams, or big arrows. Spatial concept image, not claimed as calibrated physics. Subject: A small cutaway distillation tower with three visible tray levels, warm amber fluid and jade vapor paths, temperature sensor nodes and one side-stream laboratory sample vial in a steel rack. Compact refinery soft-measurement concept, no text, numbers or dashboard.",
+      "source_sha256": "580ae2ff9985b96e593b6c1e078a787e2c2f1c815ea44f9674e4824ed65ff372",
+      "webp_sha256": "dddd706485402f383f3478567d1ae352c04526917f93b13aec0bab0541680561",
+      "webp_bytes": 62016,
+      "conversion": "format/downscale only; scene content unchanged"
+    }
+  ]
+}

@@ -1,0 +1,95 @@
+{
+  "operation": "Format and resolution optimization only. No semantic image edits; originals retained in git history. WebP quality80, Lanczos960x640.",
+  "images": [
+    {
+      "file": "boundary-learning.webp",
+      "sourceSHA256": "98c4f4424fb2b9335701f62c491f3ce4473070ec22828c62226e9523ab6a523a",
+      "sourceBytes": 207370,
+      "outputSHA256": "684b1017d6902312550ab93dfb686ee4084ad34a2e10f425a0f81613791a975b",
+      "outputBytes": 75770,
+      "width": 960,
+      "height": 640
+    },
+    {
+      "file": "cement.webp",
+      "sourceSHA256": "e0e8b4cb3cbc9f281b415716c52d7da2f184f95a6e8745dad130bffbc7398c18",
+      "sourceBytes": 165798,
+      "outputSHA256": "2309123225a91e773cf5629c4ba75582b0eafcc5d7c330bac21be38d1fb213c9",
+      "outputBytes": 75722,
+      "width": 960,
+      "height": 640
+    },
+    {
+      "file": "cuttings.webp",
+      "sourceSHA256": "61d09b1be8c1923418510a38f5a6df2409047f4c1cf6c79cc6f9a589a41785a9",
+      "sourceBytes": 196308,
+      "outputSHA256": "e2531624cd93f4732df06855f5526014b702b165ced08f8f2911f69a4ee45558",
+      "outputBytes": 91858,
+      "width": 960,
+      "height": 640
+    },
+    {
+      "file": "fracture.webp",
+      "sourceSHA256": "33143745a2ee43b6388a9d24ac30758746516e4bde5128649ce332d9940249bb",
+      "sourceBytes": 274382,
+      "outputSHA256": "177b4e71657eeb3a620c8f8727e11c3d27e43222304d316017dc5daa48c6819a",
+      "outputBytes": 115490,
+      "width": 960,
+      "height": 640
+    },
+    {
+      "file": "layering.webp",
+      "sourceSHA256": "01375004618dc1948d69a694a90132ad71685a089bbc794ac64113b4d8d45001",
+      "sourceBytes": 237860,
+      "outputSHA256": "465118c1e960cc1977ee75c664b3924fcc724a6af352550afd8771cb8652de7d",
+      "outputBytes": 113102,
+      "width": 960,
+      "height": 640
+    },
+    {
+      "file": "lithology.webp",
+      "sourceSHA256": "0650551e69759c25708f6f972cb149d0a0954e993099d35a03cf6ca5d58cfba4",
+      "sourceBytes": 229526,
+      "outputSHA256": "87fdc4fc98f05dee8cb37ca84b9ac190f7a1f83d7d51a9390d735fb400a66205",
+      "outputBytes": 105798,
+      "width": 960,
+      "height": 640
+    },
+    {
+      "file": "multiwell.webp",
+      "sourceSHA256": "db06d746d2f4fa7a38744b14880be858bebfcbc989443a418b811a9778337c7a",
+      "sourceBytes": 219084,
+      "outputSHA256": "07fa8addd6b8eff521af4106d2322b55e1c7917e0aeb1c2e46b39bcf64875ad0",
+      "outputBytes": 97598,
+      "width": 960,
+      "height": 640
+    },
+    {
+      "file": "pump.webp",
+      "sourceSHA256": "dba4ce6d8a65351c476aa1b35f86bc0d4dd04f19d15385a80c7cc5f051b9eabb",
+      "sourceBytes": 194980,
+      "outputSHA256": "0c9a502dc1cbb2949e129072a3a62e5fb0c7e1630eb852885c7dd42d4f351ec4",
+      "outputBytes": 90668,
+      "width": 960,
+      "height": 640
+    },
+    {
+      "file": "reconstruction.webp",
+      "sourceSHA256": "cb2bbc8bb523e4b059ffe6f8d38e12c400d7faae6459d57e1fc03c20877a4686",
+      "sourceBytes": 210140,
+      "outputSHA256": "e61489d5022e8cbc432de6d0ba5735b61c3ae961fd9fc5e0ce1d912fca740810",
+      "outputBytes": 100014,
+      "width": 960,
+      "height": 640
+    },
+    {
+      "file": "reservoir.webp",
+      "sourceSHA256": "bee39052fa884defc5bac6e998985c90ab6ccfc963cf70580a088de35bc7e159",
+      "sourceBytes": 261884,
+      "outputSHA256": "9bad1f02aa7bbb7d7e0e9af0aaa80a7e60ae1e4ba0d65e27d179ca0ae681375a",
+      "outputBytes": 121898,
+      "width": 960,
+      "height": 640
+    }
+  ]
+}

@@ -4,7 +4,7 @@
   var pending=Object.create(null),loaded=Object.create(null);
   function script(path){
     if(loaded[path])return Promise.resolve();
-    return new Promise(function(resolve,reject){var el=document.createElement('script');el.src=path+'?v=20261103-evidence';el.onload=function(){loaded[path]=true;resolve();};el.onerror=function(){el.remove();reject(Error('案例资源加载失败，请重试：'+path));};document.head.appendChild(el);});
+    return new Promise(function(resolve,reject){var el=document.createElement('script');el.src=path+'?v=20261103-expand1';el.onload=function(){loaded[path]=true;resolve();};el.onerror=function(){el.remove();reject(Error('案例资源加载失败，请重试：'+path));};document.head.appendChild(el);});
   }
   function ensure(c){
     if(!c||!c.__builtinAssets||c.imported)return Promise.resolve();

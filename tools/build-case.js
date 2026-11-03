@@ -176,10 +176,10 @@ function patchIndex(ids) {
   html = html.replace(new RegExp('[ \\t]*' + B + '[\\s\\S]*?' + E + '\\n?', 'g'), '');
 
   const block = ids.length
-    ? [B, '<script src="assets/cases/welllog-layer.visual.js?v=20261103-evidence"></script>',
-       '<script src="assets/cases/catalog.js?v=20261103-evidence"></script>',
-       '<script src="assets/cases/w4-lithology.demo.js?v=20261103-evidence"></script>',
-       '<script src="assets/core/builtin-loader.js?v=20261103-evidence"></script>', E, ''].join('\n')
+    ? [B, '<script src="assets/cases/welllog-layer.visual.js?v=20261103-expand1"></script>',
+       '<script src="assets/cases/catalog.js?v=20261103-expand1"></script>',
+       '<script src="assets/cases/w4-lithology.demo.js?v=20261103-expand1"></script>',
+       '<script src="assets/core/builtin-loader.js?v=20261103-expand1"></script>', E, ''].join('\n')
     : '';
 
   const marker = '<!-- ↑ 新案例加在这里';

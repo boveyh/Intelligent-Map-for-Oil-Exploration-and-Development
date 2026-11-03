@@ -15,6 +15,8 @@ const stories = {
   'c1-cement': { image: 'cement', subject: '幅度相近，井下胶结状态可能不同', input: '合成 CBL 幅度、波形能量与周向代理特征', learn: '4 个已评级段标定四类质心，再判别其余 36 段', output: '未标定段符合率、胶结候选与幅度阈值对照', impact: '提供状态候选，结合原始记录安排人工解释或复测', boundary: '周向量是合成代理特征，常规 CBL/VDL 不直接提供；分数已排除标定段，每次调参重新标定，未验证跨井迁移。', type: '监督学习 · 多特征原型分类' },
   'pr1-dynamometer': { image: 'pump', subject: '轮廓接近正常，细小波纹可能改变诊断', input: '合成的光杆位移—载荷闭合曲线', learn: '六类样本标定七维特征质心，比较残差波纹特征', output: '工况候选、特征距离与各类召回率', impact: '辅助安排巡检和复核；高噪声时先检查传感器与原始曲线', boundary: '图版来自带噪合成卡；距离分数不是校准概率，也未验证维修收益。', type: '监督学习 · 特征分类' }
 };
+const expansionDefinitions = require('../expansion/catalog').definitions;
+expansionDefinitions.forEach(d=>{stories[d.id]={image:d.image,subject:d.task,input:d.input,learn:d.operation,output:'当前对象的实际学习结果、同条件传统对照和可追查中间计算',impact:d.impact,boundary:d.boundary,type:d.method};});
 function esc(s) { return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/"/g, '&quot;'); }
 function imageURL(key) { return 'data:image/webp;base64,' + fs.readFileSync(path.join(ROOT, 'assets/models', key + '.webp')).toString('base64'); }
 const CSS = `

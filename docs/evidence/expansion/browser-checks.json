@@ -1,0 +1,762 @@
+{
+  "date": "2026-11-03",
+  "base": "http://127.0.0.1:8014/",
+  "rows": [
+    {
+      "id": "d2-drilling-warning",
+      "width": 1280,
+      "tab": "bg",
+      "overflow": false,
+      "mountFailed": false,
+      "broken": 0
+    },
+    {
+      "id": "d2-drilling-warning",
+      "width": 1280,
+      "tab": "flow",
+      "overflow": false,
+      "mountFailed": false,
+      "broken": 0
+    },
+    {
+      "id": "d2-drilling-warning",
+      "width": 1280,
+      "tab": "demo",
+      "overflow": false,
+      "mountFailed": false,
+      "broken": 0,
+      "trace": true,
+      "keyboard": true,
+      "guide": 3,
+      "mode": true,
+      "axNamedSliders": 5
+    },
+    {
+      "id": "s1-seismic-fault",
+      "width": 1280,
+      "tab": "bg",
+      "overflow": false,
+      "mountFailed": false,
+      "broken": 0
+    },
+    {
+      "id": "s1-seismic-fault",
+      "width": 1280,
+      "tab": "flow",
+      "overflow": false,
+      "mountFailed": false,
+      "broken": 0
+    },
+    {
+      "id": "s1-seismic-fault",
+      "width": 1280,
+      "tab": "demo",
+      "overflow": false,
+      "mountFailed": false,
+      "broken": 0,
+      "trace": true,
+      "keyboard": true,
+      "guide": 3,
+      "mode": true,
+      "axNamedSliders": 5
+    },
+    {
+      "id": "t1-pipeline-leak",
+      "width": 1280,
+      "tab": "bg",
+      "overflow": false,
+      "mountFailed": false,
+      "broken": 0
+    },
+    {
+      "id": "t1-pipeline-leak",
+      "width": 1280,
+      "tab": "flow",
+      "overflow": false,
+      "mountFailed": false,
+      "broken": 0
+    },
+    {
+      "id": "t1-pipeline-leak",
+      "width": 1280,
+      "tab": "demo",
+      "overflow": false,
+      "mountFailed": false,
+      "broken": 0,
+      "trace": true,
+      "keyboard": true,
+      "guide": 3,
+      "mode": true,
+      "axNamedSliders": 5
+    },
+    {
+      "id": "r5-quality-soft-sensor",
+      "width": 1280,
+      "tab": "bg",
+      "overflow": false,
+      "mountFailed": false,
+      "broken": 0
+    },
+    {
+      "id": "r5-quality-soft-sensor",
+      "width": 1280,
+      "tab": "flow",
+      "overflow": false,
+      "mountFailed": false,
+      "broken": 0
+    },
+    {
+      "id": "r5-quality-soft-sensor",
+      "width": 1280,
+      "tab": "demo",
+      "overflow": false,
+      "mountFailed": false,
+      "broken": 0,
+      "trace": true,
+      "keyboard": true,
+      "guide": 3,
+      "mode": true,
+      "axNamedSliders": 5
+    },
+    {
+      "id": "g2-geochem-anomaly",
+      "width": 1280,
+      "tab": "bg",
+      "overflow": false,
+      "mountFailed": false,
+      "broken": 0
+    },
+    {
+      "id": "g2-geochem-anomaly",
+      "width": 1280,
+      "tab": "flow",
+      "overflow": false,
+      "mountFailed": false,
+      "broken": 0
+    },
+    {
+      "id": "g2-geochem-anomaly",
+      "width": 1280,
+      "tab": "demo",
+      "overflow": false,
+      "mountFailed": false,
+      "broken": 0,
+      "trace": true,
+      "keyboard": true,
+      "guide": 3,
+      "mode": true,
+      "axNamedSliders": 5
+    },
+    {
+      "id": "co4-zonal-control",
+      "width": 1280,
+      "tab": "bg",
+      "overflow": false,
+      "mountFailed": false,
+      "broken": 0
+    },
+    {
+      "id": "co4-zonal-control",
+      "width": 1280,
+      "tab": "flow",
+      "overflow": false,
+      "mountFailed": false,
+      "broken": 0
+    },
+    {
+      "id": "co4-zonal-control",
+      "width": 1280,
+      "tab": "demo",
+      "overflow": false,
+      "mountFailed": false,
+      "broken": 0,
+      "trace": true,
+      "keyboard": true,
+      "guide": 3,
+      "mode": true,
+      "axNamedSliders": 5
+    },
+    {
+      "id": "p3-charge-ranking",
+      "width": 1280,
+      "tab": "bg",
+      "overflow": false,
+      "mountFailed": false,
+      "broken": 0
+    },
+    {
+      "id": "p3-charge-ranking",
+      "width": 1280,
+      "tab": "flow",
+      "overflow": false,
+      "mountFailed": false,
+      "broken": 0
+    },
+    {
+      "id": "p3-charge-ranking",
+      "width": 1280,
+      "tab": "demo",
+      "overflow": false,
+      "mountFailed": false,
+      "broken": 0,
+      "trace": true,
+      "keyboard": true,
+      "guide": 3,
+      "mode": true,
+      "axNamedSliders": 5
+    },
+    {
+      "id": "wo3-casing-deformation",
+      "width": 1280,
+      "tab": "bg",
+      "overflow": false,
+      "mountFailed": false,
+      "broken": 0
+    },
+    {
+      "id": "wo3-casing-deformation",
+      "width": 1280,
+      "tab": "flow",
+      "overflow": false,
+      "mountFailed": false,
+      "broken": 0
+    },
+    {
+      "id": "wo3-casing-deformation",
+      "width": 1280,
+      "tab": "demo",
+      "overflow": false,
+      "mountFailed": false,
+      "broken": 0,
+      "trace": true,
+      "keyboard": true,
+      "guide": 3,
+      "mode": true,
+      "axNamedSliders": 5
+    },
+    {
+      "id": "e3-formulation-search",
+      "width": 1280,
+      "tab": "bg",
+      "overflow": false,
+      "mountFailed": false,
+      "broken": 0
+    },
+    {
+      "id": "e3-formulation-search",
+      "width": 1280,
+      "tab": "flow",
+      "overflow": false,
+      "mountFailed": false,
+      "broken": 0
+    },
+    {
+      "id": "e3-formulation-search",
+      "width": 1280,
+      "tab": "demo",
+      "overflow": false,
+      "mountFailed": false,
+      "broken": 0,
+      "trace": true,
+      "keyboard": true,
+      "guide": 3,
+      "mode": true,
+      "axNamedSliders": 5
+    },
+    {
+      "id": "m2-gas-events",
+      "width": 1280,
+      "tab": "bg",
+      "overflow": false,
+      "mountFailed": false,
+      "broken": 0
+    },
+    {
+      "id": "m2-gas-events",
+      "width": 1280,
+      "tab": "flow",
+      "overflow": false,
+      "mountFailed": false,
+      "broken": 0
+    },
+    {
+      "id": "m2-gas-events",
+      "width": 1280,
+      "tab": "demo",
+      "overflow": false,
+      "mountFailed": false,
+      "broken": 0,
+      "trace": true,
+      "keyboard": true,
+      "guide": 3,
+      "mode": true,
+      "axNamedSliders": 5
+    },
+    {
+      "id": "w1-crosswell-correlation",
+      "width": 1280,
+      "tab": "bg",
+      "overflow": false,
+      "mountFailed": false,
+      "broken": 0
+    },
+    {
+      "id": "w1-crosswell-correlation",
+      "width": 1280,
+      "tab": "flow",
+      "overflow": false,
+      "mountFailed": false,
+      "broken": 0
+    },
+    {
+      "id": "w1-crosswell-correlation",
+      "width": 1280,
+      "tab": "demo",
+      "overflow": false,
+      "mountFailed": false,
+      "broken": 0,
+      "trace": true,
+      "keyboard": true,
+      "guide": 3,
+      "mode": true,
+      "axNamedSliders": 5
+    },
+    {
+      "id": "c2-cement-displacement",
+      "width": 1280,
+      "tab": "bg",
+      "overflow": false,
+      "mountFailed": false,
+      "broken": 0
+    },
+    {
+      "id": "c2-cement-displacement",
+      "width": 1280,
+      "tab": "flow",
+      "overflow": false,
+      "mountFailed": false,
+      "broken": 0
+    },
+    {
+      "id": "c2-cement-displacement",
+      "width": 1280,
+      "tab": "demo",
+      "overflow": false,
+      "mountFailed": false,
+      "broken": 0,
+      "trace": true,
+      "keyboard": true,
+      "guide": 3,
+      "mode": true,
+      "axNamedSliders": 5
+    },
+    {
+      "id": "pr2-production-forecast",
+      "width": 1280,
+      "tab": "bg",
+      "overflow": false,
+      "mountFailed": false,
+      "broken": 0
+    },
+    {
+      "id": "pr2-production-forecast",
+      "width": 1280,
+      "tab": "flow",
+      "overflow": false,
+      "mountFailed": false,
+      "broken": 0
+    },
+    {
+      "id": "pr2-production-forecast",
+      "width": 1280,
+      "tab": "demo",
+      "overflow": false,
+      "mountFailed": false,
+      "broken": 0,
+      "trace": true,
+      "keyboard": true,
+      "guide": 3,
+      "mode": true,
+      "axNamedSliders": 5
+    },
+    {
+      "id": "d2-drilling-warning",
+      "width": 375,
+      "tab": "bg",
+      "overflow": false,
+      "mountFailed": false,
+      "broken": 0
+    },
+    {
+      "id": "d2-drilling-warning",
+      "width": 375,
+      "tab": "flow",
+      "overflow": false,
+      "mountFailed": false,
+      "broken": 0
+    },
+    {
+      "id": "d2-drilling-warning",
+      "width": 375,
+      "tab": "demo",
+      "overflow": false,
+      "mountFailed": false,
+      "broken": 0,
+      "trace": true,
+      "keyboard": true,
+      "guide": 3,
+      "mode": true,
+      "axNamedSliders": 5
+    },
+    {
+      "id": "s1-seismic-fault",
+      "width": 375,
+      "tab": "bg",
+      "overflow": false,
+      "mountFailed": false,
+      "broken": 0
+    },
+    {
+      "id": "s1-seismic-fault",
+      "width": 375,
+      "tab": "flow",
+      "overflow": false,
+      "mountFailed": false,
+      "broken": 0
+    },
+    {
+      "id": "s1-seismic-fault",
+      "width": 375,
+      "tab": "demo",
+      "overflow": false,
+      "mountFailed": false,
+      "broken": 0,
+      "trace": true,
+      "keyboard": true,
+      "guide": 3,
+      "mode": true,
+      "axNamedSliders": 5
+    },
+    {
+      "id": "t1-pipeline-leak",
+      "width": 375,
+      "tab": "bg",
+      "overflow": false,
+      "mountFailed": false,
+      "broken": 0
+    },
+    {
+      "id": "t1-pipeline-leak",
+      "width": 375,
+      "tab": "flow",
+      "overflow": false,
+      "mountFailed": false,
+      "broken": 0
+    },
+    {
+      "id": "t1-pipeline-leak",
+      "width": 375,
+      "tab": "demo",
+      "overflow": false,
+      "mountFailed": false,
+      "broken": 0,
+      "trace": true,
+      "keyboard": true,
+      "guide": 3,
+      "mode": true,
+      "axNamedSliders": 5
+    },
+    {
+      "id": "r5-quality-soft-sensor",
+      "width": 375,
+      "tab": "bg",
+      "overflow": false,
+      "mountFailed": false,
+      "broken": 0
+    },
+    {
+      "id": "r5-quality-soft-sensor",
+      "width": 375,
+      "tab": "flow",
+      "overflow": false,
+      "mountFailed": false,
+      "broken": 0
+    },
+    {
+      "id": "r5-quality-soft-sensor",
+      "width": 375,
+      "tab": "demo",
+      "overflow": false,
+      "mountFailed": false,
+      "broken": 0,
+      "trace": true,
+      "keyboard": true,
+      "guide": 3,
+      "mode": true,
+      "axNamedSliders": 5
+    },
+    {
+      "id": "g2-geochem-anomaly",
+      "width": 375,
+      "tab": "bg",
+      "overflow": false,
+      "mountFailed": false,
+      "broken": 0
+    },
+    {
+      "id": "g2-geochem-anomaly",
+      "width": 375,
+      "tab": "flow",
+      "overflow": false,
+      "mountFailed": false,
+      "broken": 0
+    },
+    {
+      "id": "g2-geochem-anomaly",
+      "width": 375,
+      "tab": "demo",
+      "overflow": false,
+      "mountFailed": false,
+      "broken": 0,
+      "trace": true,
+      "keyboard": true,
+      "guide": 3,
+      "mode": true,
+      "axNamedSliders": 5
+    },
+    {
+      "id": "co4-zonal-control",
+      "width": 375,
+      "tab": "bg",
+      "overflow": false,
+      "mountFailed": false,
+      "broken": 0
+    },
+    {
+      "id": "co4-zonal-control",
+      "width": 375,
+      "tab": "flow",
+      "overflow": false,
+      "mountFailed": false,
+      "broken": 0
+    },
+    {
+      "id": "co4-zonal-control",
+      "width": 375,
+      "tab": "demo",
+      "overflow": false,
+      "mountFailed": false,
+      "broken": 0,
+      "trace": true,
+      "keyboard": true,
+      "guide": 3,
+      "mode": true,
+      "axNamedSliders": 5
+    },
+    {
+      "id": "p3-charge-ranking",
+      "width": 375,
+      "tab": "bg",
+      "overflow": false,
+      "mountFailed": false,
+      "broken": 0
+    },
+    {
+      "id": "p3-charge-ranking",
+      "width": 375,
+      "tab": "flow",
+      "overflow": false,
+      "mountFailed": false,
+      "broken": 0
+    },
+    {
+      "id": "p3-charge-ranking",
+      "width": 375,
+      "tab": "demo",
+      "overflow": false,
+      "mountFailed": false,
+      "broken": 0,
+      "trace": true,
+      "keyboard": true,
+      "guide": 3,
+      "mode": true,
+      "axNamedSliders": 5
+    },
+    {
+      "id": "wo3-casing-deformation",
+      "width": 375,
+      "tab": "bg",
+      "overflow": false,
+      "mountFailed": false,
+      "broken": 0
+    },
+    {
+      "id": "wo3-casing-deformation",
+      "width": 375,
+      "tab": "flow",
+      "overflow": false,
+      "mountFailed": false,
+      "broken": 0
+    },
+    {
+      "id": "wo3-casing-deformation",
+      "width": 375,
+      "tab": "demo",
+      "overflow": false,
+      "mountFailed": false,
+      "broken": 0,
+      "trace": true,
+      "keyboard": true,
+      "guide": 3,
+      "mode": true,
+      "axNamedSliders": 5
+    },
+    {
+      "id": "e3-formulation-search",
+      "width": 375,
+      "tab": "bg",
+      "overflow": false,
+      "mountFailed": false,
+      "broken": 0
+    },
+    {
+      "id": "e3-formulation-search",
+      "width": 375,
+      "tab": "flow",
+      "overflow": false,
+      "mountFailed": false,
+      "broken": 0
+    },
+    {
+      "id": "e3-formulation-search",
+      "width": 375,
+      "tab": "demo",
+      "overflow": false,
+      "mountFailed": false,
+      "broken": 0,
+      "trace": true,
+      "keyboard": true,
+      "guide": 3,
+      "mode": true,
+      "axNamedSliders": 5
+    },
+    {
+      "id": "m2-gas-events",
+      "width": 375,
+      "tab": "bg",
+      "overflow": false,
+      "mountFailed": false,
+      "broken": 0
+    },
+    {
+      "id": "m2-gas-events",
+      "width": 375,
+      "tab": "flow",
+      "overflow": false,
+      "mountFailed": false,
+      "broken": 0
+    },
+    {
+      "id": "m2-gas-events",
+      "width": 375,
+      "tab": "demo",
+      "overflow": false,
+      "mountFailed": false,
+      "broken": 0,
+      "trace": true,
+      "keyboard": true,
+      "guide": 3,
+      "mode": true,
+      "axNamedSliders": 5
+    },
+    {
+      "id": "w1-crosswell-correlation",
+      "width": 375,
+      "tab": "bg",
+      "overflow": false,
+      "mountFailed": false,
+      "broken": 0
+    },
+    {
+      "id": "w1-crosswell-correlation",
+      "width": 375,
+      "tab": "flow",
+      "overflow": false,
+      "mountFailed": false,
+      "broken": 0
+    },
+    {
+      "id": "w1-crosswell-correlation",
+      "width": 375,
+      "tab": "demo",
+      "overflow": false,
+      "mountFailed": false,
+      "broken": 0,
+      "trace": true,
+      "keyboard": true,
+      "guide": 3,
+      "mode": true,
+      "axNamedSliders": 5
+    },
+    {
+      "id": "c2-cement-displacement",
+      "width": 375,
+      "tab": "bg",
+      "overflow": false,
+      "mountFailed": false,
+      "broken": 0
+    },
+    {
+      "id": "c2-cement-displacement",
+      "width": 375,
+      "tab": "flow",
+      "overflow": false,
+      "mountFailed": false,
+      "broken": 0
+    },
+    {
+      "id": "c2-cement-displacement",
+      "width": 375,
+      "tab": "demo",
+      "overflow": false,
+      "mountFailed": false,
+      "broken": 0,
+      "trace": true,
+      "keyboard": true,
+      "guide": 3,
+      "mode": true,
+      "axNamedSliders": 5
+    },
+    {
+      "id": "pr2-production-forecast",
+      "width": 375,
+      "tab": "bg",
+      "overflow": false,
+      "mountFailed": false,
+      "broken": 0
+    },
+    {
+      "id": "pr2-production-forecast",
+      "width": 375,
+      "tab": "flow",
+      "overflow": false,
+      "mountFailed": false,
+      "broken": 0
+    },
+    {
+      "id": "pr2-production-forecast",
+      "width": 375,
+      "tab": "demo",
+      "overflow": false,
+      "mountFailed": false,
+      "broken": 0,
+      "trace": true,
+      "keyboard": true,
+      "guide": 3,
+      "mode": true,
+      "axNamedSliders": 5
+    }
+  ],
+  "errors": [],
+  "limits": "Automated Chrome keyboard and AX checks, no human screen-reader or teaching study."
+}

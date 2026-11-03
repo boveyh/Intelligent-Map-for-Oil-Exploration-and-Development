@@ -1,0 +1,140 @@
+{
+  "date": "2026-11-03",
+  "rows": [
+    {
+      "id": "c1-cement",
+      "originalUploaderAccepted": true,
+      "methodPanelMounted": true,
+      "traceWorks": null
+    },
+    {
+      "id": "c2-cement-displacement",
+      "originalUploaderAccepted": true,
+      "methodPanelMounted": true,
+      "traceWorks": true
+    },
+    {
+      "id": "co4-zonal-control",
+      "originalUploaderAccepted": true,
+      "methodPanelMounted": true,
+      "traceWorks": true
+    },
+    {
+      "id": "d2-drilling-warning",
+      "originalUploaderAccepted": true,
+      "methodPanelMounted": true,
+      "traceWorks": true
+    },
+    {
+      "id": "e3-formulation-search",
+      "originalUploaderAccepted": true,
+      "methodPanelMounted": true,
+      "traceWorks": true
+    },
+    {
+      "id": "g2-geochem-anomaly",
+      "originalUploaderAccepted": true,
+      "methodPanelMounted": true,
+      "traceWorks": true
+    },
+    {
+      "id": "m1-cuttings",
+      "originalUploaderAccepted": true,
+      "methodPanelMounted": true,
+      "traceWorks": null
+    },
+    {
+      "id": "m2-gas-events",
+      "originalUploaderAccepted": true,
+      "methodPanelMounted": true,
+      "traceWorks": true
+    },
+    {
+      "id": "p3-charge-ranking",
+      "originalUploaderAccepted": true,
+      "methodPanelMounted": true,
+      "traceWorks": true
+    },
+    {
+      "id": "pr1-dynamometer",
+      "originalUploaderAccepted": true,
+      "methodPanelMounted": true,
+      "traceWorks": null
+    },
+    {
+      "id": "pr2-production-forecast",
+      "originalUploaderAccepted": true,
+      "methodPanelMounted": true,
+      "traceWorks": true
+    },
+    {
+      "id": "r5-quality-soft-sensor",
+      "originalUploaderAccepted": true,
+      "methodPanelMounted": true,
+      "traceWorks": true
+    },
+    {
+      "id": "s1-seismic-fault",
+      "originalUploaderAccepted": true,
+      "methodPanelMounted": true,
+      "traceWorks": true
+    },
+    {
+      "id": "t1-pipeline-leak",
+      "originalUploaderAccepted": true,
+      "methodPanelMounted": true,
+      "traceWorks": true
+    },
+    {
+      "id": "w1-boundary-learning",
+      "originalUploaderAccepted": true,
+      "methodPanelMounted": true,
+      "traceWorks": true
+    },
+    {
+      "id": "w1-crosswell-correlation",
+      "originalUploaderAccepted": true,
+      "methodPanelMounted": true,
+      "traceWorks": true
+    },
+    {
+      "id": "w2-reservoir-param",
+      "originalUploaderAccepted": true,
+      "methodPanelMounted": true,
+      "traceWorks": true
+    },
+    {
+      "id": "w3-imaging-fracture",
+      "originalUploaderAccepted": true,
+      "methodPanelMounted": true,
+      "traceWorks": true
+    },
+    {
+      "id": "w4-lithology",
+      "originalUploaderAccepted": true,
+      "methodPanelMounted": true,
+      "traceWorks": true
+    },
+    {
+      "id": "w5-completion",
+      "originalUploaderAccepted": true,
+      "methodPanelMounted": true,
+      "traceWorks": true
+    },
+    {
+      "id": "w5-normalization",
+      "originalUploaderAccepted": true,
+      "methodPanelMounted": true,
+      "traceWorks": null
+    },
+    {
+      "id": "wo3-casing-deformation",
+      "originalUploaderAccepted": true,
+      "methodPanelMounted": true,
+      "traceWorks": true
+    }
+  ],
+  "restoredAfterReload": 22,
+  "errors": [],
+  "source": "unmodified course site served on independent origin"
+}

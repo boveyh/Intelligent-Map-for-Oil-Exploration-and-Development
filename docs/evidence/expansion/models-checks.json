@@ -1,0 +1,165 @@
+{
+  "date": "2026-11-03",
+  "rows": [
+    {
+      "id": "d2-drilling-warning",
+      "traceSameCalculation": true,
+      "inputChangesEvidence": true,
+      "testTruthIsolated": true,
+      "causalityChecked": true,
+      "scores": {
+        "learn": 1,
+        "baseline": 0,
+        "alternate": 1
+      }
+    },
+    {
+      "id": "s1-seismic-fault",
+      "traceSameCalculation": true,
+      "inputChangesEvidence": true,
+      "testTruthIsolated": true,
+      "causalityChecked": false,
+      "scores": {
+        "learn": 0.7049608355091384,
+        "baseline": 0.5816326530612245,
+        "alternate": 0.20411817367949867
+      }
+    },
+    {
+      "id": "t1-pipeline-leak",
+      "traceSameCalculation": true,
+      "inputChangesEvidence": true,
+      "testTruthIsolated": true,
+      "causalityChecked": true,
+      "scores": {
+        "learn": 1,
+        "baseline": 0.3333333333333333,
+        "alternate": 0.25,
+        "locationError": 0.0059047622124109855
+      }
+    },
+    {
+      "id": "r5-quality-soft-sensor",
+      "traceSameCalculation": true,
+      "inputChangesEvidence": true,
+      "testTruthIsolated": true,
+      "causalityChecked": false,
+      "scores": {
+        "learn": 0.7476198944472733,
+        "baseline": 1.2155441726275302,
+        "coverage": 0.9133333333333333,
+        "delayedLabRMSE": 6.61285472438486
+      }
+    },
+    {
+      "id": "g2-geochem-anomaly",
+      "traceSameCalculation": true,
+      "inputChangesEvidence": true,
+      "testTruthIsolated": true,
+      "causalityChecked": false,
+      "scores": {
+        "learn": 0.8409090909090909,
+        "baseline": 0.6666666666666666,
+        "alternate": 0.5483870967741935
+      }
+    },
+    {
+      "id": "co4-zonal-control",
+      "traceSameCalculation": true,
+      "inputChangesEvidence": true,
+      "testTruthIsolated": true,
+      "causalityChecked": false,
+      "scores": {
+        "learn": 0.0619348952637657,
+        "baseline": 0.4513809677874157,
+        "violation": 0,
+        "direction": "lower"
+      }
+    },
+    {
+      "id": "p3-charge-ranking",
+      "traceSameCalculation": true,
+      "inputChangesEvidence": true,
+      "testTruthIsolated": true,
+      "causalityChecked": false,
+      "scores": {
+        "learn": 1,
+        "baseline": 1
+      }
+    },
+    {
+      "id": "wo3-casing-deformation",
+      "traceSameCalculation": true,
+      "inputChangesEvidence": true,
+      "testTruthIsolated": true,
+      "causalityChecked": false,
+      "scores": {
+        "learn": 1,
+        "baseline": 1
+      }
+    },
+    {
+      "id": "e3-formulation-search",
+      "traceSameCalculation": true,
+      "inputChangesEvidence": true,
+      "testTruthIsolated": true,
+      "causalityChecked": false,
+      "scores": {
+        "learn": 0.767425125901963,
+        "baseline": 0.5740632287307711,
+        "alternate": 0.5740632287307711
+      }
+    },
+    {
+      "id": "m2-gas-events",
+      "traceSameCalculation": true,
+      "inputChangesEvidence": true,
+      "testTruthIsolated": true,
+      "causalityChecked": true,
+      "scores": {
+        "learn": 1,
+        "baseline": 0.7272510605843938
+      }
+    },
+    {
+      "id": "w1-crosswell-correlation",
+      "traceSameCalculation": true,
+      "inputChangesEvidence": true,
+      "testTruthIsolated": true,
+      "causalityChecked": false,
+      "scores": {
+        "learn": 1,
+        "baseline": 1,
+        "alternate": 1
+      }
+    },
+    {
+      "id": "c2-cement-displacement",
+      "traceSameCalculation": true,
+      "inputChangesEvidence": true,
+      "testTruthIsolated": true,
+      "causalityChecked": false,
+      "scores": {
+        "learn": 0.014870536079596475,
+        "baseline": 0.03364925736174986,
+        "regret": 0.008735689600193441,
+        "direction": "lower"
+      }
+    },
+    {
+      "id": "pr2-production-forecast",
+      "traceSameCalculation": true,
+      "inputChangesEvidence": true,
+      "testTruthIsolated": true,
+      "causalityChecked": true,
+      "scores": {
+        "learn": 2.1592358426084615,
+        "baseline": 3.8239769597133346,
+        "alternate": 2.372674197588069,
+        "coverage": 0.8994082840236687,
+        "direction": "lower"
+      }
+    }
+  ],
+  "all13OriginalModules": true
+}

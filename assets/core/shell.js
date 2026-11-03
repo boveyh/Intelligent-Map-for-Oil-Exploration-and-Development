@@ -212,8 +212,9 @@
       return '<section class="home-task"><div class="home-task-head"><span>'+g.no+'</span><h3>'+g.title+'</h3><p>'+g.desc+'</p></div><div class="hw">'+caseCards(selected)+'</div></section>';
     }).join('');
     var additional=list.filter(function(c){return !used[c.id] && c.id!=='welllog-layer';});
+    var moduleSections=A.stages.map(function(st){var entries=additional.filter(function(c){return A.index.byId[c.sceneId].stageId===st.id;});return entries.length?'<details class="home-sample" data-module="'+st.id+'"><summary>'+pad(st.idx)+' '+esc(st.name)+' · '+entries.length+' 例</summary><div class="hw home-extra-grid">'+caseCards(entries)+'</div></details>':'';}).join('');
     var sample=list.filter(function(c){return c.id==='welllog-layer';});
-    var stages=A.stages.map(function(st){return '<a href="#/stage/'+st.id+'"><small>'+pad(st.idx)+'</small>'+esc(st.name)+'</a>';}).join('');
+    var stages=A.stages.map(function(st){var n=list.filter(function(c){return c.id!=='welllog-layer' && A.index.byId[c.sceneId].stageId===st.id;}).length;return '<a href="#/stage/'+st.id+'"><small>'+pad(st.idx)+'</small>'+esc(st.name)+' <b>'+n+'例</b></a>';}).join('');
     var methods=Object.keys(M).map(function(k){return '<a href="#/method/'+k+'"><b>'+esc(M[k].abbr)+'</b>'+esc(M[k].name)+'</a>';}).join('');
     return '<main class="home-page"><section class="hero"><div class="wrap"><div class="hero-grid">'+
       '<div class="hero-main"><span class="home-eyebrow">测井专题 / WELL LOGGING</span><h1>从测井曲线<br>到<span>有依据的判断</span></h1>'+
@@ -224,7 +225,7 @@
       '<section class="section home-main" id="logging-cases"><div class="wrap"><div class="home-section-head"><div><span class="home-eyebrow">按当前问题进入</span><h2>六个案例，三类测井任务</h2></div><a href="#/stage/welllog">测井全部场景 ↗</a></div>'+sections+
       '<p class="home-count">全站已接入 '+list.length+' 个案例。测井五个原场景均有案例；标准化作为数据质量配套。原框架示范单独保留。</p>'+
       (sample.length?'<details class="home-sample"><summary>查看原框架分层样例</summary><div class="hw">'+caseCards(sample)+'</div></details>':'')+'</div></section>'+
-      (additional.length?'<section class="section home-extensions"><div class="wrap"><div class="home-section-head"><div><span class="home-eyebrow">更多作业任务</span><h2>其他已接入案例</h2></div><a href="#/cases">完整案例库 ↗</a></div><p class="home-section-copy">录井、固井、采油及外部导入案例也可从这里进入。</p><div class="hw home-extra-grid">'+caseCards(additional)+'</div></div></section>':'')+
+      (additional.length?'<section class="section home-extensions"><div class="wrap"><div class="home-section-head"><div><span class="home-eyebrow">更多作业任务</span><h2>其他已接入案例</h2></div><a href="#/cases">完整案例库 ↗</a></div><p class="home-section-copy">十三个原有作业环节均有自制案例。展开对应模块，比较不同任务中的智能介入与证据边界。</p>'+moduleSections+'</div></section>':'')+
       '<section class="section home-directory"><div class="wrap"><div class="home-section-head"><div><span class="home-eyebrow">全站导航</span><h2>按作业环节或方法继续查找</h2></div></div><div class="home-directory-row"><h3>13 个作业环节</h3><nav aria-label="全部作业环节">'+stages+'</nav></div><div class="home-directory-row"><h3>按方法找</h3><nav aria-label="全部智能方法">'+methods+'</nav></div><div class="home-upload-note"><p>已有案例包？右上角“添加案例”继续使用原框架统一接口。</p><a href="#/guide">查看接入说明 →</a></div></div></section></main>';
   }
   /* 首页主线叙事的一小段：某一环节 + 它下面的案例/子场景 */
