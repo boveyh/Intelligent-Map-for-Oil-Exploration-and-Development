@@ -1,0 +1,1409 @@
+{
+  "date": "2026-11-03",
+  "base": "https://boveyh.github.io/Intelligent-Map-for-Oil-Exploration-and-Development/",
+  "commit": "b18f592076664b89315d4b888a02c091397b8a77",
+  "transport": "Direct HTTPS; normal TLS verification; git blob bytes, not working-tree line endings",
+  "resources": [
+    {
+      "path": "assets/cases/_template.case.js",
+      "status": 200,
+      "bytes": 8138,
+      "sha256": "240f7ba5f403f829c28c9568d0140b6c73d1f678e8a6bd04456a6a3becf694a6",
+      "matchesGitBlob": true
+    },
+    {
+      "path": "assets/cases/_template.case.json",
+      "status": 200,
+      "bytes": 4941,
+      "sha256": "c47d8b8823c8f9f8bbdb4196409f8fe43b9bb8412022dc70e73e4e57b578916d",
+      "matchesGitBlob": true
+    },
+    {
+      "path": "assets/cases/c1-cement.case.js",
+      "status": 200,
+      "bytes": 153855,
+      "sha256": "bfcc8a79b9c32cdf507f953fd3de85fd73abd628f24615efcc308ab4a90909a3",
+      "matchesGitBlob": true
+    },
+    {
+      "path": "assets/cases/c1-cement.demo.js",
+      "status": 200,
+      "bytes": 37200,
+      "sha256": "35717e6a3bd1bf86958ae0d55bef4d4a600b7f0f7a3872621b00c96fdc25d953",
+      "matchesGitBlob": true
+    },
+    {
+      "path": "assets/cases/c2-cement-displacement.case.js",
+      "status": 200,
+      "bytes": 129297,
+      "sha256": "4f33a1e411523db321c3da928929d7275541ca5fa6686e83c202d81308ec22f3",
+      "matchesGitBlob": true
+    },
+    {
+      "path": "assets/cases/c2-cement-displacement.demo.js",
+      "status": 200,
+      "bytes": 47545,
+      "sha256": "a8ace9aa713323d495d41e09c911d1346884a0d119f4676ba96d998d8d548ed0",
+      "matchesGitBlob": true
+    },
+    {
+      "path": "assets/cases/catalog.js",
+      "status": 200,
+      "bytes": 24417,
+      "sha256": "d661639035850b25bed5c3c8ff4e6b879dc45a93f2b787b3122f13eb08557c25",
+      "matchesGitBlob": true
+    },
+    {
+      "path": "assets/cases/co4-zonal-control.case.js",
+      "status": 200,
+      "bytes": 168488,
+      "sha256": "2c8568ba4dbc785da2c3660762ded61c2e50f65e550a231ee34614559cd942ee",
+      "matchesGitBlob": true
+    },
+    {
+      "path": "assets/cases/co4-zonal-control.demo.js",
+      "status": 200,
+      "bytes": 48293,
+      "sha256": "a90da59018a7dfc1297515ea4819aeb861d903c013bfb58bf17861f515ed5dad",
+      "matchesGitBlob": true
+    },
+    {
+      "path": "assets/cases/d2-drilling-warning.case.js",
+      "status": 200,
+      "bytes": 126200,
+      "sha256": "f3bf5b6e407997dfc8760ff466e4eab5df95433a26757f9dd9ab29e18e3d2c22",
+      "matchesGitBlob": true
+    },
+    {
+      "path": "assets/cases/d2-drilling-warning.demo.js",
+      "status": 200,
+      "bytes": 48435,
+      "sha256": "f8a11c3c4e3a5235fee0c0e85e14a7834e664e472c46d465b6af76d0444d246e",
+      "matchesGitBlob": true
+    },
+    {
+      "path": "assets/cases/e3-formulation-search.case.js",
+      "status": 200,
+      "bytes": 92592,
+      "sha256": "bddc57eec1f60bf5c07b3f746e9fa69cdee3a4603775ceee798053d549ba7191",
+      "matchesGitBlob": true
+    },
+    {
+      "path": "assets/cases/e3-formulation-search.demo.js",
+      "status": 200,
+      "bytes": 48715,
+      "sha256": "a2e573fbb5ab3341359ec72786f68686cc3d66ef9945ff35b3654bde15a4b364",
+      "matchesGitBlob": true
+    },
+    {
+      "path": "assets/cases/g2-geochem-anomaly.case.js",
+      "status": 200,
+      "bytes": 176177,
+      "sha256": "d9f18811360e577be1510b8d63bb34c95f738a56d6196991297588e0ea0c7d14",
+      "matchesGitBlob": true
+    },
+    {
+      "path": "assets/cases/g2-geochem-anomaly.demo.js",
+      "status": 200,
+      "bytes": 48130,
+      "sha256": "ef50182c34dc7ccf2dead949adb51b9cd20a945179fe16c6a43901c218946090",
+      "matchesGitBlob": true
+    },
+    {
+      "path": "assets/cases/m1-cuttings.case.js",
+      "status": 200,
+      "bytes": 191340,
+      "sha256": "2dadcf414367ce07c66c662f4cdd6043ff56ffc73f89cad7c88aebb0de94299f",
+      "matchesGitBlob": true
+    },
+    {
+      "path": "assets/cases/m1-cuttings.demo.js",
+      "status": 200,
+      "bytes": 35706,
+      "sha256": "4033d665e59f0c7d5cb2b2c21f2999b885eafa73ea3817d37d5ad08650f2c5cc",
+      "matchesGitBlob": true
+    },
+    {
+      "path": "assets/cases/m2-gas-events.case.js",
+      "status": 200,
+      "bytes": 106642,
+      "sha256": "cdc535decc5ff592d01b9cefb86010b11b49d098ced810617268a43375a1ca74",
+      "matchesGitBlob": true
+    },
+    {
+      "path": "assets/cases/m2-gas-events.demo.js",
+      "status": 200,
+      "bytes": 47292,
+      "sha256": "42d5b7e98923a3266d918627ccbaca2d96c459c7f55a48f512eabe91a3151f22",
+      "matchesGitBlob": true
+    },
+    {
+      "path": "assets/cases/p3-charge-ranking.case.js",
+      "status": 200,
+      "bytes": 132681,
+      "sha256": "28ac94b5efd8f1d336fc210bb56f82e7707e31e636367e0714b1ab1cee940f01",
+      "matchesGitBlob": true
+    },
+    {
+      "path": "assets/cases/p3-charge-ranking.demo.js",
+      "status": 200,
+      "bytes": 47835,
+      "sha256": "bb35d674cdafa78402e6d526da72f99ad83d8d66eea98b94e88334b19dba0dd8",
+      "matchesGitBlob": true
+    },
+    {
+      "path": "assets/cases/pr1-dynamometer.case.js",
+      "status": 200,
+      "bytes": 191099,
+      "sha256": "8896edca026e48d5bcf6c7073ab035c863ed52501d64fcc133aad1202bf671de",
+      "matchesGitBlob": true
+    },
+    {
+      "path": "assets/cases/pr1-dynamometer.demo.js",
+      "status": 200,
+      "bytes": 40959,
+      "sha256": "431531ff7583467fd57c3618e5e3cc98d23161aa23cb53d13943835729c4d4f7",
+      "matchesGitBlob": true
+    },
+    {
+      "path": "assets/cases/pr2-production-forecast.case.js",
+      "status": 200,
+      "bytes": 146623,
+      "sha256": "a8cf14c7c36f716a0bb4eed0c0ff742c15f323a42cd77386832de94ea1af6fec",
+      "matchesGitBlob": true
+    },
+    {
+      "path": "assets/cases/pr2-production-forecast.demo.js",
+      "status": 200,
+      "bytes": 48855,
+      "sha256": "3e29158de848c937139f0c26fc1244bc865fcfded8828350b0a1195705a4a38e",
+      "matchesGitBlob": true
+    },
+    {
+      "path": "assets/cases/r5-quality-soft-sensor.case.js",
+      "status": 200,
+      "bytes": 104733,
+      "sha256": "8c5fa4cc52f1d82c1b07f925fccd40dc946e977d67efaa41d434f0330eb47d8e",
+      "matchesGitBlob": true
+    },
+    {
+      "path": "assets/cases/r5-quality-soft-sensor.demo.js",
+      "status": 200,
+      "bytes": 48258,
+      "sha256": "4320cdf6ba0277009d503af255912ddc0489c328cacfbbb7b8d5c67d4b343f72",
+      "matchesGitBlob": true
+    },
+    {
+      "path": "assets/cases/s1-seismic-fault.case.js",
+      "status": 200,
+      "bytes": 135717,
+      "sha256": "791d6b3f6b9f4d0725b6ee3a2d46a64829433dc6adce6f8de416c86df70a003a",
+      "matchesGitBlob": true
+    },
+    {
+      "path": "assets/cases/s1-seismic-fault.demo.js",
+      "status": 200,
+      "bytes": 48612,
+      "sha256": "3f038083f51afa8ff1489b5266eef0808d30fb64b9b532fe7a9310e069fe75b9",
+      "matchesGitBlob": true
+    },
+    {
+      "path": "assets/cases/t1-pipeline-leak.case.js",
+      "status": 200,
+      "bytes": 153298,
+      "sha256": "3ba3b1a630edc1b7601e834f853e84171ce2b9d25206723e938eda4ea298436f",
+      "matchesGitBlob": true
+    },
+    {
+      "path": "assets/cases/t1-pipeline-leak.demo.js",
+      "status": 200,
+      "bytes": 48923,
+      "sha256": "c786d1c515ee05fdb19d5ed01c994df65132c79dda5ffff03100c41bd43bd44f",
+      "matchesGitBlob": true
+    },
+    {
+      "path": "assets/cases/w1-boundary-learning.case.js",
+      "status": 200,
+      "bytes": 118623,
+      "sha256": "895110a2b1d9e6138ab3abae40aacf0a49a3d4caf16800dbd9a14e43eb81e34a",
+      "matchesGitBlob": true
+    },
+    {
+      "path": "assets/cases/w1-boundary-learning.demo.js",
+      "status": 200,
+      "bytes": 26721,
+      "sha256": "58f1979cf9712ab8819b61cf4f5e7be4e74d53c8cd991be634235530bac82916",
+      "matchesGitBlob": true
+    },
+    {
+      "path": "assets/cases/w1-crosswell-correlation.case.js",
+      "status": 200,
+      "bytes": 148051,
+      "sha256": "9697b4535f1d33f2eaf6317a1da0c7be5ff6bab65ee70bebcaa40109bd8dbd1e",
+      "matchesGitBlob": true
+    },
+    {
+      "path": "assets/cases/w1-crosswell-correlation.demo.js",
+      "status": 200,
+      "bytes": 48601,
+      "sha256": "df60364389401e0cf807bf9bfa9fd059dd3b4f560f319a6e9b9a9867644480c2",
+      "matchesGitBlob": true
+    },
+    {
+      "path": "assets/cases/w2-reservoir-param.case.js",
+      "status": 200,
+      "bytes": 202122,
+      "sha256": "06c9fd89bc5fffbd9ddf0985f1f0912c9c7c2495b9df86a8ddeb070ada453cb7",
+      "matchesGitBlob": true
+    },
+    {
+      "path": "assets/cases/w2-reservoir-param.demo.js",
+      "status": 200,
+      "bytes": 42186,
+      "sha256": "3987716daa501a20f8d807c1950f2bab1a3d0d7e2738cb8f61e6a91078f02004",
+      "matchesGitBlob": true
+    },
+    {
+      "path": "assets/cases/w3-imaging-fracture.case.js",
+      "status": 200,
+      "bytes": 190784,
+      "sha256": "cc48ed7614e5dae218f5143f492ca55124cc55d3503396d4a77e73ffd2d732cb",
+      "matchesGitBlob": true
+    },
+    {
+      "path": "assets/cases/w3-imaging-fracture.demo.js",
+      "status": 200,
+      "bytes": 50348,
+      "sha256": "1891beea8f17a361325640230f0084cc131a93ba63939a05a6c742005e864065",
+      "matchesGitBlob": true
+    },
+    {
+      "path": "assets/cases/w4-lithology.case.js",
+      "status": 200,
+      "bytes": 200417,
+      "sha256": "484c137b5d380fe65118aee8152685fe6562ad05bf20832982bd585d13ac9247",
+      "matchesGitBlob": true
+    },
+    {
+      "path": "assets/cases/w4-lithology.demo.js",
+      "status": 200,
+      "bytes": 50709,
+      "sha256": "97f6c5f5b609004d46d314e98a4a6d2a237d591be0676acf81ef0743e79d0faf",
+      "matchesGitBlob": true
+    },
+    {
+      "path": "assets/cases/w5-completion.case.js",
+      "status": 200,
+      "bytes": 190770,
+      "sha256": "5caf8861507a38591ea9cdcd869e7dd6b0721b042ea9eab116e0ce9ab60b52b3",
+      "matchesGitBlob": true
+    },
+    {
+      "path": "assets/cases/w5-completion.demo.js",
+      "status": 200,
+      "bytes": 53477,
+      "sha256": "48b7d293064eeb37c0eea63f10ef565ed9c39a93f50c582534f53ba43bb53985",
+      "matchesGitBlob": true
+    },
+    {
+      "path": "assets/cases/w5-normalization.case.js",
+      "status": 200,
+      "bytes": 184929,
+      "sha256": "076b4f4427bc8a24eb1d9a090a5c0101949ce157e0a126cff686449958e071f4",
+      "matchesGitBlob": true
+    },
+    {
+      "path": "assets/cases/w5-normalization.demo.js",
+      "status": 200,
+      "bytes": 37424,
+      "sha256": "6acdf3b5422258afaa09f7b65498e9218bb858d5d2d38be5d09734b11fc81e59",
+      "matchesGitBlob": true
+    },
+    {
+      "path": "assets/cases/welllog-layer.case.js",
+      "status": 200,
+      "bytes": 20872,
+      "sha256": "aa77d965f07ac6af4ec60fa66ddb916536f12eded49f1386320d3e55e73a9313",
+      "matchesGitBlob": true
+    },
+    {
+      "path": "assets/cases/welllog-layer.demo.js",
+      "status": 200,
+      "bytes": 22766,
+      "sha256": "cda5c3883fe99ba41eebd12c6e8bb3997e9162d650e58095361367e5e1f8b849",
+      "matchesGitBlob": true
+    },
+    {
+      "path": "assets/cases/welllog-layer.visual.js",
+      "status": 200,
+      "bytes": 158708,
+      "sha256": "92bd61ead51e5f3ec4d7a5b69238fb9c946fec52abd47fd97d7a93cbf1ab5399",
+      "matchesGitBlob": true
+    },
+    {
+      "path": "assets/cases/wo3-casing-deformation.case.js",
+      "status": 200,
+      "bytes": 94740,
+      "sha256": "2e32f606446af6f2cba18115023361f81b4d4f61b3d17dcae36f124f29d17842",
+      "matchesGitBlob": true
+    },
+    {
+      "path": "assets/cases/wo3-casing-deformation.demo.js",
+      "status": 200,
+      "bytes": 47932,
+      "sha256": "5548a18afded1a4150fcf1c424e9d4940d95014941dab9bc4a796f27adf98943",
+      "matchesGitBlob": true
+    },
+    {
+      "path": "assets/core/admin.js",
+      "status": 200,
+      "bytes": 24682,
+      "sha256": "25abed50581002bb10740abaa4eb4b79e01f6c716b69907eaa1c385ed2dc7c13",
+      "matchesGitBlob": true
+    },
+    {
+      "path": "assets/core/builtin-loader.js",
+      "status": 200,
+      "bytes": 1107,
+      "sha256": "f657178dfc498a3cf5a7c936f0e9f37c1e8e8665725598b92a6cb02bcece09aa",
+      "matchesGitBlob": true
+    },
+    {
+      "path": "assets/core/case-demo-host.js",
+      "status": 200,
+      "bytes": 14476,
+      "sha256": "b714731358d5f5b7c68ded5dfedef1c126683ce7861e38db0ac9375c5ff8cea2",
+      "matchesGitBlob": true
+    },
+    {
+      "path": "assets/core/case-upload.js",
+      "status": 200,
+      "bytes": 66694,
+      "sha256": "7e6591bdbd07d1b1b5dba2140190787c94b4f91217c7d0fd96ccb86807f97a99",
+      "matchesGitBlob": true
+    },
+    {
+      "path": "assets/core/case-zip.js",
+      "status": 200,
+      "bytes": 10088,
+      "sha256": "efd6798ca97aa13bcad93cf25d727f225b5fe10731809e168054ffecdb8629c1",
+      "matchesGitBlob": true
+    },
+    {
+      "path": "assets/core/home-demo.js",
+      "status": 200,
+      "bytes": 8406,
+      "sha256": "aa8e45271ad791b03e631772b9788b2ea0493f53d46eebff22722069ca7deeee",
+      "matchesGitBlob": true
+    },
+    {
+      "path": "assets/core/home.css",
+      "status": 200,
+      "bytes": 9667,
+      "sha256": "a069d2565a584927afb8330dcb33c531832ef18585789f3a2d6873f18f76f42e",
+      "matchesGitBlob": true
+    },
+    {
+      "path": "assets/core/kit.js",
+      "status": 200,
+      "bytes": 8151,
+      "sha256": "617d84843cad0ad45ba52b0a56c17fba116adb9fb55dea85f3506dc23ac6011f",
+      "matchesGitBlob": true
+    },
+    {
+      "path": "assets/core/layout.css",
+      "status": 200,
+      "bytes": 11279,
+      "sha256": "2e32c0b440c591124da7898722ac9590c5c3ea92fc513180454eef8fd576b5dc",
+      "matchesGitBlob": true
+    },
+    {
+      "path": "assets/core/registry.js",
+      "status": 200,
+      "bytes": 6485,
+      "sha256": "8f05258ab1773f632fcf85b42d0217832955db6db88c4e4cb1da9642c3ddd993",
+      "matchesGitBlob": true
+    },
+    {
+      "path": "assets/core/shell.js",
+      "status": 200,
+      "bytes": 65041,
+      "sha256": "8db887534196a79e2ed03b7e1690524349398f6682d20579f7881b9e5774e306",
+      "matchesGitBlob": true
+    },
+    {
+      "path": "assets/core/tokens.css",
+      "status": 200,
+      "bytes": 6193,
+      "sha256": "342cf33930a31b095c9d5dbcc7476b4e562d4b177bbd07a41f2f906d91aadd89",
+      "matchesGitBlob": true
+    },
+    {
+      "path": "assets/core/ui.css",
+      "status": 200,
+      "bytes": 48164,
+      "sha256": "fcd0839f4f51e166db7b8de06899be0d9cb6b4d245758d50acd9ab548a62b25a",
+      "matchesGitBlob": true
+    },
+    {
+      "path": "assets/data.js",
+      "status": 200,
+      "bytes": 79687,
+      "sha256": "50d502e4675afaae7ac6545e72caef096da9f2e382ab67f868f1746513bdf807",
+      "matchesGitBlob": true
+    },
+    {
+      "path": "assets/models/README.md",
+      "status": 200,
+      "bytes": 3649,
+      "sha256": "ab02f41fc467a0758f03c6a8fdb7adc08bf3d9cb22bb638b61fdf096fdacf06e",
+      "matchesGitBlob": true
+    },
+    {
+      "path": "assets/models/boundary-learning.webp",
+      "status": 200,
+      "bytes": 75770,
+      "sha256": "684b1017d6902312550ab93dfb686ee4084ad34a2e10f425a0f81613791a975b",
+      "matchesGitBlob": true
+    },
+    {
+      "path": "assets/models/casing-deformation.webp",
+      "status": 200,
+      "bytes": 55022,
+      "sha256": "0d6f054dfc553c127fbcebf2cf09a9e15f795850d03f29c94631397a7afe9f98",
+      "matchesGitBlob": true
+    },
+    {
+      "path": "assets/models/cement-displacement.webp",
+      "status": 200,
+      "bytes": 80612,
+      "sha256": "8586f5961f4a7aa4370f399edac2dc74456ec19e61c402f518cbec3accd9eb7d",
+      "matchesGitBlob": true
+    },
+    {
+      "path": "assets/models/cement.webp",
+      "status": 200,
+      "bytes": 75722,
+      "sha256": "2309123225a91e773cf5629c4ba75582b0eafcc5d7c330bac21be38d1fb213c9",
+      "matchesGitBlob": true
+    },
+    {
+      "path": "assets/models/charge-ranking.webp",
+      "status": 200,
+      "bytes": 83362,
+      "sha256": "ad0c0a96c888378ce4e6a8427d5a26e1efedfac549e056502653f4e4572ed7ee",
+      "matchesGitBlob": true
+    },
+    {
+      "path": "assets/models/crosswell-correlation.webp",
+      "status": 200,
+      "bytes": 94526,
+      "sha256": "b7eae01ca64f20e4dbb2111ed4f5ff2d7395ead1148e3e07f5bb7314e77feaad",
+      "matchesGitBlob": true
+    },
+    {
+      "path": "assets/models/cuttings.webp",
+      "status": 200,
+      "bytes": 91858,
+      "sha256": "e2531624cd93f4732df06855f5526014b702b165ced08f8f2911f69a4ee45558",
+      "matchesGitBlob": true
+    },
+    {
+      "path": "assets/models/drilling-warning.webp",
+      "status": 200,
+      "bytes": 78042,
+      "sha256": "d5e1f98d796b185be3986369db2ac9bd47a309dedcde51f901dde450fdf66386",
+      "matchesGitBlob": true
+    },
+    {
+      "path": "assets/models/formulation-search.webp",
+      "status": 200,
+      "bytes": 53086,
+      "sha256": "073db7e0a74070ae821c1e7d55e9ab6b9ceda3979d6c3e042c64faafded084d4",
+      "matchesGitBlob": true
+    },
+    {
+      "path": "assets/models/fracture.webp",
+      "status": 200,
+      "bytes": 115490,
+      "sha256": "177b4e71657eeb3a620c8f8727e11c3d27e43222304d316017dc5daa48c6819a",
+      "matchesGitBlob": true
+    },
+    {
+      "path": "assets/models/gas-events.webp",
+      "status": 200,
+      "bytes": 63794,
+      "sha256": "16890e8d54fb1d740ddedc46813746666e955e892452b41c5fc1a0ae3d77b76a",
+      "matchesGitBlob": true
+    },
+    {
+      "path": "assets/models/geochem.webp",
+      "status": 200,
+      "bytes": 116194,
+      "sha256": "7acf305ce9c4860c98e1d1822d00450a10d40e55bd3dc903f7aa4654efd102a8",
+      "matchesGitBlob": true
+    },
+    {
+      "path": "assets/models/home-strata-background.prompt.txt",
+      "status": 200,
+      "bytes": 1643,
+      "sha256": "02afedcf503523aee0fbcb9076fd108a404581694fa13f7eb1d450e3c2d976d8",
+      "matchesGitBlob": true
+    },
+    {
+      "path": "assets/models/home-strata-background.webp",
+      "status": 200,
+      "bytes": 192992,
+      "sha256": "07da25cbade60c64de4ec02d8f6fc05b254f7ee0243b54c004577f242e8e18c4",
+      "matchesGitBlob": true
+    },
+    {
+      "path": "assets/models/layering.webp",
+      "status": 200,
+      "bytes": 113102,
+      "sha256": "465118c1e960cc1977ee75c664b3924fcc724a6af352550afd8771cb8652de7d",
+      "matchesGitBlob": true
+    },
+    {
+      "path": "assets/models/lithology.webp",
+      "status": 200,
+      "bytes": 105798,
+      "sha256": "87fdc4fc98f05dee8cb37ca84b9ac190f7a1f83d7d51a9390d735fb400a66205",
+      "matchesGitBlob": true
+    },
+    {
+      "path": "assets/models/multiwell.webp",
+      "status": 200,
+      "bytes": 97598,
+      "sha256": "07fa8addd6b8eff521af4106d2322b55e1c7917e0aeb1c2e46b39bcf64875ad0",
+      "matchesGitBlob": true
+    },
+    {
+      "path": "assets/models/optimization-2026-11-03.json",
+      "status": 200,
+      "bytes": 3398,
+      "sha256": "da207d9b653be12529fa161ca17ee8025ccc39b54b7d2fdcb51e6ef42443e24e",
+      "matchesGitBlob": true
+    },
+    {
+      "path": "assets/models/pipeline-leak.webp",
+      "status": 200,
+      "bytes": 98594,
+      "sha256": "65c294f6d02c5b42433d496b5074f8c2caa573974542c72fbc5c0c5019bcda3a",
+      "matchesGitBlob": true
+    },
+    {
+      "path": "assets/models/production-forecast.webp",
+      "status": 200,
+      "bytes": 93534,
+      "sha256": "d3dd5f3740eed936c345b7fe7acd02e7420db673088785584cc7e1b7e4bb4a93",
+      "matchesGitBlob": true
+    },
+    {
+      "path": "assets/models/prompts-expansion-2026-11-03.json",
+      "status": 200,
+      "bytes": 17968,
+      "sha256": "b5931948637dc8ae722cdb311e6b973a1eee190d437071781312c0671bc2aae9",
+      "matchesGitBlob": true
+    },
+    {
+      "path": "assets/models/prompts-unique-cases.json",
+      "status": 200,
+      "bytes": 5106,
+      "sha256": "e6e11c841682614d231594ef4eb186b724fbed4c83f1c81ad7bbea03ac1e4708",
+      "matchesGitBlob": true
+    },
+    {
+      "path": "assets/models/prompts.json",
+      "status": 200,
+      "bytes": 6377,
+      "sha256": "b3ed7f530fecb207afc8a67cfa6226a69f30a92374a86d20a109c514891df525",
+      "matchesGitBlob": true
+    },
+    {
+      "path": "assets/models/pump.webp",
+      "status": 200,
+      "bytes": 90668,
+      "sha256": "0c9a502dc1cbb2949e129072a3a62e5fb0c7e1630eb852885c7dd42d4f351ec4",
+      "matchesGitBlob": true
+    },
+    {
+      "path": "assets/models/quality-soft-sensor.webp",
+      "status": 200,
+      "bytes": 62016,
+      "sha256": "dddd706485402f383f3478567d1ae352c04526917f93b13aec0bab0541680561",
+      "matchesGitBlob": true
+    },
+    {
+      "path": "assets/models/reconstruction.webp",
+      "status": 200,
+      "bytes": 100014,
+      "sha256": "e61489d5022e8cbc432de6d0ba5735b61c3ae961fd9fc5e0ce1d912fca740810",
+      "matchesGitBlob": true
+    },
+    {
+      "path": "assets/models/reservoir.webp",
+      "status": 200,
+      "bytes": 121898,
+      "sha256": "9bad1f02aa7bbb7d7e0e9af0aaa80a7e60ae1e4ba0d65e27d179ca0ae681375a",
+      "matchesGitBlob": true
+    },
+    {
+      "path": "assets/models/seismic-fault.webp",
+      "status": 200,
+      "bytes": 85676,
+      "sha256": "98225e7f9f42c37b38c3b9c69214131ea7ad01e53e64868c3617439ab10e9642",
+      "matchesGitBlob": true
+    },
+    {
+      "path": "assets/models/zonal-control.webp",
+      "status": 200,
+      "bytes": 110074,
+      "sha256": "1b33b01df6eb410efb8bfc0e6333c55946ba56e9d2917e8815d977a7c1c64330",
+      "matchesGitBlob": true
+    },
+    {
+      "path": "docs/PROPOSAL.md",
+      "status": 200,
+      "bytes": 26408,
+      "sha256": "b12fb141603fa9b2ffa94d75158ef73dd1e2cd6e7827289da5c7de3ddb869b4d",
+      "matchesGitBlob": true
+    },
+    {
+      "path": "docs/evidence.html",
+      "status": 200,
+      "bytes": 8037,
+      "sha256": "32eaf1c6e8999f423efaf9f096b4358699ecfb1442d964fd58796f03fcd7abc0",
+      "matchesGitBlob": true
+    },
+    {
+      "path": "docs/evidence/expansion-acceptance-2026-11-03.md",
+      "status": 200,
+      "bytes": 8325,
+      "sha256": "118e8539a2cf9ab1d235601a94fd3dee2c73ec06685ea784560d32e37eccbfba",
+      "matchesGitBlob": true
+    },
+    {
+      "path": "docs/evidence/expansion-audit.json",
+      "status": 200,
+      "bytes": 232968,
+      "sha256": "d0b69e57e91fc4d6bfc685e865336be7abf0b7f06a9ea966197a5444ce845181",
+      "matchesGitBlob": true
+    },
+    {
+      "path": "docs/evidence/expansion-audit.md",
+      "status": 200,
+      "bytes": 12863,
+      "sha256": "73376dba5063c0f38128261c0da0c000d38f34fe9cd1908f5963c388d8a438de",
+      "matchesGitBlob": true
+    },
+    {
+      "path": "docs/evidence/expansion/audit-viewer.webp",
+      "status": 200,
+      "bytes": 63152,
+      "sha256": "356512eea466cf9327ca7b12ae8273305016a3e11593c7ffc2af5a555e3504de",
+      "matchesGitBlob": true
+    },
+    {
+      "path": "docs/evidence/expansion/browser-checks.json",
+      "status": 200,
+      "bytes": 15537,
+      "sha256": "8ab9ad649b8a2acea2ace5354e5ba6c6277fad610eafe6de594a678372168433",
+      "matchesGitBlob": true
+    },
+    {
+      "path": "docs/evidence/expansion/c2-cement-displacement-1280.webp",
+      "status": 200,
+      "bytes": 43576,
+      "sha256": "4f51803f488887805d5fc13a8fd877bd7dd7bb4fed41e44e40409dd54b80ef89",
+      "matchesGitBlob": true
+    },
+    {
+      "path": "docs/evidence/expansion/c2-cement-displacement-375.webp",
+      "status": 200,
+      "bytes": 33582,
+      "sha256": "51b41f5ff5bfb74d3a02d9e6bc55370fc30fd47ca0a2ad92eb2ead31aa82970c",
+      "matchesGitBlob": true
+    },
+    {
+      "path": "docs/evidence/expansion/co4-zonal-control-1280.webp",
+      "status": 200,
+      "bytes": 49510,
+      "sha256": "10fe2b1a219bccb8ec7fd148458fe3f8a82571a6ac8ab7f5999f5d1d3f122972",
+      "matchesGitBlob": true
+    },
+    {
+      "path": "docs/evidence/expansion/co4-zonal-control-375.webp",
+      "status": 200,
+      "bytes": 26548,
+      "sha256": "d5f4c4a2303c41c57e243c13f3a47cf0c39f0b81899ab770d0e3e10666bac033",
+      "matchesGitBlob": true
+    },
+    {
+      "path": "docs/evidence/expansion/concept-models.jpg",
+      "status": 200,
+      "bytes": 182735,
+      "sha256": "c645774c2752d866c87eb0b9803305d34ad489c1511f1081fcb00b562c1a303c",
+      "matchesGitBlob": true
+    },
+    {
+      "path": "docs/evidence/expansion/d2-drilling-warning-1280.webp",
+      "status": 200,
+      "bytes": 36860,
+      "sha256": "a7af82b4742dc1f52deca53728f80f5259db54eb1876a44115aae7b57bbe83f9",
+      "matchesGitBlob": true
+    },
+    {
+      "path": "docs/evidence/expansion/d2-drilling-warning-375.webp",
+      "status": 200,
+      "bytes": 31520,
+      "sha256": "7492e46ea5b422c3db70803f7d0eea2be35f9fcd9bfeec1bf6b53f3f9201f441",
+      "matchesGitBlob": true
+    },
+    {
+      "path": "docs/evidence/expansion/e3-formulation-search-1280.webp",
+      "status": 200,
+      "bytes": 46124,
+      "sha256": "aea5e1cd9f4e89c7a11e0ef86ac8d7e40545866b2c63eafee3106c1736c0f1db",
+      "matchesGitBlob": true
+    },
+    {
+      "path": "docs/evidence/expansion/e3-formulation-search-375.webp",
+      "status": 200,
+      "bytes": 36064,
+      "sha256": "928fbb7c0617e11857858e52b978a5eed8ff1446402a4039a88cada5845da665",
+      "matchesGitBlob": true
+    },
+    {
+      "path": "docs/evidence/expansion/g2-geochem-anomaly-1280.webp",
+      "status": 200,
+      "bytes": 66190,
+      "sha256": "5af334a98a9259ea79c3ed5a8940c3440ddaad28c48b280e74ad2a09c7334ada",
+      "matchesGitBlob": true
+    },
+    {
+      "path": "docs/evidence/expansion/g2-geochem-anomaly-375.webp",
+      "status": 200,
+      "bytes": 46796,
+      "sha256": "3df762f371d7807054301fea431c29b94fdceb5c22d9f840881b0af0d5d2dd08",
+      "matchesGitBlob": true
+    },
+    {
+      "path": "docs/evidence/expansion/home.webp",
+      "status": 200,
+      "bytes": 75258,
+      "sha256": "ff44ebe19b8a40e78833a005931473eb3d5b3eb8a794d2b7395855434dcd2d6f",
+      "matchesGitBlob": true
+    },
+    {
+      "path": "docs/evidence/expansion/m2-gas-events-1280.webp",
+      "status": 200,
+      "bytes": 35236,
+      "sha256": "5cd7f0e67fc33cd87963828e3a27c801daa48875d3a56f68b39e37a9d6f71d72",
+      "matchesGitBlob": true
+    },
+    {
+      "path": "docs/evidence/expansion/m2-gas-events-375.webp",
+      "status": 200,
+      "bytes": 30146,
+      "sha256": "41323034c60170ad5381e98b830b81d5ab0bd3b9ee29e6eb55e9abb8e75477a6",
+      "matchesGitBlob": true
+    },
+    {
+      "path": "docs/evidence/expansion/models-checks.json",
+      "status": 200,
+      "bytes": 4214,
+      "sha256": "da13b579e745624e1e0fb688fca3f4940b386804486cc1c9aa3b9bba275c489b",
+      "matchesGitBlob": true
+    },
+    {
+      "path": "docs/evidence/expansion/original-checks.json",
+      "status": 200,
+      "bytes": 3353,
+      "sha256": "045758b3c449685fe5e66eaa12dbe7b98ffd1f191f3cb41f82d590b1f53e1798",
+      "matchesGitBlob": true
+    },
+    {
+      "path": "docs/evidence/expansion/original-file-hashes.json",
+      "status": 200,
+      "bytes": 947,
+      "sha256": "afde5a42f367a37ab7ae85c39261f3139418da7ab8a928d02d352030b73fc444",
+      "matchesGitBlob": true
+    },
+    {
+      "path": "docs/evidence/expansion/p3-charge-ranking-1280.webp",
+      "status": 200,
+      "bytes": 46764,
+      "sha256": "5f6838330824bd5bff5e2e62c28a13a4e6506fd2b785b356761156102a72ef7d",
+      "matchesGitBlob": true
+    },
+    {
+      "path": "docs/evidence/expansion/p3-charge-ranking-375.webp",
+      "status": 200,
+      "bytes": 35296,
+      "sha256": "627484f3fcdefd71a573ac6110fd9069965a6ffa6e3e3924cd2664ab89bd6389",
+      "matchesGitBlob": true
+    },
+    {
+      "path": "docs/evidence/expansion/pr2-production-forecast-1280.webp",
+      "status": 200,
+      "bytes": 42024,
+      "sha256": "6905b9fbb509792a7ee4c0edf1945632a0f46bfa46d0e4c9159d2e8659c97419",
+      "matchesGitBlob": true
+    },
+    {
+      "path": "docs/evidence/expansion/pr2-production-forecast-375.webp",
+      "status": 200,
+      "bytes": 32036,
+      "sha256": "f3599043722bab75909f195e3c7d018fe86105b933a623dbfcb7f44f46105943",
+      "matchesGitBlob": true
+    },
+    {
+      "path": "docs/evidence/expansion/presentation-checks.json",
+      "status": 200,
+      "bytes": 214,
+      "sha256": "a89b8a60e5acc837990ce24779316c5e3399cc08565e5a80dde7d5cdee22e4f7",
+      "matchesGitBlob": true
+    },
+    {
+      "path": "docs/evidence/expansion/r5-quality-soft-sensor-1280.webp",
+      "status": 200,
+      "bytes": 35170,
+      "sha256": "0d66be568e073a61349ebb380a847c3d97cf1820c774cc5c60c1ec3b2f0d6bae",
+      "matchesGitBlob": true
+    },
+    {
+      "path": "docs/evidence/expansion/r5-quality-soft-sensor-375.webp",
+      "status": 200,
+      "bytes": 30788,
+      "sha256": "59d39f3bd1c4de33bba365a07a15fa2857c7efe4a422348d767b9336b25c8be7",
+      "matchesGitBlob": true
+    },
+    {
+      "path": "docs/evidence/expansion/s1-seismic-fault-1280.webp",
+      "status": 200,
+      "bytes": 66632,
+      "sha256": "90210630739313f9b5e7a62210217fde5fa9d8c55f0a3fdb7373b5181a304741",
+      "matchesGitBlob": true
+    },
+    {
+      "path": "docs/evidence/expansion/s1-seismic-fault-375.webp",
+      "status": 200,
+      "bytes": 42952,
+      "sha256": "cc15477d346792708c6c1211683311c09d4b51171367c60d121e2d629d11414e",
+      "matchesGitBlob": true
+    },
+    {
+      "path": "docs/evidence/expansion/t1-pipeline-leak-1280.webp",
+      "status": 200,
+      "bytes": 39470,
+      "sha256": "196a7c879c03bd7f15769ba221296591b2961e61a89b3b729f3a3cf41e3c0f76",
+      "matchesGitBlob": true
+    },
+    {
+      "path": "docs/evidence/expansion/t1-pipeline-leak-375.webp",
+      "status": 200,
+      "bytes": 32274,
+      "sha256": "ad6b82805b1e4efc4f1f940743127b3412f7fcbec662734445f2f0307de46b00",
+      "matchesGitBlob": true
+    },
+    {
+      "path": "docs/evidence/expansion/w1-crosswell-correlation-1280.webp",
+      "status": 200,
+      "bytes": 52522,
+      "sha256": "a66e34b58a89de9ecb9bde258968e994e447a07bd1c790929041f751faaa4d3a",
+      "matchesGitBlob": true
+    },
+    {
+      "path": "docs/evidence/expansion/w1-crosswell-correlation-375.webp",
+      "status": 200,
+      "bytes": 35478,
+      "sha256": "679f15112be9e120f388dba2c278ca0eeda901a81679b55f79bb1de0394da89d",
+      "matchesGitBlob": true
+    },
+    {
+      "path": "docs/evidence/expansion/wo3-casing-deformation-1280.webp",
+      "status": 200,
+      "bytes": 47934,
+      "sha256": "2d27cba8633e3a0d941f4fa62d57a8fd2618c1ea655ee1620227e5b19c078a00",
+      "matchesGitBlob": true
+    },
+    {
+      "path": "docs/evidence/expansion/wo3-casing-deformation-375.webp",
+      "status": 200,
+      "bytes": 34162,
+      "sha256": "a11b08f194f16d171efbbd2a47cb63b29b01b9e0374f4e48b659d11e91ba30de",
+      "matchesGitBlob": true
+    },
+    {
+      "path": "index.html",
+      "status": 200,
+      "bytes": 3060,
+      "sha256": "6a394f44a416652ba4c389c58da7c4e3d6eb84e0331b9669a1268361bee02254",
+      "matchesGitBlob": true
+    },
+    {
+      "path": "packages/c1-cement/README.txt",
+      "status": 200,
+      "bytes": 1250,
+      "sha256": "c127bc37e5dd0319696efa25ba09567ed393422cfe66297871457e9b1264dd22",
+      "matchesGitBlob": true
+    },
+    {
+      "path": "packages/c1-cement/case.json",
+      "status": 200,
+      "bytes": 153080,
+      "sha256": "854762314f9a677b82ce6d28f2a17ec582eb0f00470a5f9150b3b3bf34374019",
+      "matchesGitBlob": true
+    },
+    {
+      "path": "packages/c1-cement/demo/demo.js",
+      "status": 200,
+      "bytes": 37200,
+      "sha256": "35717e6a3bd1bf86958ae0d55bef4d4a600b7f0f7a3872621b00c96fdc25d953",
+      "matchesGitBlob": true
+    },
+    {
+      "path": "packages/c2-cement-displacement/README.txt",
+      "status": 200,
+      "bytes": 1263,
+      "sha256": "d13b2d8f85df76a75300440436627188ba54edcd643956e02fde6824045718d8",
+      "matchesGitBlob": true
+    },
+    {
+      "path": "packages/c2-cement-displacement/case.json",
+      "status": 200,
+      "bytes": 128472,
+      "sha256": "8f3a33cfd86952bf8c2c1404b28c7ef188394aa0b4026827a23878a970c0c5a5",
+      "matchesGitBlob": true
+    },
+    {
+      "path": "packages/c2-cement-displacement/demo/demo.js",
+      "status": 200,
+      "bytes": 47545,
+      "sha256": "a8ace9aa713323d495d41e09c911d1346884a0d119f4676ba96d998d8d548ed0",
+      "matchesGitBlob": true
+    },
+    {
+      "path": "packages/co4-zonal-control/README.txt",
+      "status": 200,
+      "bytes": 1210,
+      "sha256": "8b0274e59e103a623581c3d4d961fa152a9445f8e8aa042637ee28d6b5e28e59",
+      "matchesGitBlob": true
+    },
+    {
+      "path": "packages/co4-zonal-control/case.json",
+      "status": 200,
+      "bytes": 167683,
+      "sha256": "29071fdc06025953bf91e2670941cc7f74d37d48401a6cc9783d81c6da88773a",
+      "matchesGitBlob": true
+    },
+    {
+      "path": "packages/co4-zonal-control/demo/demo.js",
+      "status": 200,
+      "bytes": 48293,
+      "sha256": "a90da59018a7dfc1297515ea4819aeb861d903c013bfb58bf17861f515ed5dad",
+      "matchesGitBlob": true
+    },
+    {
+      "path": "packages/d2-drilling-warning/README.txt",
+      "status": 200,
+      "bytes": 1294,
+      "sha256": "d559828350c954e3df32136da499983c57789d21aa66c82f522b3db6528cf1e3",
+      "matchesGitBlob": true
+    },
+    {
+      "path": "packages/d2-drilling-warning/case.json",
+      "status": 200,
+      "bytes": 125390,
+      "sha256": "1606cdae9f87bb01df138c6674be697d1176c79470fcefdbc035d2ec2831ef39",
+      "matchesGitBlob": true
+    },
+    {
+      "path": "packages/d2-drilling-warning/demo/demo.js",
+      "status": 200,
+      "bytes": 48435,
+      "sha256": "f8a11c3c4e3a5235fee0c0e85e14a7834e664e472c46d465b6af76d0444d246e",
+      "matchesGitBlob": true
+    },
+    {
+      "path": "packages/e3-formulation-search/README.txt",
+      "status": 200,
+      "bytes": 1267,
+      "sha256": "813e60e4270b24f4eea2e039b8cb60da04fd46b2e49e5108a985b039e93c9863",
+      "matchesGitBlob": true
+    },
+    {
+      "path": "packages/e3-formulation-search/case.json",
+      "status": 200,
+      "bytes": 91776,
+      "sha256": "caeb0ea65fe99957e68c5f4af0bac22333f5bd41c04519a8cec33714002a0f63",
+      "matchesGitBlob": true
+    },
+    {
+      "path": "packages/e3-formulation-search/demo/demo.js",
+      "status": 200,
+      "bytes": 48715,
+      "sha256": "a2e573fbb5ab3341359ec72786f68686cc3d66ef9945ff35b3654bde15a4b364",
+      "matchesGitBlob": true
+    },
+    {
+      "path": "packages/g2-geochem-anomaly/README.txt",
+      "status": 200,
+      "bytes": 1198,
+      "sha256": "c8ea9221b1821986ea7ccc139432df5c8f04f70eba44c2cbe568480d885b730f",
+      "matchesGitBlob": true
+    },
+    {
+      "path": "packages/g2-geochem-anomaly/case.json",
+      "status": 200,
+      "bytes": 175375,
+      "sha256": "9c79a172d80670d2ffc9341db746812c5b7f7f8ca7a2debea1e5fd43dc7affad",
+      "matchesGitBlob": true
+    },
+    {
+      "path": "packages/g2-geochem-anomaly/demo/demo.js",
+      "status": 200,
+      "bytes": 48130,
+      "sha256": "ef50182c34dc7ccf2dead949adb51b9cd20a945179fe16c6a43901c218946090",
+      "matchesGitBlob": true
+    },
+    {
+      "path": "packages/m1-cuttings/README.txt",
+      "status": 200,
+      "bytes": 1254,
+      "sha256": "676619efe7e1fe28f04dc34e087d0763faee97f494389081ac5073ff8e36a8b2",
+      "matchesGitBlob": true
+    },
+    {
+      "path": "packages/m1-cuttings/case.json",
+      "status": 200,
+      "bytes": 190568,
+      "sha256": "a988061b5e966ec68aa5a8d6906790bf13c7f1e67ae8576553e471deedd3b2b1",
+      "matchesGitBlob": true
+    },
+    {
+      "path": "packages/m1-cuttings/demo/demo.js",
+      "status": 200,
+      "bytes": 35706,
+      "sha256": "4033d665e59f0c7d5cb2b2c21f2999b885eafa73ea3817d37d5ad08650f2c5cc",
+      "matchesGitBlob": true
+    },
+    {
+      "path": "packages/m2-gas-events/README.txt",
+      "status": 200,
+      "bytes": 1226,
+      "sha256": "237b9d76835537d3e50c8fa9fbde41c2ff2cedf932a2b09247e6379a4e40374d",
+      "matchesGitBlob": true
+    },
+    {
+      "path": "packages/m2-gas-events/case.json",
+      "status": 200,
+      "bytes": 105850,
+      "sha256": "917a0a3c6b3c22fc8a9e11948e4a164fbdb57f47b5062ed35cb8282b14acaa5c",
+      "matchesGitBlob": true
+    },
+    {
+      "path": "packages/m2-gas-events/demo/demo.js",
+      "status": 200,
+      "bytes": 47292,
+      "sha256": "42d5b7e98923a3266d918627ccbaca2d96c459c7f55a48f512eabe91a3151f22",
+      "matchesGitBlob": true
+    },
+    {
+      "path": "packages/p3-charge-ranking/README.txt",
+      "status": 200,
+      "bytes": 1228,
+      "sha256": "2c7b7e4c0427ec1b118475cf684356b3ffd11a5f81c36b74d718df8dbdf9e928",
+      "matchesGitBlob": true
+    },
+    {
+      "path": "packages/p3-charge-ranking/case.json",
+      "status": 200,
+      "bytes": 131874,
+      "sha256": "eca6cd8c4ae4ac165b3a623f95e30f74afe0a5d7659002c3d4ece6b178e80129",
+      "matchesGitBlob": true
+    },
+    {
+      "path": "packages/p3-charge-ranking/demo/demo.js",
+      "status": 200,
+      "bytes": 47835,
+      "sha256": "bb35d674cdafa78402e6d526da72f99ad83d8d66eea98b94e88334b19dba0dd8",
+      "matchesGitBlob": true
+    },
+    {
+      "path": "packages/pr1-dynamometer/README.txt",
+      "status": 200,
+      "bytes": 1272,
+      "sha256": "91b4b4cf7052634e73b447874b0128829adcdcd7da7bfde83108cd6700028de5",
+      "matchesGitBlob": true
+    },
+    {
+      "path": "packages/pr1-dynamometer/case.json",
+      "status": 200,
+      "bytes": 190321,
+      "sha256": "95bba73a1ce3d7511d87f35e9f709c651f8c8da37a7ad3c648936292efff684f",
+      "matchesGitBlob": true
+    },
+    {
+      "path": "packages/pr1-dynamometer/demo/demo.js",
+      "status": 200,
+      "bytes": 40959,
+      "sha256": "431531ff7583467fd57c3618e5e3cc98d23161aa23cb53d13943835729c4d4f7",
+      "matchesGitBlob": true
+    },
+    {
+      "path": "packages/pr2-production-forecast/README.txt",
+      "status": 200,
+      "bytes": 1255,
+      "sha256": "c1ee9e1ab54f273e96e33a5b9ca60d4b205d0aeb5b39ed1a312fce8c94fde6cf",
+      "matchesGitBlob": true
+    },
+    {
+      "path": "packages/pr2-production-forecast/case.json",
+      "status": 200,
+      "bytes": 145791,
+      "sha256": "d1baf1c27e56056e28de9a51d64a8ad5208f8f7153a9afac19c81c942591a680",
+      "matchesGitBlob": true
+    },
+    {
+      "path": "packages/pr2-production-forecast/demo/demo.js",
+      "status": 200,
+      "bytes": 48855,
+      "sha256": "3e29158de848c937139f0c26fc1244bc865fcfded8828350b0a1195705a4a38e",
+      "matchesGitBlob": true
+    },
+    {
+      "path": "packages/r5-quality-soft-sensor/README.txt",
+      "status": 200,
+      "bytes": 1284,
+      "sha256": "3be42c6c63ab99d96cbca20c727948452ec92beb39dfba7feb5fe098eeda67ce",
+      "matchesGitBlob": true
+    },
+    {
+      "path": "packages/r5-quality-soft-sensor/case.json",
+      "status": 200,
+      "bytes": 103914,
+      "sha256": "8bae010ef0d703ea078b40662d2d49090f9c26dd8c898e923aa3b63a84298750",
+      "matchesGitBlob": true
+    },
+    {
+      "path": "packages/r5-quality-soft-sensor/demo/demo.js",
+      "status": 200,
+      "bytes": 48258,
+      "sha256": "4320cdf6ba0277009d503af255912ddc0489c328cacfbbb7b8d5c67d4b343f72",
+      "matchesGitBlob": true
+    },
+    {
+      "path": "packages/s1-seismic-fault/README.txt",
+      "status": 200,
+      "bytes": 1246,
+      "sha256": "bb2cce93b5a1f52e2733c46e05242d9050be26691b34ca6556f1899e9c2283ee",
+      "matchesGitBlob": true
+    },
+    {
+      "path": "packages/s1-seismic-fault/case.json",
+      "status": 200,
+      "bytes": 134916,
+      "sha256": "6d8cafa89d47d5e1733f134d81585145790ba2bedf74817f1cc3e27f775ac0dd",
+      "matchesGitBlob": true
+    },
+    {
+      "path": "packages/s1-seismic-fault/demo/demo.js",
+      "status": 200,
+      "bytes": 48612,
+      "sha256": "3f038083f51afa8ff1489b5266eef0808d30fb64b9b532fe7a9310e069fe75b9",
+      "matchesGitBlob": true
+    },
+    {
+      "path": "packages/t1-pipeline-leak/README.txt",
+      "status": 200,
+      "bytes": 1249,
+      "sha256": "106eebc2f4f75c74f3f22ddc394c7c8a1ceac4e24c34943bec30f3d7e908a66a",
+      "matchesGitBlob": true
+    },
+    {
+      "path": "packages/t1-pipeline-leak/case.json",
+      "status": 200,
+      "bytes": 152491,
+      "sha256": "4b79d947cae91ebfcea2749f5cf3dcdb7a2a6546299ffeb221f01b057c436953",
+      "matchesGitBlob": true
+    },
+    {
+      "path": "packages/t1-pipeline-leak/demo/demo.js",
+      "status": 200,
+      "bytes": 48923,
+      "sha256": "c786d1c515ee05fdb19d5ed01c994df65132c79dda5ffff03100c41bd43bd44f",
+      "matchesGitBlob": true
+    },
+    {
+      "path": "packages/w1-boundary-learning/README.txt",
+      "status": 200,
+      "bytes": 1208,
+      "sha256": "cbb5f1fb7ebd1e74633940e683639c1ea7d99a50d78d2da9736dc9fe884e0f75",
+      "matchesGitBlob": true
+    },
+    {
+      "path": "packages/w1-boundary-learning/case.json",
+      "status": 200,
+      "bytes": 117825,
+      "sha256": "b46d6569080322598ad6a11a6c715a3b2a81b9369791884794b0cc961fda9702",
+      "matchesGitBlob": true
+    },
+    {
+      "path": "packages/w1-boundary-learning/demo/demo.js",
+      "status": 200,
+      "bytes": 26721,
+      "sha256": "58f1979cf9712ab8819b61cf4f5e7be4e74d53c8cd991be634235530bac82916",
+      "matchesGitBlob": true
+    },
+    {
+      "path": "packages/w1-crosswell-correlation/README.txt",
+      "status": 200,
+      "bytes": 1278,
+      "sha256": "351b13fc7007bdd708e5d7a6dc5b97ed93a9d17f64c60736ae400907cb3cbf54",
+      "matchesGitBlob": true
+    },
+    {
+      "path": "packages/w1-crosswell-correlation/case.json",
+      "status": 200,
+      "bytes": 147217,
+      "sha256": "1b9f727b434bd76a1b6b4fcb6b31d8a0693793640ae96de809ba3b3a8a9268c7",
+      "matchesGitBlob": true
+    },
+    {
+      "path": "packages/w1-crosswell-correlation/demo/demo.js",
+      "status": 200,
+      "bytes": 48601,
+      "sha256": "df60364389401e0cf807bf9bfa9fd059dd3b4f560f319a6e9b9a9867644480c2",
+      "matchesGitBlob": true
+    },
+    {
+      "path": "packages/w2-reservoir-param/README.txt",
+      "status": 200,
+      "bytes": 1191,
+      "sha256": "6e7c8cc33539192d65d18cd5a53fd6144b0b8b6132ca0d6ebb02c3febf31c05f",
+      "matchesGitBlob": true
+    },
+    {
+      "path": "packages/w2-reservoir-param/case.json",
+      "status": 200,
+      "bytes": 201337,
+      "sha256": "e051b0c6f760dd94cd7fddd5d1cec98459e68291b35a971fb26c6dfa94618e6d",
+      "matchesGitBlob": true
+    },
+    {
+      "path": "packages/w2-reservoir-param/demo/demo.js",
+      "status": 200,
+      "bytes": 42186,
+      "sha256": "3987716daa501a20f8d807c1950f2bab1a3d0d7e2738cb8f61e6a91078f02004",
+      "matchesGitBlob": true
+    },
+    {
+      "path": "packages/w3-imaging-fracture/README.txt",
+      "status": 200,
+      "bytes": 1260,
+      "sha256": "363176333b24adf15c746b684200950d21a06325177ebfab24c5fae05f988ea0",
+      "matchesGitBlob": true
+    },
+    {
+      "path": "packages/w3-imaging-fracture/case.json",
+      "status": 200,
+      "bytes": 189989,
+      "sha256": "eff68ca8e25be6f55b5b17401654ffc10be9c11961c85d7a976b70a076d9d8cc",
+      "matchesGitBlob": true
+    },
+    {
+      "path": "packages/w3-imaging-fracture/demo/demo.js",
+      "status": 200,
+      "bytes": 50348,
+      "sha256": "1891beea8f17a361325640230f0084cc131a93ba63939a05a6c742005e864065",
+      "matchesGitBlob": true
+    },
+    {
+      "path": "packages/w4-lithology/README.txt",
+      "status": 200,
+      "bytes": 1309,
+      "sha256": "1b3cdd6307697c8881a79277e74977fd531ddb9eef9f833219db2632bcfee602",
+      "matchesGitBlob": true
+    },
+    {
+      "path": "packages/w4-lithology/case.json",
+      "status": 200,
+      "bytes": 199644,
+      "sha256": "6c224d5e18831ba39ec703072c8aeba2fa51f1a17d6c86ae1c7336ea5590ef3d",
+      "matchesGitBlob": true
+    },
+    {
+      "path": "packages/w4-lithology/demo/demo.js",
+      "status": 200,
+      "bytes": 50709,
+      "sha256": "97f6c5f5b609004d46d314e98a4a6d2a237d591be0676acf81ef0743e79d0faf",
+      "matchesGitBlob": true
+    },
+    {
+      "path": "packages/w5-completion/README.txt",
+      "status": 200,
+      "bytes": 1267,
+      "sha256": "b977ed962473f36cf36247acfc5be89af93c6f5b3038b7bbc75bedb7b5ad42b6",
+      "matchesGitBlob": true
+    },
+    {
+      "path": "packages/w5-completion/case.json",
+      "status": 200,
+      "bytes": 189988,
+      "sha256": "d69929838eab7344badb419385c2c4bb0690360854adb2eadda6b49422302396",
+      "matchesGitBlob": true
+    },
+    {
+      "path": "packages/w5-completion/demo/demo.js",
+      "status": 200,
+      "bytes": 53477,
+      "sha256": "48b7d293064eeb37c0eea63f10ef565ed9c39a93f50c582534f53ba43bb53985",
+      "matchesGitBlob": true
+    },
+    {
+      "path": "packages/w5-normalization/README.txt",
+      "status": 200,
+      "bytes": 1241,
+      "sha256": "024256d76599b46ed24f8168e8f91d12b2eb7d67b35d43fb9bd50311cd529919",
+      "matchesGitBlob": true
+    },
+    {
+      "path": "packages/w5-normalization/case.json",
+      "status": 200,
+      "bytes": 184135,
+      "sha256": "176d752d41daa45ceb87398ecc983673ba1a92e9531b95809f03614ba4bf248c",
+      "matchesGitBlob": true
+    },
+    {
+      "path": "packages/w5-normalization/demo/demo.js",
+      "status": 200,
+      "bytes": 37424,
+      "sha256": "6acdf3b5422258afaa09f7b65498e9218bb858d5d2d38be5d09734b11fc81e59",
+      "matchesGitBlob": true
+    },
+    {
+      "path": "packages/wo3-casing-deformation/README.txt",
+      "status": 200,
+      "bytes": 1210,
+      "sha256": "7d9d43a812bd86885d9d4a682e96ed049f2d2e728a28cd3b1ef1d4bc946699d3",
+      "matchesGitBlob": true
+    },
+    {
+      "path": "packages/wo3-casing-deformation/case.json",
+      "status": 200,
+      "bytes": 93929,
+      "sha256": "37cea3fe86aa966bdb8ad26b0bc27e47cc2022aa77487bbabd77769952f935d1",
+      "matchesGitBlob": true
+    },
+    {
+      "path": "packages/wo3-casing-deformation/demo/demo.js",
+      "status": 200,
+      "bytes": 47932,
+      "sha256": "5548a18afded1a4150fcf1c424e9d4940d95014941dab9bc4a796f27adf98943",
+      "matchesGitBlob": true
+    }
+  ],
+  "failed": []
+}

@@ -1,0 +1,73 @@
+{
+  "base": "https://boveyh.github.io/Intelligent-Map-for-Oil-Exploration-and-Development/",
+  "homeCount": 23,
+  "modules": 13,
+  "rows": [
+    {
+      "id": "d2-drilling-warning",
+      "mounted": true,
+      "inputChangesEvidence": true
+    },
+    {
+      "id": "s1-seismic-fault",
+      "mounted": true,
+      "inputChangesEvidence": true
+    },
+    {
+      "id": "t1-pipeline-leak",
+      "mounted": true,
+      "inputChangesEvidence": true
+    },
+    {
+      "id": "r5-quality-soft-sensor",
+      "mounted": true,
+      "inputChangesEvidence": true
+    },
+    {
+      "id": "g2-geochem-anomaly",
+      "mounted": true,
+      "inputChangesEvidence": true
+    },
+    {
+      "id": "co4-zonal-control",
+      "mounted": true,
+      "inputChangesEvidence": true
+    },
+    {
+      "id": "p3-charge-ranking",
+      "mounted": true,
+      "inputChangesEvidence": true
+    },
+    {
+      "id": "wo3-casing-deformation",
+      "mounted": true,
+      "inputChangesEvidence": true
+    },
+    {
+      "id": "e3-formulation-search",
+      "mounted": true,
+      "inputChangesEvidence": true
+    },
+    {
+      "id": "m2-gas-events",
+      "mounted": true,
+      "inputChangesEvidence": true
+    },
+    {
+      "id": "w1-crosswell-correlation",
+      "mounted": true,
+      "inputChangesEvidence": true
+    },
+    {
+      "id": "c2-cement-displacement",
+      "mounted": true,
+      "inputChangesEvidence": true
+    },
+    {
+      "id": "pr2-production-forecast",
+      "mounted": true,
+      "inputChangesEvidence": true
+    }
+  ],
+  "errors": []
+}
